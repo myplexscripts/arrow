@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="theme-color" content="#f4f1ea" />
+<title>Arrowflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+:root{
+  --bg:#f4f1ea;
+  --surface:#fffdf8;
+  --surface-2:#ebe7dd;
+  --ink:#172033;
+  --muted:#7f8796;
+  --line:#d9d5cb;
+  --accent:#ff6d5a;
+  --accent-2:#4ea7a1;
+  --accent-3:#f0b54a;
+  --danger:#e94b5f;
+  --good:#4b9c76;
+  --shadow:0 18px 50px rgba(36,31,24,.12);
+  --radius-xl:30px;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --tap:52px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;background:#ded9cf;color:var(--ink);font-family:Manrope,system-ui,sans-serif}
+button,input,textarea{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 65%,white);outline-offset:3px}
+.app{position:relative;width:100%;max-width:480px;height:100dvh;height:100svh;margin:0 auto;overflow:hidden;background:
+  radial-gradient(circle at 18% 4%,rgba(255,109,90,.08),transparent 27%),
+  radial-gradient(circle at 90% 92%,rgba(78,167,161,.07),transparent 28%),var(--bg);box-shadow:0 0 42px rgba(28,24,18,.14)}
+.screen{position:absolute;inset:0;padding:max(14px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(16px) scale(.992);transition:opacity .24s ease,transform .24s ease}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+.topbar{display:grid;grid-template-columns:var(--tap) 1fr var(--tap);align-items:center;min-height:58px;gap:10px;flex:0 0 auto}
+.topbar h1{margin:0;text-align:center;font-size:1.25rem;letter-spacing:-.03em}
+.icon-btn{width:var(--tap);height:var(--tap);border-radius:17px;background:rgba(255,255,255,.56);display:grid;place-items:center;font-size:1.55rem;border:1px solid rgba(23,32,51,.07)}
+.icon-btn:active{transform:scale(.96)}
+.scroll{overflow:auto;overscroll-behavior:contain;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}
+.kicker{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:var(--accent)}
+.title{font-size:clamp(2rem,8vw,3rem);line-height:1.02;letter-spacing:-.055em;margin:.3rem 0 .7rem}
+.subtitle{font-size:.98rem;line-height:1.55;color:var(--muted);margin:0}
+.card{background:rgba(255,253,248,.92);border:1px solid rgba(23,32,51,.08);border-radius:var(--radius-lg);box-shadow:0 12px 36px rgba(36,31,24,.07)}
+.primary,.secondary,.ghost{min-height:54px;border-radius:17px;font-weight:800;padding:0 18px;font-size:.96rem;display:flex;align-items:center;justify-content:center;gap:9px}
+.primary{background:var(--ink);color:white;box-shadow:0 8px 0 rgba(23,32,51,.12)}
+.primary:active{transform:translateY(3px);box-shadow:0 5px 0 rgba(23,32,51,.12)}
+.secondary{background:var(--accent);color:white;box-shadow:0 8px 0 rgba(255,109,90,.18)}
+.ghost{background:rgba(255,255,255,.7);border:1px solid rgba(23,32,51,.08)}
+.chip{height:42px;border-radius:14px;background:rgba(255,255,255,.58);border:1px solid rgba(23,32,51,.06);padding:0 13px;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.88rem}
+.chip i{font-size:1.05rem}
+
+/* splash */
+#splash{z-index:100;display:grid;place-items:center;background:var(--ink);color:#fff;transition:opacity .45s ease,visibility .45s ease}
+#splash.hide{opacity:0;visibility:hidden}
+.splash-mark{display:grid;place-items:center;gap:20px}
+.splash-logo{width:92px;height:92px;border-radius:28px;background:var(--surface);color:var(--ink);position:relative;box-shadow:0 16px 40px rgba(0,0,0,.28)}
+.splash-logo svg{width:100%;height:100%}
+.splash-name{font-weight:800;font-size:1.35rem;letter-spacing:-.04em}
+
+/* home */
+#home{padding-left:22px;padding-right:22px}
+.home-head{display:flex;align-items:center;justify-content:space-between;padding-top:6px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.05rem}
+.brand-mark{width:46px;height:46px;border-radius:15px;background:var(--ink);color:white;display:grid;place-items:center}
+.brand-mark svg{width:34px;height:34px}
+.wallet{display:flex;gap:8px}
+.home-hero{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;padding:16px 0 10px}
+.hero-art{position:relative;min-height:250px;max-height:330px;height:34vh;margin:10px 0 20px;border-radius:34px;background:var(--surface);border:1px solid rgba(23,32,51,.08);overflow:hidden;box-shadow:var(--shadow)}
+.hero-art:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(23,32,51,.09) 1.25px,transparent 1.25px);background-size:18px 18px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.2),#000)}
+.hero-arrow{position:absolute;inset:8%;filter:drop-shadow(0 7px 12px rgba(23,32,51,.06))}
+.hero-arrow path,.hero-arrow polyline{stroke:var(--ink);stroke-width:5.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hero-arrow .accent{stroke:var(--accent)}
+.hero-copy{position:absolute;left:24px;bottom:22px;right:24px;display:flex;align-items:end;justify-content:space-between;gap:12px}
+.hero-copy strong{font-size:1.55rem;letter-spacing:-.05em;line-height:1}
+.hero-copy span{font-size:.78rem;color:var(--muted);font-weight:700}
+.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-actions .primary{grid-column:1/-1}
+.home-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:14px}
+.nav-mini{min-height:62px;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(23,32,51,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:.72rem;font-weight:800;color:var(--muted)}
+.nav-mini i{font-size:1.3rem;color:var(--ink)}
+
+/* levels */
+.level-summary{display:flex;justify-content:space-between;align-items:center;margin:12px 0 16px;padding:18px}
+.level-summary strong{font-size:1.55rem;letter-spacing:-.04em}.level-summary span{color:var(--muted);font-size:.83rem}
+.level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding-bottom:20px}
+.level-cell{aspect-ratio:1;border-radius:18px;background:var(--surface);border:1px solid rgba(23,32,51,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;font-weight:800;box-shadow:0 5px 14px rgba(36,31,24,.05)}
+.level-cell.current{background:var(--ink);color:#fff;transform:scale(1.03)}
+.level-cell.locked{opacity:.42}.level-cell .stars{font-size:.62rem;letter-spacing:1px;color:var(--accent-3)}
+.level-cell.current .stars{color:#ffd46e}.level-cell i{font-size:1.1rem}
+
+/* game */
+#game{padding-left:10px;padding-right:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+.game-top{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:8px;flex:0 0 auto}
+.level-title{text-align:center}.level-title strong{font-size:1.18rem}.level-title small{display:block;color:var(--muted);font-weight:700;margin-top:2px}
+.game-stats{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:10px 8px 4px}
+.game-stats .left{justify-self:start}.game-stats .right{justify-self:end}.hearts{display:flex;gap:5px;color:var(--danger);font-size:1.6rem}.heart.lost{color:#d8d6d0;transform:scale(.86)}
+.board-shell{flex:1;min-height:0;position:relative;margin:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden}
+.board-viewport{width:100%;height:100%;min-height:0;position:relative;touch-action:none;overflow:hidden;border-radius:22px;background:rgba(255,253,248,.24)}
+.board-stage{position:absolute;left:50%;top:50%;transform-origin:center center;will-change:transform;transition:transform .18s ease}
+.board-grid{position:relative;border-radius:24px;display:grid;place-items:center}
+.board-svg{display:block;overflow:visible;touch-action:none}
+.arrow-piece{cursor:pointer;transform-box:fill-box;transform-origin:center;pointer-events:auto}
+.arrow-piece .arrow-body,.arrow-piece .arrow-head{vector-effect:non-scaling-stroke;transition:stroke .16s ease,fill .16s ease,filter .16s ease,opacity .16s ease}
+.arrow-piece .arrow-body{stroke:var(--ink);fill:none;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+.arrow-piece .arrow-head{fill:none;stroke:var(--ink);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:3}
+.arrow-piece .arrow-hit{stroke:transparent;fill:none;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;pointer-events:stroke}
+.arrow-piece.legalHint .arrow-body{stroke:#4a90ff;fill:none}
+.arrow-piece.legalHint .arrow-head{fill:none;stroke:#4a90ff}
+.arrow-piece.legalHint{filter:drop-shadow(0 0 7px rgba(74,144,255,.26));animation:hintPulse 1s ease-in-out infinite}
+.arrow-piece.clearing{pointer-events:none;filter:drop-shadow(0 0 9px rgba(74,144,255,.32))}
+.arrow-piece.clearing .arrow-body{stroke:#4d9df8;fill:none}
+.arrow-piece.clearing .arrow-head{fill:none;stroke:#4d9df8}
+.arrow-piece.failed .arrow-body{stroke:#f25564;fill:none}
+.arrow-piece.failed .arrow-head{fill:none;stroke:#f25564}
+.arrow-piece.cleared{visibility:hidden;pointer-events:none}
+@keyframes hintPulse{50%{opacity:.78;transform:scale(1.01)}}
+.game-tools{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:9px;padding:7px 0 1px}
+.tool{height:58px;min-width:58px;padding:0 15px;border-radius:20px;background:var(--surface);border:1px solid rgba(23,32,51,.08);display:flex;align-items:center;justify-content:center;gap:7px;font-weight:800;box-shadow:0 9px 26px rgba(36,31,24,.08);position:relative}
+.tool i{font-size:1.35rem}.tool .cost{font-size:.74rem;color:var(--muted)}.tool.active{box-shadow:inset 0 0 0 2px var(--accent-2)}
+.tool-badge{position:absolute;right:-4px;top:-5px;background:var(--accent);color:#fff;border-radius:999px;min-width:23px;height:23px;display:grid;place-items:center;font-size:.7rem;border:3px solid var(--bg)}
+.zoom-cluster{display:none;gap:6px;position:absolute;right:12px;bottom:12px;z-index:10}.zoom-cluster.show{display:flex}
+.zoom-cluster button{width:44px;height:44px;border-radius:15px;background:var(--surface);border:1px solid rgba(23,32,51,.08);font-size:1.2rem;box-shadow:0 8px 20px rgba(36,31,24,.08)}
+
+/* overlays */
+.modal-layer{position:absolute;inset:0;z-index:40;background:rgba(23,32,51,.30);display:flex;align-items:flex-end;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:.2s}
+.modal-layer.show{opacity:1;pointer-events:auto}.sheet{width:min(100%,560px);background:var(--surface);border-radius:30px;padding:22px;box-shadow:0 28px 70px rgba(23,32,51,.24);transform:translateY(24px);transition:.25s}.modal-layer.show .sheet{transform:none}
+.sheet h2{margin:0 0 8px;letter-spacing:-.04em}.sheet p{margin:0 0 18px;color:var(--muted);line-height:1.5}.sheet-actions{display:grid;gap:9px}
+.tutorial{position:absolute;inset:0;z-index:35;background:rgba(23,32,51,.58);display:none;align-items:flex-end;padding:18px}.tutorial.show{display:flex}.tutorial-card{background:var(--surface);border-radius:26px;padding:20px;width:min(100%,520px);margin:auto auto 6px}.tutorial-card .step{font-size:.72rem;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.12em}.tutorial-card h3{font-size:1.25rem;margin:6px 0;letter-spacing:-.03em}.tutorial-card p{margin:0 0 14px;color:var(--muted);line-height:1.5}.tutorial-focus{position:absolute;border:3px solid var(--accent);border-radius:22px;box-shadow:0 0 0 9999px rgba(23,32,51,.62);pointer-events:none;z-index:34;display:none}
+.toast{position:absolute;left:50%;bottom:98px;z-index:70;transform:translate(-50%,18px);opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:11px 16px;font-weight:800;font-size:.82rem;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* win */
+.win-wrap{flex:1;display:flex;align-items:center;justify-content:center}.win-card{width:min(100%,520px);padding:26px;text-align:center;position:relative;overflow:hidden}.win-card:before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,109,90,.12) 8% 10%,transparent 10% 18%,rgba(78,167,161,.11) 18% 20%,transparent 20% 28%);animation:spin 20s linear infinite}.win-card>*{position:relative}.win-icon{width:94px;height:94px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:2.5rem;margin:0 auto 18px;transform:rotate(-4deg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.win-card h1{font-size:2.1rem;letter-spacing:-.055em;margin:0}.win-stars{font-size:2rem;color:var(--accent-3);letter-spacing:5px;margin:10px 0}.win-reward{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.reward-pill{background:var(--surface-2);border-radius:16px;padding:10px 14px;font-weight:800}.win-actions{display:grid;gap:10px}.confetti{position:absolute;width:8px;height:16px;border-radius:4px;top:-20px;animation:confetti 1.5s ease-out forwards}@keyframes confetti{to{transform:translate(var(--x),680px) rotate(640deg);opacity:.1}}
+
+/* shop, settings, info */
+.section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:.96rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:.78rem}.buy{height:42px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:.8rem}.ad-card{padding:19px;background:linear-gradient(135deg,var(--ink),#2d3c57);color:#fff}.ad-card p{color:#c3cbd8}.ad-label{font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;color:#aeb7c7;font-weight:800}
+.setting-list{display:grid;gap:10px;padding:10px 0}.setting-row{display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:13px;padding:15px}.setting-row i{width:46px;height:46px;border-radius:15px;background:var(--surface-2);display:grid;place-items:center;font-size:1.2rem}.setting-row h3{margin:0;font-size:.92rem}.setting-row p{margin:2px 0 0;color:var(--muted);font-size:.75rem}.switch{width:50px;height:30px;border-radius:999px;background:#d5d2ca;padding:4px;transition:.2s}.switch:before{content:"";display:block;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.12);transition:.2s}.switch.on{background:var(--accent-2)}.switch.on:before{transform:translateX(20px)}
+.info-card{padding:20px;margin-top:12px}.info-card h2{letter-spacing:-.04em}.info-card p{color:var(--muted);line-height:1.6;font-size:.9rem}.field{display:grid;gap:7px;margin-top:12px}.field label{font-size:.78rem;font-weight:800}.field input,.field textarea{width:100%;border:1px solid rgba(23,32,51,.12);background:var(--surface);border-radius:16px;padding:14px;min-height:50px}.field textarea{min-height:120px;resize:none}
+
+/* dark mode */
+body.dark{--bg:#0d1119;--surface:#151b27;--surface-2:#202736;--ink:#f3f4f7;--muted:#9ba4b5;--line:#303746;--shadow:0 18px 50px rgba(0,0,0,.28)}
+body.dark .app{background:radial-gradient(circle at 18% 4%,rgba(255,109,90,.08),transparent 27%),radial-gradient(circle at 90% 92%,rgba(78,167,161,.07),transparent 28%),var(--bg)}
+body.dark .icon-btn,body.dark .chip,body.dark .nav-mini{background:rgba(255,255,255,.04)}
+body.dark .hero-art,body.dark .board-viewport{background:rgba(255,255,255,.025)}
+body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
+
+@media (min-width:520px){
+  body{display:grid;place-items:center}
+  .app{height:min(920px,100dvh);border-left:1px solid rgba(23,32,51,.08);border-right:1px solid rgba(23,32,51,.08)}
+}
+@media (max-width:519px){
+  .app{max-width:none;box-shadow:none}
+}
+@media (max-height:720px){.hero-art{min-height:210px}.home-nav{padding-top:8px}.nav-mini{min-height:54px}.board-viewport{height:58dvh}.game-tools{padding-top:2px}.tool{height:52px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div id="splash">
+    <div class="splash-mark">
+      <div class="splash-logo">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M18 72H42V46H70" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M61 35L76 46L61 57" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M24 28H46" stroke="#ff6d5a" stroke-width="8" stroke-linecap="round"/><path d="M38 19L50 28L38 37" stroke="#ff6d5a" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="splash-name">Arrowflow</div>
+    </div>
+  </div>
+
+  <section class="screen active" id="home">
+    <div class="home-head">
+      <div class="brand"><div class="brand-mark">
+        <svg viewBox="0 0 40 40"><path d="M7 28h10V17h13" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m25 12 6 5-6 5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>Arrowflow</div>
+      <div class="wallet"><button class="chip" data-nav="shop"><i class="ph ph-coin"></i><span data-coins>0</span></button></div>
+    </div>
+    <div class="home-hero">
+      <div class="hero-art" aria-hidden="true">
+        <svg class="hero-arrow" viewBox="0 0 100 100">
+          <path d="M4 18h32v16h28v-18h28"/>
+          <polyline points="84,8 94,16 84,24"/>
+          <path d="M10 58h20v-18h18v34h20v-18h20"/>
+          <polyline class="accent" points="79,48 90,56 79,64"/>
+          <path d="M8 86h22v-10h20v10h42"/>
+          <polyline points="84,78 94,86 84,94"/>
+        </svg>
+        <div class="hero-copy"><div><strong>Find the<br>open line.</strong><br><span>Tap clear arrows. Unwind the board.</span></div><div class="kicker">No timer</div></div>
+      </div>
+      <div class="home-copy">
+        <div class="kicker">Daily logic puzzle</div>
+        <h1 class="title">Clear a path.<br>Keep the flow.</h1>
+        <p class="subtitle">A calm arrow puzzle where every tap opens new routes through the board.</p>
+        <div class="home-actions" style="margin-top:20px">
+          <button class="primary" id="continueBtn"><i class="ph-fill ph-play"></i><span>Continue</span></button>
+          <button class="ghost" data-nav="levels"><i class="ph ph-squares-four"></i>Levels</button>
+          <button class="ghost" id="dailyBtn"><i class="ph ph-calendar-dots"></i>Daily</button>
+        </div>
+        <div class="home-nav">
+          <button class="nav-mini" data-nav="shop"><i class="ph ph-storefront"></i>Shop</button>
+          <button class="nav-mini" data-nav="settings"><i class="ph ph-gear-six"></i>Settings</button>
+          <button class="nav-mini" data-nav="about"><i class="ph ph-info"></i>About</button>
+          <button class="nav-mini" id="shareBtn"><i class="ph ph-share-network"></i>Share</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="levels">
+    <div class="topbar"><button class="icon-btn" data-nav="home" aria-label="Back"><i class="ph ph-caret-left"></i></button><h1>Levels</h1><button class="icon-btn" data-nav="shop" aria-label="Shop"><i class="ph ph-coin"></i></button></div>
+    <div class="level-summary card"><div><span>Your progress</span><br><strong id="progressText">1 of 30</strong></div><button class="chip"><i class="ph-fill ph-star" style="color:var(--accent-3)"></i><span id="starsTotal">0</span></button></div>
+    <div class="scroll"><div class="level-grid" id="levelGrid"></div></div>
+  </section>
+
+  <section class="screen" id="game">
+    <div class="game-top"><button class="icon-btn" id="gameBack" aria-label="Back"><i class="ph ph-caret-left"></i></button><div class="level-title"><strong id="gameLevel">Level 1</strong><small id="difficultyLabel">Warm up</small></div><button class="icon-btn" data-nav="settings" aria-label="Settings"><i class="ph ph-gear-six"></i></button></div>
+    <div class="game-stats">
+      <button class="chip left" id="remainingChip"><i class="ph ph-arrow-up-right"></i><span id="remainingCount">0</span></button>
+      <div class="hearts" id="hearts"></div>
+      <button class="chip right" data-nav="shop"><i class="ph ph-coin"></i><span data-coins>0</span></button>
+    </div>
+    <div class="board-shell">
+      <div class="board-viewport" id="boardViewport" aria-label="Arrow puzzle board">
+        <div class="board-stage" id="boardStage"><div class="board-grid" id="boardGrid"></div></div>
+        <div class="zoom-cluster" id="zoomCluster"><button id="zoomOut" aria-label="Zoom out"><i class="ph ph-minus"></i></button><button id="zoomReset" aria-label="Reset zoom"><i class="ph ph-arrows-out"></i></button><button id="zoomIn" aria-label="Zoom in"><i class="ph ph-plus"></i></button></div>
+      </div>
+    </div>
+    <div class="game-tools">
+      <button class="tool" id="hintBtn"><i class="ph ph-lightbulb"></i><span>Hint</span><span class="cost" id="hintCost"></span><span class="tool-badge" id="hintInventory">0</span></button>
+      <button class="tool" id="viewBtn"><i class="ph ph-magnifying-glass-plus"></i><span>View</span></button>
+      <button class="tool" id="skipBtn"><i class="ph ph-skip-forward"></i><span>Skip</span></button>
+    </div>
+  </section>
+
+  <section class="screen" id="win">
+    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-x"></i></button><h1>Level clear</h1><span></span></div>
+    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-coin"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><div class="win-actions"><button class="secondary" id="doubleBtn"><i class="ph ph-play-circle"></i>Demo ad: double coins</button><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
+  </section>
+
+  <section class="screen" id="shop">
+    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-caret-left"></i></button><h1>Shop</h1><span></span></div>
+    <div class="scroll">
+      <div class="shop-balance card"><div><span class="kicker">Balance</span><br><strong><i class="ph ph-coin"></i> <span data-coins>0</span></strong></div><button class="chip" id="freeCoinsBtn"><i class="ph ph-play-circle"></i>Free coins</button></div>
+      <h2 class="section-title">Helpful stuff</h2><div class="shop-list" id="shopList"></div>
+      <h2 class="section-title">Demo monetisation</h2><div class="ad-card card"><div class="ad-label">Ad network placeholder</div><h2>Rewarded ad hook is ready.</h2><p>This demo grants rewards instantly. Replace the single <strong>showRewardedAd()</strong> function with your own ad SDK later.</p><button class="secondary" id="demoAdBtn"><i class="ph ph-play"></i>Test rewarded ad</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="settings">
+    <div class="topbar"><button class="icon-btn" data-back><i class="ph ph-caret-left"></i></button><h1>Settings</h1><span></span></div>
+    <div class="scroll"><div class="setting-list">
+      <div class="setting-row card"><i class="ph ph-speaker-high"></i><div><h3>Sound effects</h3><p>Soft taps, errors and rewards.</p></div><button class="switch" data-setting="sound" aria-label="Toggle sound"></button></div>
+      <div class="setting-row card"><i class="ph ph-device-mobile-vibration"></i><div><h3>Haptics</h3><p>Light feedback on supported devices.</p></div><button class="switch" data-setting="haptics" aria-label="Toggle haptics"></button></div>
+      <div class="setting-row card"><i class="ph ph-moon-stars"></i><div><h3>Night ink</h3><p>A darker palette for late play.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
+      <div class="setting-row card"><i class="ph ph-arrows-out-cardinal"></i><div><h3>Board motion</h3><p>Allow pan and zoom on larger boards.</p></div><button class="switch" data-setting="boardMotion" aria-label="Toggle board motion"></button></div>
+    </div><h2 class="section-title">Game</h2><div class="shop-list"><button class="setting-row card" id="resetTutorial"><i class="ph ph-graduation-cap"></i><div style="text-align:left"><h3>Replay tutorial</h3><p>Show the first play guide again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button><button class="setting-row card" id="resetProgress"><i class="ph ph-arrow-counter-clockwise"></i><div style="text-align:left"><h3>Reset progress</h3><p>Start from level 1 again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button></div></div>
+  </section>
+
+  <section class="screen" id="about">
+    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-caret-left"></i></button><h1>About</h1><span></span></div>
+    <div class="scroll"><div class="info-card card"><div class="brand-mark" style="margin-bottom:18px"><i class="ph ph-arrow-up-right"></i></div><h2>Arrowflow</h2><p>Arrowflow is a compact logic game built around one rule: the maze itself is made from intertwined arrows. Each arrow is one continuous path, and its head can leave only when no other active arrow blocks the lane ahead. Pull the free arrows out to untangle the whole shape.</p><p>This HTML demo includes generated solvable levels, local progress, coins, hints, haptics, sound, pan and zoom, a shop, and a rewarded ad placeholder.</p><button class="ghost" data-nav="contact" style="width:100%;margin-top:8px">Contact</button><button class="ghost" data-nav="feedback" style="width:100%;margin-top:8px">Feedback</button></div></div>
+  </section>
+
+  <section class="screen" id="contact">
+    <div class="topbar"><button class="icon-btn" data-nav="about"><i class="ph ph-caret-left"></i></button><h1>Contact</h1><span></span></div>
+    <div class="scroll"><div class="info-card card"><h2>Say hello</h2><p>This is a demo form. Wire the submit handler to Formspree, Netlify Forms, your API, or an email service when you ship.</p><div class="field"><label>Name</label><input placeholder="Your name"></div><div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div><div class="field"><label>Message</label><textarea placeholder="What can we help with?"></textarea></div><button class="primary fakeSubmit" style="width:100%;margin-top:14px">Send message</button></div></div>
+  </section>
+
+  <section class="screen" id="feedback">
+    <div class="topbar"><button class="icon-btn" data-nav="about"><i class="ph ph-caret-left"></i></button><h1>Feedback</h1><span></span></div>
+    <div class="scroll"><div class="info-card card"><h2>How does it feel?</h2><p>Tell us where a level felt confusing, too easy, or especially satisfying.</p><div class="field"><label>Rating</label><div style="display:flex;gap:8px" id="ratingRow"><button class="icon-btn">1</button><button class="icon-btn">2</button><button class="icon-btn">3</button><button class="icon-btn">4</button><button class="icon-btn">5</button></div></div><div class="field"><label>Comments</label><textarea placeholder="Your feedback"></textarea></div><button class="primary fakeSubmit" style="width:100%;margin-top:14px">Send feedback</button></div></div>
+  </section>
+
+  <div class="modal-layer" id="modalLayer"><div class="sheet" id="modalSheet"></div></div>
+  <div class="tutorial" id="tutorial"><div class="tutorial-card" id="tutorialCard"></div></div>
+  <div class="tutorial-focus" id="tutorialFocus"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+'use strict';
+
+// Economy and tuning live here so the numbers are easy to change later.
+const CONSTANTS = Object.freeze({
+  TOTAL_LEVELS: 1000,
+  STARTING_COINS: 100,
+  STARTING_HINTS: 2,
+  STARTING_LIVES: 3,
+  HINT_COST: 25,
+  SKIP_COST: 65,
+  EXTRA_LIFE_COST: 45,
+  COINS_PER_AD: 60,
+  BASE_LEVEL_REWARD: 18,
+  STAR_BONUS: [0, 6, 14, 26],
+  HINT_PACK_COST: 85,
+  HINT_PACK_AMOUNT: 5,
+  LIFE_PACK_COST: 70,
+  LIFE_PACK_AMOUNT: 2,
+  ZOOM_MIN: .75,
+  ZOOM_MAX: 2.25
+});
+
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+const defaultState = {
+  coins: CONSTANTS.STARTING_COINS,
+  hints: CONSTANTS.STARTING_HINTS,
+  maxUnlocked: 1,
+  currentLevel: 1,
+  stars: {},
+  tutorialSeen: false,
+  sound: true,
+  haptics: true,
+  dark: false,
+  boardMotion: true,
+  lifeCredits: 0,
+  skipTokens: 0,
+  reviewAsked: false
+};
+let state = loadState();
+let previousScreen = 'home';
+let game = null;
+let audioCtx = null;
+let tutorialStage = 0;
+
+function loadState(){
+  try { return {...defaultState, ...JSON.parse(localStorage.getItem('arrowflowState')||'{}')}; }
+  catch { return {...defaultState}; }
+}
+function saveState(){ localStorage.setItem('arrowflowState',JSON.stringify(state)); updateWallets(); }
+function updateWallets(){ $$('[data-coins]').forEach(el=>el.textContent=state.coins); }
+function haptic(ms=18){ if(state.haptics && navigator.vibrate) navigator.vibrate(ms); }
+function sound(kind='tap'){
+  if(!state.sound) return;
+  try{
+    audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    const now=audioCtx.currentTime;
+    const map={tap:[420,.025,.035],good:[620,.045,.055],bad:[155,.065,.06],coin:[780,.05,.05],win:[520,.12,.07]};
+    const [freq,dur,vol]=map[kind]||map.tap;
+    o.frequency.setValueAtTime(freq,now); if(kind==='win') o.frequency.exponentialRampToValueAtTime(900,now+dur);
+    g.gain.setValueAtTime(vol,now);g.gain.exponentialRampToValueAtTime(.0001,now+dur);
+    o.start(now);o.stop(now+dur+.01);
+  }catch{}
+}
+function toast(msg){ const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600); }
+function showScreen(id){
+  const current=$('.screen.active'); if(current) previousScreen=current.id;
+  $$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+  if(id==='levels') renderLevels();
+  if(id==='shop') renderShop();
+  if(id==='settings') syncSettings();
+  haptic(7);
+}
+
+function rng(seed){ let s=seed>>>0; return ()=>{s=(s*1664525+1013904223)>>>0; return s/4294967296}; }
+
+function levelShape(level){
+  if(level<24)return 'square';
+  const shapes=['diamond','oval','hourglass','shield','wave','bottle','square'];
+  return shapes[Math.floor((level-24)/10)%shapes.length];
+}
+function shapeLabel(shape){
+  return ({square:'Square',diamond:'Diamond',oval:'Oval',hourglass:'Hourglass',shield:'Shield',wave:'Wave',bottle:'Bottle'})[shape]||'Maze';
+}
+function levelConfig(level){
+  const size=clamp(8+Math.floor((level-1)/28),8,18);
+  const label=level<10?'Warm up':level<40?'Flow':level<100?'Tricky':level<250?'Tangled':level<500?'Expert':'Master';
+  const shape=levelShape(level);
+  const minChunk=level<12?5:4;
+  const maxChunk=clamp(8+Math.floor(level/180),8,11);
+  return {size,label,shape,shapeLabel:shapeLabel(shape),seed:level*92821+317,minChunk,maxChunk};
+}
+function dirVec(d){ return ({R:[0,1],D:[1,0],L:[0,-1],U:[-1,0]})[d]; }
+function cellKey(r,c){ return r+','+c; }
+function inBounds(size,r,c){ return r>=0&&c>=0&&r<size&&c<size; }
+function vecToDir(dr,dc){ return dr===-1?'U':dr===1?'D':dc===-1?'L':'R'; }
+
+function desiredShapeInterval(shape,r,size){
+  const mid=(size-1)/2;
+  const y=mid?((r-mid)/mid):0;
+  let half=size*.49,center=mid;
+  if(shape==='diamond')half=Math.max(1.5,size*.48*(1-.72*Math.abs(y)));
+  else if(shape==='oval')half=Math.max(1.7,size*.47*Math.sqrt(Math.max(.15,1-y*y)));
+  else if(shape==='hourglass')half=size*(.18+.30*Math.abs(y));
+  else if(shape==='shield')half=r<size*.43?size*.47:Math.max(1.6,size*.47*(1-(r-size*.43)/(size*.68)));
+  else if(shape==='bottle'){
+    half=r<size*.25?size*.22:r<size*.42?size*.32:size*.45;
+    if(r>size*.82)half*=.82;
+  }else if(shape==='wave'){
+    half=size*.36;
+    center=mid+Math.sin((r/(size-1||1))*Math.PI*2)*size*.10;
+  }
+  let l=Math.max(0,Math.round(center-half));
+  let rr=Math.min(size-1,Math.round(center+half));
+  if(rr-l<2){l=Math.max(0,Math.floor(center)-1);rr=Math.min(size-1,l+2);l=Math.max(0,rr-2);}
+  return [l,rr];
+}
+function makeShapePath(size,shape='square'){
+  if(shape==='square'){
+    const path=[];
+    for(let r=0;r<size;r++){
+      if(r%2===0){for(let c=0;c<size;c++)path.push({r,c});}
+      else{for(let c=size-1;c>=0;c--)path.push({r,c});}
+    }
+    return path;
+  }
+  const rows=Array.from({length:size},(_,r)=>desiredShapeInterval(shape,r,size));
+  // Pairwise boundary locks guarantee the serpentine path can step down one cell
+  // between every row while still letting the silhouette widen and narrow.
+  for(let r=0;r<size-1;r++){
+    if(r%2===0){
+      const edge=clamp(Math.round((rows[r][1]+rows[r+1][1])/2),2,size-1);
+      rows[r][1]=edge;rows[r+1][1]=edge;
+    }else{
+      const edge=clamp(Math.round((rows[r][0]+rows[r+1][0])/2),0,size-3);
+      rows[r][0]=edge;rows[r+1][0]=edge;
+    }
+  }
+  for(const row of rows){
+    if(row[1]-row[0]<2){
+      const center=Math.round((row[0]+row[1])/2);
+      row[0]=clamp(center-1,0,size-3);row[1]=row[0]+2;
+    }
+  }
+  const path=[];
+  for(let r=0;r<size;r++){
+    const [l,rr]=rows[r];
+    if(r%2===0){for(let c=l;c<=rr;c++)path.push({r,c});}
+    else{for(let c=rr;c>=l;c--)path.push({r,c});}
+  }
+  return path;
+}
+function transformShapePath(path,size,variant){
+  return path.map(({r,c})=>{
+    let rr=r,cc=c;
+    if(variant&1){const t=rr;rr=cc;cc=t;}
+    if(variant&2)cc=size-1-cc;
+    if(variant&4)rr=size-1-rr;
+    return {r:rr,c:cc};
+  });
+}
+function makeSnakePath(size){ return makeShapePath(size,'square'); }
+
+function randomizeHamiltonian(path,size,random,steps){
+  let out=path.map(p=>({...p}));
+  for(let s=0;s<steps;s++){
+    const index=new Map(out.map((p,i)=>[cellKey(p.r,p.c),i]));
+    const first=random()<.5;
+    const endpoint=first?out[0]:out[out.length-1];
+    const neighbors=[[endpoint.r-1,endpoint.c],[endpoint.r+1,endpoint.c],[endpoint.r,endpoint.c-1],[endpoint.r,endpoint.c+1]]
+      .filter(([r,c])=>inBounds(size,r,c)).map(([r,c])=>index.get(cellKey(r,c))).filter(i=>i!==undefined);
+    if(first){
+      const choices=neighbors.filter(i=>i>1); if(!choices.length)continue;
+      const j=choices[Math.floor(random()*choices.length)];
+      out=[...out.slice(0,j).reverse(),...out.slice(j)];
+    }else{
+      const choices=neighbors.filter(i=>i<out.length-2); if(!choices.length)continue;
+      const j=choices[Math.floor(random()*choices.length)];
+      out=[...out.slice(0,j+1),...out.slice(j+1).reverse()];
+    }
+  }
+  return out;
+}
+
+function partitionHamiltonian(path,random,minLen,maxLen){
+  const chunks=[];let i=0;
+  while(path.length-i>=minLen){
+    const remaining=path.length-i;
+    let len=remaining<=maxLen?remaining:minLen+Math.floor(random()*(maxLen-minLen+1));
+    const left=remaining-len;
+    if(left>0&&left<minLen)len=Math.max(minLen,len-(minLen-left));
+    if(len<2)break;
+    chunks.push(path.slice(i,i+len).map(p=>({...p})));i+=len;
+  }
+  if(i<path.length){
+    if(chunks.length)chunks[chunks.length-1].push(...path.slice(i).map(p=>({...p})));
+    else chunks.push(path.map(p=>({...p})));
+  }
+  return chunks;
+}
+
+function orientSequentialChunks(chunks){
+  const arrows=chunks.map((cells,id)=>{
+    const copy=cells.map(p=>({...p}));
+    const head=copy[copy.length-1],pre=copy[copy.length-2];
+    return {id,cells:copy,dir:vecToDir(head.r-pre.r,head.c-pre.c),active:true};
+  });
+  return {oriented:arrows,solution:arrows.map(a=>a.id).reverse()};
+}
+
+function orientationOptions(cells){
+  if(cells.length<2)return [];
+  const forward=cells.map(p=>({...p}));
+  const fHead=forward[forward.length-1],fPre=forward[forward.length-2];
+  const reverse=[...cells].reverse().map(p=>({...p}));
+  const rHead=reverse[reverse.length-1],rPre=reverse[reverse.length-2];
+  return [
+    {cells:forward,dir:vecToDir(fHead.r-fPre.r,fHead.c-fPre.c)},
+    {cells:reverse,dir:vecToDir(rHead.r-rPre.r,rHead.c-rPre.c)}
+  ];
+}
+
+function blockerCount(candidate,remaining,selfIndex,size){
+  const occupied=new Map();
+  // A moving arrow behaves like a snake: its head cannot pass through any occupied cell,
+  // including a later part of its own body. The rest of the body then follows the
+  // exact path it already occupies, so only the head's exit lane needs testing.
+  remaining.forEach((cells,i)=>{if(!cells)return;for(const p of cells)occupied.set(cellKey(p.r,p.c),i);});
+  const [dr,dc]=dirVec(candidate.dir),head=candidate.cells[candidate.cells.length-1];
+  const hit=new Set();
+  for(let r=head.r+dr,c=head.c+dc;inBounds(size,r,c);r+=dr,c+=dc){
+    const owner=occupied.get(cellKey(r,c));if(owner!==undefined)hit.add(owner);
+  }
+  return hit.size;
+}
+
+function orientFixedOrder(chunks,size,random){
+  const oriented=new Array(chunks.length),placed=[];
+  for(let i=chunks.length-1;i>=0;i--){
+    const options=orientationOptions(chunks[i]);
+    const legal=options.filter(opt=>blockerCount(opt,[opt.cells,...placed],0,size)===0);
+    if(!legal.length)return null;
+    const pick=legal[Math.floor(random()*legal.length)];
+    oriented[i]={id:i,cells:pick.cells,dir:pick.dir,active:true};
+    placed.push(pick.cells);
+  }
+  return {oriented,solution:oriented.map(a=>a.id)};
+}
+
+function orientForSolvability(chunks,size,random){
+  const remaining=chunks.map(ch=>ch.map(p=>({...p})));
+  const full=chunks.map(ch=>ch.map(p=>({...p})));
+  const oriented=new Array(chunks.length),solution=[];
+  for(let step=0;step<chunks.length;step++){
+    const candidates=[];
+    for(let i=0;i<remaining.length;i++){
+      if(!remaining[i])continue;
+      for(const opt of orientationOptions(remaining[i])){
+        if(blockerCount(opt,remaining,i,size)===0){
+          const initialBlocks=blockerCount(opt,full,i,size);
+          candidates.push({i,opt,initialBlocks});
+        }
+      }
+    }
+    if(!candidates.length)return null;
+    const best=Math.max(...candidates.map(c=>c.initialBlocks));
+    const pool=candidates.filter(c=>c.initialBlocks>=best-1);
+    const pick=pool[Math.floor(random()*pool.length)];
+    oriented[pick.i]={id:pick.i,cells:pick.opt.cells,dir:pick.opt.dir,active:true};
+    solution.push(pick.i);remaining[pick.i]=null;
+  }
+  return {oriented,solution};
+}
+
+function legalInSet(arrows,cfg,a){
+  const [dr,dc]=dirVec(a.dir),head=a.cells[a.cells.length-1];
+  for(let r=head.r+dr,c=head.c+dc;inBounds(cfg.size,r,c);r+=dr,c+=dc){
+    for(const other of arrows){
+      if(!other.active)continue;
+      if(other.cells.some(p=>p.r===r&&p.c===c))return false;
+    }
+  }
+  return true;
+}
+
+function verifySolvable(data){
+  if(!data?.arrows?.length)return false;
+  const arrows=data.arrows.map(a=>({...a,cells:a.cells.map(p=>({...p})),active:true}));
+  // One verified solution is enough to prove the board cannot soft lock after a
+  // legal move: clearing an arrow only removes occupied cells, so future lanes
+  // can stay the same or become more open, never more blocked.
+  for(const id of data.solution||[]){
+    const a=arrows.find(x=>x.id===id&&x.active);
+    if(!a||!legalInSet(arrows,data.cfg,a))return false;
+    a.active=false;
+  }
+  return arrows.every(a=>!a.active);
+}
+function generateLevel(level){
+  const cfg=levelConfig(level);let best=null,bestScore=-Infinity;
+  for(let attempt=0;attempt<4;attempt++){
+    const random=rng(cfg.seed+attempt*7919);
+    let master=makeShapePath(cfg.size,cfg.shape);
+    const variant=(Math.floor(level/10)+attempt)%8;
+    master=transformShapePath(master,cfg.size,variant);
+    master=randomizeHamiltonian(master,cfg.size,random,Math.min(master.length*2,cfg.size*cfg.size*2));
+    const chunks=partitionHamiltonian(master,random,cfg.minChunk,cfg.maxChunk);
+    const solved=orientFixedOrder(chunks,cfg.size,random);if(!solved)continue;
+    const candidate={cfg,arrows:solved.oriented,solution:solved.solution,fill:master.length/(cfg.size*cfg.size)};
+    if(!verifySolvable(candidate))continue;
+    const legal=candidate.arrows.filter(a=>legalInSet(candidate.arrows,cfg,a)).length;
+    const desired=level<12?2:level<80?2:3;
+    const score=-Math.abs(legal-desired)*8+candidate.arrows.length*.06;
+    if(score>bestScore){bestScore=score;best=candidate;}
+    if(legal>=1&&legal<=desired){best=candidate;break;}
+  }
+  if(best)return best;
+
+  // Deterministic fallback made directly from the silhouette's top to bottom
+  // serpentine route. Its reverse chunk order is guaranteed to clear because
+  // every removed chunk only opens more of the exit lanes ahead.
+  const random=rng(cfg.seed);
+  const master=makeShapePath(cfg.size,cfg.shape);
+  const chunks=partitionHamiltonian(master,random,cfg.minChunk,cfg.maxChunk);
+  const solved=orientSequentialChunks(chunks);
+  const fallback={cfg,arrows:solved.oriented,solution:solved.solution,fill:master.length/(cfg.size*cfg.size)};
+  if(!verifySolvable(fallback)){
+    const squareMaster=makeShapePath(cfg.size,'square');
+    const squareChunks=partitionHamiltonian(squareMaster,random,cfg.minChunk,cfg.maxChunk);
+    const squareSolved=orientSequentialChunks(squareChunks);
+    const squareCfg={...cfg,shape:'square',shapeLabel:'Square'};
+    const square={cfg:squareCfg,arrows:squareSolved.oriented,solution:squareSolved.solution,fill:1};
+    if(!verifySolvable(square))throw new Error('Level generator failed its solvability guarantee.');
+    return square;
+  }
+  return fallback;
+}
+
+function renderLevels(){
+  const grid=$('#levelGrid');grid.innerHTML='';
+  let totalStars=0;Object.values(state.stars).forEach(v=>totalStars+=v);
+  $('#starsTotal').textContent=totalStars;$('#progressText').textContent=`${state.maxUnlocked} of ${CONSTANTS.TOTAL_LEVELS}`;
+  for(let i=1;i<=CONSTANTS.TOTAL_LEVELS;i++){
+    const btn=document.createElement('button');btn.className='level-cell';
+    const locked=i>state.maxUnlocked; if(locked)btn.classList.add('locked'); if(i===state.currentLevel&&!locked)btn.classList.add('current');
+    const stars=state.stars[i]||0;
+    btn.innerHTML=locked?`<i class="ph ph-lock-simple"></i><span>${i}</span>`:`<span>${i}</span><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>`;
+    btn.disabled=locked;btn.addEventListener('click',()=>startLevel(i));grid.appendChild(btn);
+  }
+}
+
+function visualPointsForArrow(a,step,pad){
+  const centers=a.cells.map(p=>({x:pad+(p.c+.5)*step,y:pad+(p.r+.5)*step}));
+  if(centers.length<2) return centers;
+  const first=a.cells[0],second=a.cells[1];
+  const fdr=second.r-first.r,fdc=second.c-first.c;
+  const [hdr,hdc]=dirVec(a.dir);
+  const ext=step*.42;
+  const start={x:centers[0].x-fdc*ext,y:centers[0].y-fdr*ext};
+  const endCenter=centers[centers.length-1];
+  const tip={x:endCenter.x+hdc*ext,y:endCenter.y+hdr*ext};
+  return [start,...centers.slice(0,-1),tip];
+}
+function pathDataFromArrow(a,step,pad){
+  return visualPointsForArrow(a,step,pad).map((p,i)=>`${i?'L':'M'} ${p.x} ${p.y}`).join(' ');
+}
+
+function headPathAt(x,y,dr,dc,step){
+  const wing=step*.20,back=step*.25;
+  const bx=x-dc*back,by=y-dr*back,px=-dr*wing,py=dc*wing;
+  return `M ${bx+px} ${by+py} L ${x} ${y} L ${bx-px} ${by-py}`;
+}
+function headData(a,step,pad){
+  const pts=visualPointsForArrow(a,step,pad),tip=pts[pts.length-1],[dr,dc]=dirVec(a.dir);
+  return headPathAt(tip.x,tip.y,dr,dc,step);
+}
+function polylineLength(points){
+  let total=0;
+  for(let i=1;i<points.length;i++)total+=Math.hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y);
+  return total;
+}
+function pointOnPolyline(points,distance){
+  if(!points.length)return {x:0,y:0};
+  if(distance<=0)return {...points[0]};
+  let walked=0;
+  for(let i=1;i<points.length;i++){
+    const a=points[i-1],b=points[i];
+    const len=Math.hypot(b.x-a.x,b.y-a.y);
+    if(distance<=walked+len||i===points.length-1){
+      const t=len?clamp((distance-walked)/len,0,1):0;
+      return {x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+    }
+    walked+=len;
+  }
+  return {...points[points.length-1]};
+}
+function slicePolyline(points,startDistance,endDistance){
+  const total=polylineLength(points);
+  const start=clamp(startDistance,0,total),end=clamp(endDistance,start,total);
+  const out=[pointOnPolyline(points,start)];
+  let walked=0;
+  for(let i=1;i<points.length;i++){
+    const a=points[i-1],b=points[i];
+    const len=Math.hypot(b.x-a.x,b.y-a.y);
+    const at=walked+len;
+    if(at>start+0.001&&at<end-0.001)out.push({...b});
+    walked=at;
+  }
+  const last=pointOnPolyline(points,end);
+  const prev=out[out.length-1];
+  if(!prev||Math.abs(prev.x-last.x)>.001||Math.abs(prev.y-last.y)>.001)out.push(last);
+  return out;
+}
+function pathFromPoints(points){
+  return points.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(3)} ${p.y.toFixed(3)}`).join(' ');
+}
+function makeSnakeMotion(a,extraDistance){
+  const base=visualPointsForArrow(a,game.step,game.pad);
+  const originalLength=polylineLength(base);
+  const [dr,dc]=dirVec(a.dir);
+  const tip=base[base.length-1];
+  const travel=[...base,{x:tip.x+dc*extraDistance,y:tip.y+dr*extraDistance}];
+  return {travel,originalLength,dr,dc};
+}
+function renderSnakeFrame(el,motion,offset){
+  const body=el.querySelector('.arrow-body'),head=el.querySelector('.arrow-head');
+  body.style.strokeDasharray='';
+  body.style.strokeDashoffset='';
+  const segment=slicePolyline(motion.travel,offset,offset+motion.originalLength);
+  const tip=segment[segment.length-1];
+  body.setAttribute('d',pathFromPoints(segment));
+  head.setAttribute('d',headPathAt(tip.x,tip.y,motion.dr,motion.dc,game.step));
+}
+function restoreArrowGeometry(el,a){
+  const body=el.querySelector('.arrow-body'),head=el.querySelector('.arrow-head');
+  body.style.strokeDasharray='';
+  body.style.strokeDashoffset='';
+  const d=body.dataset.baseD||pathDataFromArrow(a,game.step,game.pad);
+  body.setAttribute('d',d);
+  head.setAttribute('d',headData(a,game.step,game.pad));
+}
+function animateArrowOut(el,a){
+  const body=el.querySelector('.arrow-body'),head=el.querySelector('.arrow-head');
+  if(!body||!head){el.classList.add('cleared');return Promise.resolve();}
+  el.classList.remove('failed');
+  el.classList.add('clearing');
+
+  const base=visualPointsForArrow(a,game.step,game.pad);
+  const originalLen=polylineLength(base);
+  const extra=originalLen+game.boardUnits*1.15;
+  const motion=makeSnakeMotion(a,extra);
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const duration=reduced?220:clamp(520+originalLen*2.1,560,1180);
+  const start=performance.now();
+
+  return new Promise(resolve=>{
+    function frame(now){
+      const t=Math.min(1,(now-start)/duration);
+      // Nearly linear travel makes the line read as one continuous snake.
+      const eased=t<.14?2.55*t*t:(t>.86?1-2.55*(1-t)*(1-t):.0714+(t-.14)*1.0714);
+      const offset=extra*clamp(eased,0,1);
+      renderSnakeFrame(el,motion,offset);
+      if(t<1){requestAnimationFrame(frame);return;}
+      el.classList.add('cleared');
+      resolve();
+    }
+    requestAnimationFrame(frame);
+  });
+}
+function startLevel(level,{daily=false}={}){
+  const data=generateLevel(level); state.currentLevel=level;saveState();
+  game={...data,level,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,panMode:false,doubleClaimed:false,reward:0,tutorialActionDone:false};
+  $('#gameLevel').textContent=daily?'Daily board':`Level ${level}`; $('#difficultyLabel').textContent=`${data.cfg.label} · ${data.cfg.shapeLabel}`;
+  renderBoard(); renderHearts(); updateRemaining(); resetView(); showScreen('game');
+  $('#zoomCluster').classList.toggle('show',data.cfg.size>=7 && state.boardMotion);
+  $('#viewBtn').style.display=data.cfg.size>=7&&state.boardMotion?'flex':'none';
+  if(!state.tutorialSeen && level===1) setTimeout(()=>beginTutorial(),350);
+}
+function renderBoard(){
+  const grid=$('#boardGrid'),n=game.cfg.size;
+  const step=n<=5?27:n===6?24.5:22,pad=n<=6?18:16,units=pad*2+n*step;
+  const appWidth=$('.app')?.clientWidth||window.innerWidth;
+  const availableHeight=$('#boardViewport')?.clientHeight||window.innerHeight*.62;
+  const physical=clamp(Math.min(appWidth-22,availableHeight-4,520),260,520);
+  game.step=step;game.pad=pad;game.boardUnits=units;game.boardPhysical=physical;
+  grid.style.width=physical+'px';grid.style.height=physical+'px';grid.innerHTML='';
+
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.classList.add('board-svg');svg.setAttribute('viewBox',`0 0 ${units} ${units}`);svg.setAttribute('width',physical);svg.setAttribute('height',physical);svg.setAttribute('aria-label','Intertwined arrow maze');
+  game.arrows.forEach(a=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('arrow-piece');g.dataset.id=a.id;
+    const d=pathDataFromArrow(a,step,pad);
+    const body=document.createElementNS('http://www.w3.org/2000/svg','path');body.classList.add('arrow-body');body.setAttribute('d',d);body.dataset.baseD=d;
+    const head=document.createElementNS('http://www.w3.org/2000/svg','path');head.classList.add('arrow-head');head.setAttribute('d',headData(a,step,pad));
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('arrow-hit');hit.setAttribute('d',d);hit.setAttribute('tabindex','0');hit.setAttribute('role','button');hit.setAttribute('aria-label',`Arrow pointing ${a.dir}`);
+    const trigger=e=>{e.stopPropagation();if(!game.panMode)attemptArrow(a.id,g)};
+    hit.addEventListener('click',trigger);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger(e)}});
+    g.append(body,head,hit);svg.appendChild(g);
+  });
+  grid.appendChild(svg);
+}
+function isLegal(a){ return legalInSet(game.arrows,game.cfg,a); }
+function raySegmentDistance(origin,dir,a,b){
+  const vx=dir.x,vy=dir.y,wx=b.x-a.x,wy=b.y-a.y;
+  const rx=a.x-origin.x,ry=a.y-origin.y;
+  const cross=(x1,y1,x2,y2)=>x1*y2-y1*x2;
+  const denom=cross(vx,vy,wx,wy);
+  if(Math.abs(denom)>1e-6){
+    const t=cross(rx,ry,wx,wy)/denom;
+    const u=cross(rx,ry,vx,vy)/denom;
+    if(t>1e-5&&u>=-1e-5&&u<=1+1e-5)return t;
+    return Infinity;
+  }
+  // Parallel segments only matter if they sit on the same ray.
+  if(Math.abs(cross(rx,ry,vx,vy))>1e-5)return Infinity;
+  const ta=rx*vx+ry*vy;
+  const tb=(b.x-origin.x)*vx+(b.y-origin.y)*vy;
+  const candidates=[ta,tb].filter(t=>t>1e-5);
+  return candidates.length?Math.min(...candidates):Infinity;
+}
+function blockedTravelDistance(a){
+  const [dr,dc]=dirVec(a.dir);
+  const moving=visualPointsForArrow(a,game.step,game.pad);
+  const origin=moving[moving.length-1];
+  const dir={x:dc,y:dr};
+  let nearest=Infinity;
+
+  // Find the first piece of actual drawn arrow geometry in front of the head.
+  // This makes the red head stop before the visible obstacle instead of using
+  // the coarser occupied-cell distance used by the puzzle rules.
+  for(const other of game.arrows){
+    if(!other.active)continue;
+    const pts=visualPointsForArrow(other,game.step,game.pad);
+    for(let i=1;i<pts.length;i++){
+      // Ignore the moving arrow's own final segment, which terminates at the
+      // current head and would otherwise register as a collision at distance 0.
+      if(other.id===a.id && i===pts.length-1)continue;
+      const d=raySegmentDistance(origin,dir,pts[i-1],pts[i]);
+      if(d<nearest)nearest=d;
+    }
+  }
+
+  // Convert a small screen-space breathing room into SVG units. The arrow tip
+  // now stops a few pixels before the obstacle, so it reads as a bump, not an
+  // overlap. Keep a conservative fallback for unusual generated geometry.
+  const scale=(game.boardPhysical||420)/(game.boardUnits||420);
+  const visualGap=5.5/Math.max(.1,scale);
+  if(Number.isFinite(nearest))return clamp(nearest-visualGap,game.step*.08,game.step*1.35);
+
+  const head=a.cells[a.cells.length-1];
+  let steps=1;
+  outer:for(let r=head.r+dr,c=head.c+dc;inBounds(game.cfg.size,r,c);r+=dr,c+=dc,steps++){
+    for(const other of game.arrows){
+      if(!other.active)continue;
+      if(other.cells.some(p=>p.r===r&&p.c===c))break outer;
+    }
+  }
+  return clamp((steps-.58)*game.step-visualGap,game.step*.08,game.step*1.35);
+}
+function animateBlockedTap(el,a){
+  const body=el.querySelector('.arrow-body'),head=el.querySelector('.arrow-head');
+  if(!body||!head)return Promise.resolve();
+  el.dataset.busy='1';
+  el.classList.add('failed');
+
+  const bump=blockedTravelDistance(a);
+  const motion=makeSnakeMotion(a,bump+game.step*.2);
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const duration=reduced?260:620;
+  const start=performance.now();
+  const easeOut=t=>1-Math.pow(1-t,3);
+  const easeInOut=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+  return new Promise(resolve=>{
+    function frame(now){
+      const t=Math.min(1,(now-start)/duration);
+      let offset;
+      if(t<.38){
+        // The body actually feeds through its bends as the head bumps forward.
+        offset=bump*easeOut(t/.38);
+      }else if(t<.50){
+        offset=bump;
+      }else{
+        // Then the exact same continuous line flows backward into place.
+        offset=bump*(1-easeInOut((t-.50)/.50));
+      }
+      renderSnakeFrame(el,motion,offset);
+      if(t<1){requestAnimationFrame(frame);return;}
+      restoreArrowGeometry(el,a);
+      el.classList.remove('failed');
+      delete el.dataset.busy;
+      resolve();
+    }
+    requestAnimationFrame(frame);
+  });
+}
+async function attemptArrow(id,el){
+  const a=game.arrows.find(x=>x.id===id); if(!a||!a.active||el.dataset.busy) return;
+  clearHint();
+  if(isLegal(a)){
+    sound('good');haptic(16);a.active=false;
+    await animateArrowOut(el,a);
+    updateRemaining();
+    if(tutorialStage===1){game.tutorialActionDone=true;showTutorialStep2();}
+    if(game.arrows.every(x=>!x.active)) finishLevel();
+  }else{
+    sound('bad');haptic([30,25,30]);game.mistakes++;game.lives--;
+    const bump=animateBlockedTap(el,a);
+    renderHearts();
+    await bump;
+    if(game.lives<=0) setTimeout(showOutOfLives,260); else toast('That arrow is blocked');
+  }
+}
+function updateRemaining(){ const n=game.arrows.filter(a=>a.active).length;$('#remainingCount').textContent=n; }
+function renderHearts(){
+  const h=$('#hearts');h.innerHTML='';
+  for(let i=0;i<CONSTANTS.STARTING_LIVES;i++){const s=document.createElement('span');s.className='heart'+(i>=game.lives?' lost':'');s.innerHTML='<i class="ph-fill ph-heart"></i>';h.appendChild(s);}
+  if(game.lives>CONSTANTS.STARTING_LIVES){const extra=document.createElement('span');extra.className='heart';extra.innerHTML=`<i class="ph-fill ph-heart"></i><small style="font-size:.6rem">+${game.lives-CONSTANTS.STARTING_LIVES}</small>`;h.appendChild(extra)}
+}
+function clearHint(){ $$('.arrow-piece.legalHint').forEach(x=>x.classList.remove('legalHint')); }
+function useHint(){
+  if(!game) return; const legal=game.arrows.filter(a=>a.active&&isLegal(a)); if(!legal.length)return;
+  if(state.hints>0){state.hints--;saveState();}
+  else if(state.coins>=CONSTANTS.HINT_COST){state.coins-=CONSTANTS.HINT_COST;saveState();}
+  else {toast('Not enough coins');showScreen('shop');return;}
+  const a=legal[Math.floor(Math.random()*legal.length)];const el=$(`.arrow-piece[data-id="${a.id}"]`);clearHint();el?.classList.add('legalHint');sound('coin');haptic(12);updateHintUI();setTimeout(()=>el?.classList.remove('legalHint'),4000);
+}
+function updateHintUI(){ $('#hintInventory').textContent=state.hints;$('#hintCost').textContent=state.hints?`x${state.hints}`:`${CONSTANTS.HINT_COST}`; }
+function showOutOfLives(){
+  const creditButton = state.lifeCredits ? `<button class="ghost" id="creditLife">Use extra life credit · ${state.lifeCredits} left</button>` : '';
+  openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry free, add one life, or use the demo rewarded ad.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · ${CONSTANTS.EXTRA_LIFE_COST} coins</button><button class="ghost" id="adLife"><i class="ph ph-play-circle"></i>Demo ad · +1 life</button></div>`);
+  $('#retryNow').onclick=()=>{closeModal();startLevel(game.level,{daily:game.daily})};
+  if($('#creditLife')) $('#creditLife').onclick=()=>{state.lifeCredits--;game.lives=1;saveState();renderHearts();closeModal();toast('Extra life used')};
+  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('Not enough coins');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();closeModal();};
+  $('#adLife').onclick=()=>showRewardedAd(()=>{game.lives=1;renderHearts();closeModal();toast('Extra life added')});
+}
+function finishLevel(){
+  clearHint();sound('win');haptic([20,40,20]);
+  const stars=game.mistakes===0?3:game.mistakes===1?2:1;
+  const elapsed=Math.max(1,Math.floor((Date.now()-game.startedAt)/1000));
+  const reward=CONSTANTS.BASE_LEVEL_REWARD+game.cfg.size+CONSTANTS.STAR_BONUS[stars];game.reward=reward;
+  state.coins+=reward;state.stars[game.level]=Math.max(state.stars[game.level]||0,stars);
+  if(!game.daily){state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);}
+  saveState();
+  if(!game.daily && game.level===3 && !state.reviewAsked){
+    state.reviewAsked=true;saveState();setTimeout(()=>openModal(`<h2>Enjoying Arrowflow?</h2><p>This is the web stand-in for a native app review prompt. In a Capacitor build, this can call the App Store or Play Store review API.</p><div class="sheet-actions"><button class="primary" id="reviewSure">Sure</button><button class="ghost" id="reviewLater">Not now</button></div>`),900);
+  }
+  $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';$('#doubleBtn').disabled=false;$('#doubleBtn').style.opacity=1;
+  burstConfetti();setTimeout(()=>showScreen('win'),260);
+}
+function formatTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
+function burstConfetti(){
+  const card=$('#winCard');$$('.confetti',card).forEach(x=>x.remove());
+  for(let i=0;i<24;i++){const c=document.createElement('i');c.className='confetti';c.style.left=(10+Math.random()*80)+'%';c.style.background=["#ff6d5a","#4ea7a1","#f0b54a","#8c7bd6"][i%4];c.style.setProperty('--x',(Math.random()*240-120)+'px');c.style.animationDelay=(Math.random()*.35)+'s';card.appendChild(c)}
+}
+
+function openModal(html){$('#modalSheet').innerHTML=html;$('#modalLayer').classList.add('show')}
+function closeModal(){$('#modalLayer').classList.remove('show')}
+
+function renderShop(){
+  const items=[
+    {icon:'ph-lightbulb',name:'Hint pack',desc:`${CONSTANTS.HINT_PACK_AMOUNT} hints for tricky boards`,price:CONSTANTS.HINT_PACK_COST,buy:()=>{state.hints+=CONSTANTS.HINT_PACK_AMOUNT}},
+    {icon:'ph-heart',name:'Life pack',desc:`${CONSTANTS.LIFE_PACK_AMOUNT} extra-life credits`,price:CONSTANTS.LIFE_PACK_COST,buy:()=>{state.lifeCredits=(state.lifeCredits||0)+CONSTANTS.LIFE_PACK_AMOUNT}},
+    {icon:'ph-skip-forward',name:'Skip token',desc:'Unlock the next level instantly',price:CONSTANTS.SKIP_COST,buy:()=>{state.skipTokens=(state.skipTokens||0)+1}}
+  ];
+  const list=$('#shopList');list.innerHTML='';
+  items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy">${it.price} <i class="ph ph-coin"></i></button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('Not enough coins');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateHintUI();};list.appendChild(d)});
+}
+function showRewardedAd(onReward){
+  openModal(`<div class="ad-label">Demo rewarded ad</div><h2>Imagine a 15 second ad here.</h2><p>The demo resolves instantly so you can test the reward flow without an ad SDK.</p><button class="primary" id="finishAd" style="width:100%"><i class="ph ph-play"></i>Grant reward</button>`);
+  $('#finishAd').onclick=()=>{closeModal();sound('coin');haptic(20);onReward?.();};
+}
+
+function syncSettings(){
+  $$('[data-setting]').forEach(b=>b.classList.toggle('on',!!state[b.dataset.setting]));document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#0d1119':'#f4f1ea';
+}
+
+function resetView(){game.scale=1;game.x=0;game.y=0;game.panMode=false;applyStageTransform();$('#viewBtn').classList.remove('active');}
+function applyStageTransform(){if(!game)return;$('#boardStage').style.transform=`translate(calc(-50% + ${game.x}px),calc(-50% + ${game.y}px)) scale(${game.scale})`;}
+function zoomBy(delta){if(!game||!state.boardMotion)return;game.scale=clamp(game.scale+delta,CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();}
+
+let drag=null,pinch=null;
+const viewport=$('#boardViewport');
+viewport.addEventListener('pointerdown',e=>{
+  if(!game||!game.panMode||!state.boardMotion)return;viewport.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:game.x,oy:game.y};e.preventDefault();
+});
+viewport.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;game.x=drag.ox+(e.clientX-drag.x);game.y=drag.oy+(e.clientY-drag.y);applyStageTransform();});
+viewport.addEventListener('pointerup',e=>{if(drag&&e.pointerId===drag.id)drag=null});
+viewport.addEventListener('wheel',e=>{if(!game||!state.boardMotion)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
+viewport.addEventListener('touchstart',e=>{if(!game||!state.boardMotion||e.touches.length!==2)return;const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};},{passive:true});
+viewport.addEventListener('touchmove',e=>{if(!pinch||e.touches.length!==2)return;const [a,b]=e.touches;const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);game.scale=clamp(pinch.scale*(d/pinch.dist),CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();},{passive:true});
+viewport.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null},{passive:true});
+
+function beginTutorial(){
+  tutorialStage=1;const legal=game.arrows.find(a=>a.active&&isLegal(a));const el=$(`.arrow-piece[data-id="${legal.id}"]`);el?.classList.add('legalHint');
+  $('#tutorialCard').innerHTML=`<div class="step">Step 1 of 2</div><h3>Find an open arrow</h3><p>Each line is one continuous arrow. Its head can escape only when the entire lane in front is clear. It cannot pass through another arrow or through its own tail. Tap the highlighted arrow.</p><button class="ghost" id="tutorialSkip" style="width:100%">Skip tutorial</button>`;$('#tutorial').classList.add('show');$('#tutorialSkip').onclick=endTutorial;
+  setTimeout(()=>$('#tutorial').classList.remove('show'),1800);
+}
+function showTutorialStep2(){
+  tutorialStage=2;$('#tutorialCard').innerHTML=`<div class="step">Step 2 of 2</div><h3>Unwind the maze</h3><p>When an arrow flows out, its body follows its head through every bend like a snake. That opens a new lane for arrows that were blocked before. Clear the maze in the right order. A blocked tap costs a life.</p><button class="primary" id="tutorialDone" style="width:100%">Got it</button>`;$('#tutorial').classList.add('show');$('#tutorialDone').onclick=endTutorial;
+}
+function endTutorial(){tutorialStage=0;state.tutorialSeen=true;saveState();clearHint();$('#tutorial').classList.remove('show')}
+
+// Navigation
+$$('[data-nav]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.nav)));
+$$('[data-back]').forEach(b=>b.addEventListener('click',()=>showScreen(previousScreen==='settings'?'home':previousScreen)));
+$('#continueBtn').onclick=()=>startLevel(state.currentLevel);
+$('#dailyBtn').onclick=()=>{const day=Math.floor(Date.now()/86400000);startLevel((day%CONSTANTS.TOTAL_LEVELS)+1,{daily:true})};
+$('#gameBack').onclick=()=>openModal(`<h2>Leave this board?</h2><p>Your current attempt will restart when you return.</p><div class="sheet-actions"><button class="primary" id="leaveBoard">Leave level</button><button class="ghost" id="stayBoard">Keep playing</button></div>`);
+$('#modalLayer').addEventListener('click',e=>{if(e.target.id==='modalLayer')closeModal()});
+document.addEventListener('click',e=>{if(e.target?.id==='leaveBoard'){closeModal();showScreen('home')}if(e.target?.id==='stayBoard')closeModal();});
+$('#hintBtn').onclick=useHint;
+$('#viewBtn').onclick=()=>{game.panMode=!game.panMode;$('#viewBtn').classList.toggle('active',game.panMode);$('#viewBtn').innerHTML=game.panMode?'<i class="ph ph-hand"></i><span>Pan</span>':'<i class="ph ph-magnifying-glass-plus"></i><span>View</span>';toast(game.panMode?'Drag the board to move it':'Arrow taps are active')};
+$('#zoomIn').onclick=()=>zoomBy(.2);$('#zoomOut').onclick=()=>zoomBy(-.2);$('#zoomReset').onclick=resetView;
+$('#skipBtn').onclick=()=>{
+  const token=state.skipTokens||0;
+  openModal(`<h2>Skip this level?</h2><p>${token?`You have ${token} skip token${token===1?'':'s'}.`:`Skipping costs ${CONSTANTS.SKIP_COST} coins.`}</p><div class="sheet-actions"><button class="primary" id="confirmSkip">Skip level</button><button class="ghost" id="cancelSkip">Cancel</button></div>`);
+  $('#confirmSkip').onclick=()=>{if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('Not enough coins');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
+};
+$('#nextBtn').onclick=()=>{if(game.daily)return showScreen('home');startLevel(state.currentLevel)};
+$('#doubleBtn').onclick=()=>{if(game.doubleClaimed)return;showRewardedAd(()=>{game.doubleClaimed=true;state.coins+=game.reward;saveState();$('#doubleBtn').disabled=true;$('#doubleBtn').style.opacity=.5;toast(`+${game.reward} bonus coins`)})};
+$('#freeCoinsBtn').onclick=$('#demoAdBtn').onclick=()=>showRewardedAd(()=>{state.coins+=CONSTANTS.COINS_PER_AD;saveState();toast(`+${CONSTANTS.COINS_PER_AD} coins`)});
+$('#shareBtn').onclick=async()=>{const data={title:'Arrowflow',text:'Try this calm arrow logic game.'};try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(location.href);toast('Link copied')}}catch{}};
+$$('[data-setting]').forEach(b=>b.onclick=()=>{const k=b.dataset.setting;state[k]=!state[k];saveState();syncSettings();if(k==='dark')toast(state.dark?'Night ink on':'Night ink off')});
+$('#resetTutorial').onclick=()=>{state.tutorialSeen=false;saveState();toast('Tutorial will play on level 1')};
+$('#resetProgress').onclick=()=>openModal(`<h2>Reset all progress?</h2><p>Levels, stars, coins and inventory will return to their starting values.</p><div class="sheet-actions"><button class="secondary" id="doReset">Reset everything</button><button class="ghost" id="cancelReset">Cancel</button></div>`);
+document.addEventListener('click',e=>{if(e.target?.id==='doReset'){state={...defaultState};saveState();syncSettings();closeModal();showScreen('home');toast('Progress reset')}if(e.target?.id==='cancelReset')closeModal();if(e.target?.id==='reviewSure'){closeModal();toast('Native review hook placeholder')}if(e.target?.id==='reviewLater')closeModal();});
+$$('.fakeSubmit').forEach(b=>b.onclick=()=>toast('Demo form only'));
+$$('#ratingRow button').forEach(b=>b.onclick=()=>{$$('#ratingRow button').forEach(x=>x.style.background='');b.style.background='var(--accent)';b.style.color='white';haptic(10)});
+
+window.addEventListener('resize',()=>{if(game&&$('#game').classList.contains('active')){renderBoard();applyStageTransform();}});
+
+updateWallets();updateHintUI();syncSettings();renderLevels();renderShop();
+setTimeout(()=>$('#splash').classList.add('hide'),720);
+</script>
+</body>
+</html>
