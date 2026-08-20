@@ -527,28 +527,37 @@ function windingHamiltonianPath(cellsArr,random){
     const path=[start];
     let calls=0,overBudget=false;
     // Randomized depth-first search using Warnsdorff ordering (visit the neighbor with
-    // the fewest remaining options first) so a full tour stays reachable, but with a
-    // same-direction penalty as a tie-breaker so the line actually winds through open
-    // areas instead of coasting straight across them. Backtracks out of dead ends.
-    function dfs(cur,lastDr,lastDc){
+    // the fewest remaining options first) so a full tour stays reachable. On top of that,
+    // each run commits to a short random corridor length before it's willing to turn, so
+    // the line actually carves multi-cell straight runs in varying directions (a real
+    // 2D weave) instead of either sweeping straight across or zig-zagging every cell.
+    // Backtracks out of dead ends.
+    function dfs(cur,lastDr,lastDc,runLen,targetRun){
       calls++;
       if(calls>budget){overBudget=true;return false;}
       if(path.length===total)return true;
       const opts=shuffle(neighborsOf(cur.r,cur.c,visited));
       opts.sort((a,b)=>{
-        const da=neighborsOf(a.r,a.c,visited).length*4+((a.r-cur.r===lastDr&&a.c-cur.c===lastDc)?1:0);
-        const db=neighborsOf(b.r,b.c,visited).length*4+((b.r-cur.r===lastDr&&b.c-cur.c===lastDc)?1:0);
+        const aSame=(a.r-cur.r===lastDr&&a.c-cur.c===lastDc);
+        const bSame=(b.r-cur.r===lastDr&&b.c-cur.c===lastDc);
+        const aPref=runLen<targetRun?(aSame?0:1):(aSame?1:0);
+        const bPref=runLen<targetRun?(bSame?0:1):(bSame?1:0);
+        const da=neighborsOf(a.r,a.c,visited).length*3+aPref*2;
+        const db=neighborsOf(b.r,b.c,visited).length*3+bPref*2;
         return da-db;
       });
       for(const n of opts){
+        const ndr=n.r-cur.r,ndc=n.c-cur.c,same=(ndr===lastDr&&ndc===lastDc);
+        const nRunLen=same?runLen+1:1;
+        const nTarget=same?targetRun:2+Math.floor(random()*5);
         visited.add(n.key);path.push(n);
-        if(dfs(n,n.r-cur.r,n.c-cur.c))return true;
+        if(dfs(n,ndr,ndc,nRunLen,nTarget))return true;
         visited.delete(n.key);path.pop();
         if(overBudget)return false;
       }
       return false;
     }
-    if(dfs(start,0,0)&&path.length===total)return path.map(p=>({r:p.r,c:p.c}));
+    if(dfs(start,0,0,0,2+Math.floor(random()*5))&&path.length===total)return path.map(p=>({r:p.r,c:p.c}));
   }
   return null;
 }
