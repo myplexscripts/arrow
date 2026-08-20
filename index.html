@@ -344,6 +344,7 @@ const defaultState = {
   lastDailyDay: -1
 };
 let state = loadState();
+const levelCache = new Map();
 let previousScreen = 'home';
 let game = null;
 let audioCtx = null;
@@ -402,6 +403,13 @@ function dirVec(d){ return ({R:[0,1],D:[1,0],L:[0,-1],U:[-1,0]})[d]; }
 function cellKey(r,c){ return r+','+c; }
 function inBounds(size,r,c){ return r>=0&&c>=0&&r<size&&c<size; }
 function vecToDir(dr,dc){ return dr===-1?'U':dr===1?'D':dc===-1?'L':'R'; }
+function chunkTurns(cells){
+  let turns=0;
+  for(let i=2;i<cells.length;i++){
+    if(cells[i-1].r-cells[i-2].r!==cells[i].r-cells[i-1].r||cells[i-1].c-cells[i-2].c!==cells[i].c-cells[i-1].c)turns++;
+  }
+  return turns;
+}
 
 function desiredShapeInterval(shape,r,size){
   const mid=(size-1)/2;
@@ -423,15 +431,8 @@ function desiredShapeInterval(shape,r,size){
   if(rr-l<2){l=Math.max(0,Math.floor(center)-1);rr=Math.min(size-1,l+2);l=Math.max(0,rr-2);}
   return [l,rr];
 }
-function makeShapePath(size,shape='square'){
-  if(shape==='square'){
-    const path=[];
-    for(let r=0;r<size;r++){
-      if(r%2===0){for(let c=0;c<size;c++)path.push({r,c});}
-      else{for(let c=size-1;c>=0;c--)path.push({r,c});}
-    }
-    return path;
-  }
+function computeShapeRows(size,shape){
+  if(shape==='square')return Array.from({length:size},()=>[0,size-1]);
   const rows=Array.from({length:size},(_,r)=>desiredShapeInterval(shape,r,size));
   // Pairwise boundary locks guarantee the serpentine path can step down one cell
   // between every row while still letting the silhouette widen and narrow.
@@ -450,6 +451,15 @@ function makeShapePath(size,shape='square'){
       row[0]=clamp(center-1,0,size-3);row[1]=row[0]+2;
     }
   }
+  return rows;
+}
+function shapeCells(size,shape){
+  const rows=computeShapeRows(size,shape),cells=[];
+  for(let r=0;r<size;r++){const [l,rr]=rows[r];for(let c=l;c<=rr;c++)cells.push({r,c});}
+  return cells;
+}
+function makeShapePath(size,shape='square'){
+  const rows=computeShapeRows(size,shape);
   const path=[];
   for(let r=0;r<size;r++){
     const [l,rr]=rows[r];
@@ -488,6 +498,63 @@ function randomizeHamiltonian(path,size,random,steps){
     }
   }
   return out;
+}
+
+function windingHamiltonianPath(cellsArr,random){
+  const inShape=new Set(cellsArr.map(p=>cellKey(p.r,p.c)));
+  const total=cellsArr.length;
+  if(total===0)return null;
+  const budget=Math.min(220000,total*380+3000);
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+    return arr;
+  }
+  function neighborsOf(r,c,visited){
+    const out=[];
+    for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){
+      const nr=r+dr,nc=c+dc,key=cellKey(nr,nc);
+      if(inShape.has(key)&&!visited.has(key))out.push({r:nr,c:nc,key});
+    }
+    return out;
+  }
+
+  const startPool=shuffle(cellsArr.slice());
+  const tries=Math.min(3,startPool.length);
+  for(let s=0;s<tries;s++){
+    const start=startPool[s];
+    const visited=new Set([cellKey(start.r,start.c)]);
+    const path=[start];
+    let calls=0,overBudget=false;
+    // Randomized depth-first search using Warnsdorff ordering (visit the neighbor with
+    // the fewest remaining options first) so a full tour stays reachable, but with a
+    // same-direction penalty as a tie-breaker so the line actually winds through open
+    // areas instead of coasting straight across them. Backtracks out of dead ends.
+    function dfs(cur,lastDr,lastDc){
+      calls++;
+      if(calls>budget){overBudget=true;return false;}
+      if(path.length===total)return true;
+      const opts=shuffle(neighborsOf(cur.r,cur.c,visited));
+      opts.sort((a,b)=>{
+        const da=neighborsOf(a.r,a.c,visited).length*4+((a.r-cur.r===lastDr&&a.c-cur.c===lastDc)?1:0);
+        const db=neighborsOf(b.r,b.c,visited).length*4+((b.r-cur.r===lastDr&&b.c-cur.c===lastDc)?1:0);
+        return da-db;
+      });
+      for(const n of opts){
+        visited.add(n.key);path.push(n);
+        if(dfs(n,n.r-cur.r,n.c-cur.c))return true;
+        visited.delete(n.key);path.pop();
+        if(overBudget)return false;
+      }
+      return false;
+    }
+    if(dfs(start,0,0)&&path.length===total)return path.map(p=>({r:p.r,c:p.c}));
+  }
+  return null;
+}
+function generateWindingPath(size,shape,variant,random){
+  const cells=transformShapePath(shapeCells(size,shape),size,variant);
+  return windingHamiltonianPath(cells,random);
 }
 
 function partitionHamiltonian(path,random,minLen,maxLen){
@@ -605,22 +672,44 @@ function verifySolvable(data){
   return arrows.every(a=>!a.active);
 }
 function generateLevel(level){
+  if(levelCache.has(level))return cloneLevelData(levelCache.get(level));
+  const data=buildLevel(level);
+  levelCache.set(level,data);
+  return cloneLevelData(data);
+}
+function cloneLevelData(data){
+  return {cfg:data.cfg,arrows:data.arrows.map(a=>({...a,cells:a.cells.map(p=>({...p})),active:true})),solution:data.solution.slice(),fill:data.fill};
+}
+function buildLevel(level){
   const cfg=levelConfig(level);let best=null,bestScore=-Infinity;
-  for(let attempt=0;attempt<4;attempt++){
+  // Generation is a one-off per level (cached above), so it can afford a modest time
+  // budget to search for a windier board before settling for a plainer one.
+  const deadline=Date.now()+450;
+  for(let attempt=0;attempt<6&&Date.now()<deadline;attempt++){
     const random=rng(cfg.seed+attempt*7919);
-    let master=makeShapePath(cfg.size,cfg.shape);
     const variant=(Math.floor(level/10)+attempt)%8;
-    master=transformShapePath(master,cfg.size,variant);
-    master=randomizeHamiltonian(master,cfg.size,random,Math.min(master.length*2,cfg.size*cfg.size*2));
+    let master=generateWindingPath(cfg.size,cfg.shape,variant,random);
+    if(!master){
+      master=makeShapePath(cfg.size,cfg.shape);
+      master=transformShapePath(master,cfg.size,variant);
+      master=randomizeHamiltonian(master,cfg.size,random,Math.min(master.length*2,cfg.size*cfg.size*2));
+    }
     const chunks=partitionHamiltonian(master,random,cfg.minChunk,cfg.maxChunk);
-    const solved=orientFixedOrder(chunks,cfg.size,random);if(!solved)continue;
+    // The chunking is fixed once master path is set, but the orientation search still
+    // has random tie-breaks; one retry with fresh randomness costs little and
+    // rescues chunkings that the first pass couldn't resolve.
+    let solved=orientForSolvability(chunks,cfg.size,random)
+      ||orientForSolvability(chunks,cfg.size,rng(cfg.seed+attempt*7919+104729))
+      ||orientFixedOrder(chunks,cfg.size,random);
+    if(!solved)continue;
     const candidate={cfg,arrows:solved.oriented,solution:solved.solution,fill:master.length/(cfg.size*cfg.size)};
     if(!verifySolvable(candidate))continue;
     const legal=candidate.arrows.filter(a=>legalInSet(candidate.arrows,cfg,a)).length;
     const desired=level<12?2:level<80?2:3;
-    const score=-Math.abs(legal-desired)*8+candidate.arrows.length*.06;
+    const avgTurns=candidate.arrows.reduce((s,a)=>s+chunkTurns(a.cells),0)/candidate.arrows.length;
+    const score=-Math.abs(legal-desired)*8+candidate.arrows.length*.06+avgTurns*3;
     if(score>bestScore){bestScore=score;best=candidate;}
-    if(legal>=1&&legal<=desired){best=candidate;break;}
+    if(legal>=1&&legal<=desired&&avgTurns>=1.1){best=candidate;break;}
   }
   if(best)return best;
 
