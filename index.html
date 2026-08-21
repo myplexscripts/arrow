@@ -129,8 +129,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .tool{height:58px;min-width:58px;padding:0 15px;border-radius:20px;background:var(--surface);border:1px solid rgba(23,32,51,.08);display:flex;align-items:center;justify-content:center;gap:7px;font-weight:800;box-shadow:0 9px 26px rgba(36,31,24,.08);position:relative}
 .tool i{font-size:1.35rem}.tool .cost{font-size:.875rem;color:var(--muted)}.tool.active{box-shadow:inset 0 0 0 2px var(--accent-2)}
 .tool-badge{position:absolute;right:-4px;top:-5px;background:var(--accent);color:#fff;border-radius:999px;min-width:23px;height:23px;display:grid;place-items:center;font-size:.875rem;border:3px solid var(--bg)}
-.zoom-cluster{display:none;gap:6px;position:absolute;right:12px;bottom:12px;z-index:10}.zoom-cluster.show{display:flex}
-.zoom-cluster button{width:44px;height:44px;border-radius:15px;background:var(--surface);border:1px solid rgba(23,32,51,.08);font-size:1.2rem;box-shadow:0 8px 20px rgba(36,31,24,.08)}
+
+
 
 /* overlays */
 .modal-layer{position:absolute;inset:0;z-index:40;background:rgba(23,32,51,.30);display:flex;align-items:flex-end;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:.2s}
@@ -184,7 +184,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .tool{min-height:58px;border-radius:18px;border:1px solid var(--line);box-shadow:0 4px 0 rgba(23,32,51,.10);background:var(--surface)}
 .tool:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(23,32,51,.10)}
 .tool-badge{min-width:26px;height:26px;border-width:2px}
-.zoom-cluster button{border:1px solid var(--line);box-shadow:0 3px 0 rgba(23,32,51,.10)}
+
 
 /* More tactile global controls. */
 .icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip{transition:transform .12s ease,box-shadow .12s ease,background .16s ease}
@@ -203,13 +203,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .secondary{background:var(--accent-2);box-shadow:0 5px 0 color-mix(in srgb,var(--accent-2) 35%,transparent)}
 .home-emblem{position:relative;isolation:isolate;box-shadow:0 6px 0 color-mix(in srgb,var(--arrow-3) 22%,transparent),0 18px 42px rgba(36,31,24,.08)}
 .home-emblem:before{content:"";position:absolute;inset:9px;border:1px dashed color-mix(in srgb,var(--arrow-0) 30%,transparent);border-radius:20px;z-index:-1}
-.game-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+.game-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
 .tool{width:100%;min-width:0;height:68px;flex-direction:column;gap:2px;padding:7px 8px 8px}
 .tool i{font-size:1.4rem;line-height:1}
 .tool>i:first-child{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:var(--surface-2);border:1px solid color-mix(in srgb,var(--line) 75%,transparent)}
 .tool .cost{position:absolute;right:8px;bottom:7px;font-weight:800}
 #hintBtn{border-bottom:3px solid var(--arrow-4)}
-#viewBtn{border-bottom:3px solid var(--arrow-0)}
+
 #skipBtn{border-bottom:3px solid var(--arrow-3)}
 #remainingChip{border-left:3px solid var(--arrow-0)}
 .game-stats .right{border-right:3px solid var(--arrow-3)}
@@ -438,12 +438,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px soli
 .heart i{font-size:1.45rem!important}
 .board-viewport{background:color-mix(in srgb,var(--game-panel) 72%,var(--game-bg));border:2px solid var(--game-outline);border-radius:26px;box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--game-panel-2) 55%,transparent),0 7px 0 var(--game-shadow)}
 body.dark .board-viewport{background:#0d1321;border-color:var(--game-outline);box-shadow:inset 0 0 0 3px rgba(255,255,255,.02),0 7px 0 var(--game-shadow)}
-.zoom-cluster button{width:46px;height:46px;border:2px solid var(--game-outline);background:var(--game-panel);box-shadow:0 4px 0 var(--game-shadow)}
+
 .game-tools{gap:10px;padding-top:11px}
 .tool{height:72px;border-radius:19px;background:var(--game-panel);box-shadow:0 5px 0 var(--game-shadow)}
 .tool>i:first-child{width:34px;height:34px;border:2px solid var(--game-outline);background:var(--game-panel-2);border-radius:11px}
 #hintBtn{border-bottom:5px solid var(--game-gold)}
-#viewBtn{border-bottom:5px solid var(--game-blue)}
+
 #skipBtn{border-bottom:5px solid var(--game-purple)}
 .tool-badge{min-width:28px;height:28px;border:2px solid var(--game-outline);background:var(--game-pink);color:#fff}
 
@@ -561,7 +561,7 @@ html,body{background:var(--flat-bg);color:var(--flat-ink)}
 .screen{color:var(--flat-ink);padding-left:16px;padding-right:16px}
 
 .card,.sheet,.tutorial-card,.home-emblem,.level-title,.hearts,.game-stats .chip,.tool,.reward-pill,.shop-item,.setting-row,
-.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.level-cell,.board-viewport,.zoom-cluster button,
+.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.level-cell,.board-viewport,
 .shop-balance,.toast,.brand-mark,.home-level,.shop-icon,.setting-row>i:first-child,
 .tool>i:first-child,.win-card,.win-icon,.tutorial-icon,.field input,.field textarea{
   border-radius:var(--flat-radius)!important;
@@ -569,7 +569,7 @@ html,body{background:var(--flat-bg);color:var(--flat-ink)}
 .card,.sheet,.tutorial-card,.board-viewport,.win-card,.shop-balance,.home-emblem{
   border-radius:var(--flat-radius-lg)!important;
 }
-.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.tool,.level-cell,.zoom-cluster button,
+.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.tool,.level-cell,
 .reward-pill,.shop-icon,.setting-row>i:first-child,.tool>i:first-child,.tutorial-icon,.field input,.field textarea{
   border-radius:var(--flat-radius-sm)!important;
 }
@@ -596,7 +596,7 @@ i[class^="ph"],i[class*=" ph-"]{font-size:max(1rem,1em)}
 
 /* Shared controls. Thick through height and outline, not bulk. */
 button{transition:transform .09s ease,background-color .12s ease,color .12s ease,border-color .12s ease,opacity .12s ease}
-.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.tool,.level-cell,.zoom-cluster button{
+.icon-btn,.primary,.secondary,.ghost,.nav-mini,.buy,.chip,.tool,.level-cell{
   min-height:44px;
   border:var(--flat-border) solid var(--flat-line)!important;
   background:var(--flat-panel)!important;
@@ -604,7 +604,7 @@ button{transition:transform .09s ease,background-color .12s ease,color .12s ease
   position:relative;
   overflow:hidden;
 }
-.icon-btn:active,.primary:active,.secondary:active,.ghost:active,.nav-mini:active,.buy:active,.chip:active,.tool:active,.level-cell:active,.zoom-cluster button:active{
+.icon-btn:active,.primary:active,.secondary:active,.ghost:active,.nav-mini:active,.buy:active,.chip:active,.tool:active,.level-cell:active:active{
   transform:scale(.965)!important;
 }
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--flat-blue)!important;outline-offset:3px}
@@ -678,17 +678,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   background-size:18px 18px!important
 }
 body.dark .board-viewport{background-color:#0c1219!important;background-image:radial-gradient(circle,rgba(255,255,255,.08) 1px,transparent 1.2px)!important}
-.zoom-cluster{gap:4px!important;right:8px!important;bottom:8px!important}
-.zoom-cluster button{width:44px!important;height:44px!important;background:var(--flat-panel)!important}
+
+
 .game-tools{gap:6px;padding-top:8px}
 .tool{
   height:58px!important;background:var(--flat-panel)!important;border:2px solid var(--flat-line)!important;
   flex-direction:row!important;gap:7px!important;padding:0 9px!important
 }
 .tool>i:first-child{width:auto!important;height:auto!important;background:none!important;border:0!important;padding:0!important}
-#hintBtn:after,#viewBtn:after,#skipBtn:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px}
+#hintBtn:after,#skipBtn:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px}
 #hintBtn:after{background:var(--flat-yellow)}
-#viewBtn:after{background:var(--flat-blue)}
+
 #skipBtn:after{background:var(--flat-purple)}
 .tool-badge{min-width:26px;height:26px;border:2px solid var(--flat-line)!important;background:var(--flat-pink)!important;color:#fff!important}
 
@@ -746,7 +746,7 @@ body.dark .board-viewport{background-color:#0c1219!important;background-image:ra
 /* Dark mode uses the same components, only the palette changes. */
 body.dark .card,body.dark .sheet,body.dark .tutorial-card,body.dark .shop-item,body.dark .setting-row,
 body.dark .icon-btn,body.dark .ghost,body.dark .nav-mini,body.dark .chip,body.dark .tool,body.dark .level-cell,
-body.dark .reward-pill,body.dark .shop-icon,body.dark .setting-row>i:first-child,body.dark .zoom-cluster button{
+body.dark .reward-pill,body.dark .shop-icon,body.dark .setting-row>i:first-child{
   background:var(--flat-panel)!important;color:var(--flat-ink)!important;border-color:var(--flat-line)!important
 }
 body.dark .primary{background:var(--flat-purple)!important;color:#fff!important}
@@ -774,7 +774,7 @@ button{border-radius:var(--flat-radius)!important}
 .home-actions .ghost:after,#dailyBtn:after,.home-nav .nav-mini:after,
 .level-cell.current:after,
 #remainingChip:after,.game-stats .right:after,
-#hintBtn:after,#viewBtn:after,#skipBtn:after,
+#hintBtn:after,#skipBtn:after,
 .sheet:before,.tutorial-card:before,.win-card:after{
   content:none!important;
   display:none!important;
@@ -980,12 +980,10 @@ body.dark {
     <div class="board-shell">
       <div class="board-viewport" id="boardViewport" aria-label="Arrow puzzle board">
         <div class="board-stage" id="boardStage"><div class="board-grid" id="boardGrid"></div></div>
-        <div class="zoom-cluster" id="zoomCluster"><button id="zoomOut" aria-label="Zoom out"><i class="ph ph-minus"></i></button><button id="zoomReset" aria-label="Reset zoom"><i class="ph ph-arrows-out"></i></button><button id="zoomIn" aria-label="Zoom in"><i class="ph ph-plus"></i></button></div>
       </div>
     </div>
     <div class="game-tools">
       <button class="tool" id="hintBtn"><i class="ph ph-lightbulb"></i><span>Hint</span><span class="cost" id="hintCost"></span><span class="tool-badge" id="hintInventory">0</span></button>
-      <button class="tool" id="viewBtn"><i class="ph ph-magnifying-glass-plus"></i><span>View</span></button>
       <button class="tool" id="skipBtn"><i class="ph ph-skip-forward"></i><span>Skip</span></button>
     </div>
   </section>
@@ -1009,7 +1007,6 @@ body.dark {
       <div class="setting-row card"><i class="ph ph-speaker-high"></i><div><h3>Sound effects</h3><p>Soft taps, errors and rewards.</p></div><button class="switch" data-setting="sound" aria-label="Toggle sound"></button></div>
       <div class="setting-row card"><i class="ph ph-device-mobile-vibration"></i><div><h3>Haptics</h3><p>Light feedback on supported devices.</p></div><button class="switch" data-setting="haptics" aria-label="Toggle haptics"></button></div>
       <div class="setting-row card"><i class="ph ph-moon-stars"></i><div><h3>Dark mode</h3><p>High-contrast colours for dark environments.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
-      <div class="setting-row card"><i class="ph ph-arrows-out-cardinal"></i><div><h3>Board motion</h3><p>Allow pan and zoom on larger boards.</p></div><button class="switch" data-setting="boardMotion" aria-label="Toggle board motion"></button></div>
     </div><h2 class="section-title">Game</h2><div class="shop-list"><button class="setting-row card" id="resetTutorial"><i class="ph ph-graduation-cap"></i><div style="text-align:left"><h3>Replay tutorial</h3><p>Show the first play guide again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button><button class="setting-row card" id="resetProgress"><i class="ph ph-arrow-counter-clockwise"></i><div style="text-align:left"><h3>Reset progress</h3><p>Start from level 1 again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button></div></div>
   </section>
 
@@ -2948,7 +2945,6 @@ const defaultState = {
   sound: true,
   haptics: true,
   dark: false,
-  boardMotion: true,
   lifeCredits: 0,
   skipTokens: 0,
   dailyHistory: {}
@@ -3027,7 +3023,6 @@ function showScreen(id){
   if(id!=='game'){
     drag=null;
     pinch=null;
-    if(game) game.panMode=false;
     const stage=$('#boardStage');
     if(stage) stage.style.pointerEvents='none';
   }
@@ -3307,8 +3302,33 @@ function roundedPathFromPoints(points,radius){
   d+=` L ${last.x.toFixed(3)} ${last.y.toFixed(3)}`;
   return d;
 }
-function arrowHeadBack(step){ return step*.28; }
-function arrowHeadWing(step){ return step*.18; }
+// The body's stroke-width is 4.2 in *device pixels* always (see
+// vector-effect:non-scaling-stroke in CSS), because the viewBox-to-viewport
+// scale that SVG applies to fit each board's grid into the available screen
+// space is exactly the kind of transform non-scaling-stroke cancels out.
+// The arrowhead is a filled shape, though, so vector-effect does nothing for
+// it - its size was defined purely in *world* units (`step*.18`/`step*.28`),
+// which DOES shrink under that same viewBox-to-viewport scale. Since that
+// scale (game.unitPxScale, aka pxPerUnit) is small on big/dense boards (more
+// grid units have to fit into the same phone-sized viewport) and large on
+// small boards, the net effect was: heads read as a clear flare on small
+// boards but shrank down toward - or past - the fixed-width body stroke on
+// large ones, which is exactly the "blends into the tail" look. Sizing the
+// head from a target device-pixel size and converting to world units via
+// pxPerUnit keeps its on-screen size constant across every board size,
+// matching how the body stroke already behaves, so head vs. tail contrast is
+// consistent everywhere. Clamped to a sane fraction of a cell so it can
+// never overshoot a very small step on an extreme board.
+const ARROWHEAD_WING_PX = 7.2;
+const ARROWHEAD_BACK_PX = 11.5;
+function arrowHeadBack(step){
+  const scale=game?.unitPxScale||1;
+  return clamp(ARROWHEAD_BACK_PX/scale, step*.22, step*.85);
+}
+function arrowHeadWing(step){
+  const scale=game?.unitPxScale||1;
+  return clamp(ARROWHEAD_WING_PX/scale, step*.13, step*.5);
+}
 function bodyPointsForArrow(a,step,pad){
   const pts=visualPointsForArrow(a,step,pad);
   if(pts.length<2)return pts;
@@ -3481,11 +3501,9 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   if(loadingStarted)await finishLoadingWipe(loadingStarted);
   levelStarting=false;
   if(!daily){state.currentLevel=level;saveState();}
-  game={...data,level,dailyKey,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,panMode:false,reward:0,tutorialActionDone:false,motionLocked:false,exitAnimations:new Set()};
+  game={...data,level,dailyKey,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,reward:0,tutorialActionDone:false,motionLocked:false,exitAnimations:new Set()};
   $('#gameLevel').textContent=daily?'Daily':`Level ${level}`; $('#difficultyLabel').textContent='';
   renderBoard(); renderHearts(); updateRemaining(); resetView(); showScreen('game');
-  $('#zoomCluster').classList.toggle('show',data.cfg.size>=7 && state.boardMotion);
-  $('#viewBtn').style.display=data.cfg.size>=7&&state.boardMotion?'flex':'none';
   $('#skipBtn').style.display=daily?'none':'flex';
   if(!daily)warmNextLevels(level,2);
   if(tutorialPending)setTimeout(()=>beginTutorial(),300);
@@ -3571,7 +3589,7 @@ function renderBoard(){
     const body=document.createElementNS('http://www.w3.org/2000/svg','path');body.classList.add('arrow-body');body.setAttribute('d',d);body.dataset.baseD=d;
     const head=document.createElementNS('http://www.w3.org/2000/svg','path');head.classList.add('arrow-head');head.setAttribute('d',headData(a,step,pad));
     const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('arrow-hit');hit.setAttribute('d',hitPathDataFromArrow(a,step,pad));hit.setAttribute('tabindex','0');hit.setAttribute('role','button');hit.setAttribute('aria-label',`Arrow pointing ${SHORT_TO_LONG_DIR[a.dir]}`);
-    const trigger=e=>{if(!isGameScreenActive())return;e.stopPropagation();if(!game.panMode)attemptArrow(a.id,g)};
+    const trigger=e=>{if(!isGameScreenActive())return;if(Date.now()<suppressClickUntil)return;e.stopPropagation();attemptArrow(a.id,g)};
     hit.addEventListener('click',trigger);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger(e)}});
     g.append(body,head,hit);svg.appendChild(g);
   });
@@ -3794,19 +3812,52 @@ function syncSettings(){
   $$('[data-setting]').forEach(b=>{const on=!!state[b.dataset.setting];b.classList.toggle('on',on);b.setAttribute('role','switch');b.setAttribute('aria-checked',String(on));});document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#141210':'#f7f4ed';
 }
 
-function resetView(){game.scale=1;game.x=0;game.y=0;game.panMode=false;applyStageTransform();$('#viewBtn').classList.remove('active');}
+function resetView(){game.scale=1;game.x=0;game.y=0;applyStageTransform();}
 function applyStageTransform(){if(!game)return;$('#boardStage').style.transform=`translate(calc(-50% + ${game.x}px),calc(-50% + ${game.y}px)) scale(${game.scale})`;}
-function zoomBy(delta){if(!game||!state.boardMotion)return;game.scale=clamp(game.scale+delta,CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();}
+function zoomBy(delta){if(!game)return;game.scale=clamp(game.scale+delta,CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();}
 
-let drag=null,pinch=null;
+// Pan/zoom is always on, like a normal photo/map view: pinch with two
+// fingers to zoom, press and drag with one finger to pan, tap an arrow to
+// play it - no separate "pan mode" toggle to switch in and out of. A single
+// pointer only starts panning once it has actually moved past a small
+// tolerance (DRAG_THRESHOLD_PX), so a quick tap still reaches the arrow
+// underneath it untouched; once that threshold is crossed we capture the
+// pointer and briefly suppress the click that would otherwise fire on
+// whatever the finger lifts off over, so a drag never accidentally plays
+// an arrow it passed across.
+const DRAG_THRESHOLD_PX=6;
+let drag=null,pinch=null,suppressClickUntil=0;
 const viewport=$('#boardViewport');
 viewport.addEventListener('pointerdown',e=>{
-  if(!isGameScreenActive()||!game||!game.panMode||!state.boardMotion)return;viewport.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:game.x,oy:game.y};e.preventDefault();
+  if(!isGameScreenActive()||!game||e.pointerType==='mouse'&&e.button!==0)return;
+  drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:game.x,oy:game.y,moved:false};
 });
-viewport.addEventListener('pointermove',e=>{if(!isGameScreenActive()||!drag||e.pointerId!==drag.id)return;game.x=drag.ox+(e.clientX-drag.x);game.y=drag.oy+(e.clientY-drag.y);applyStageTransform();});
-viewport.addEventListener('pointerup',e=>{if(drag&&e.pointerId===drag.id)drag=null});
-viewport.addEventListener('wheel',e=>{if(!isGameScreenActive()||!game||!state.boardMotion)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
-viewport.addEventListener('touchstart',e=>{if(!isGameScreenActive()||!game||!state.boardMotion||e.touches.length!==2)return;const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};},{passive:true});
+viewport.addEventListener('pointermove',e=>{
+  if(!isGameScreenActive()||!drag||e.pointerId!==drag.id)return;
+  const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+  if(!drag.moved){
+    if(Math.hypot(dx,dy)<DRAG_THRESHOLD_PX)return;
+    drag.moved=true;
+    try{viewport.setPointerCapture(e.pointerId);}catch{}
+  }
+  e.preventDefault();
+  game.x=drag.ox+dx;game.y=drag.oy+dy;applyStageTransform();
+},{passive:false});
+viewport.addEventListener('pointerup',e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  if(drag.moved){
+    suppressClickUntil=Date.now()+300;
+    try{viewport.releasePointerCapture(e.pointerId);}catch{}
+  }
+  drag=null;
+});
+viewport.addEventListener('pointercancel',e=>{if(drag&&e.pointerId===drag.id)drag=null});
+viewport.addEventListener('wheel',e=>{if(!isGameScreenActive()||!game)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
+viewport.addEventListener('touchstart',e=>{
+  if(!isGameScreenActive()||!game||e.touches.length!==2)return;
+  drag=null; // two fingers down means pinch, not pan - don't fight the drag handler
+  const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};
+},{passive:true});
 viewport.addEventListener('touchmove',e=>{if(!isGameScreenActive()||!pinch||e.touches.length!==2)return;const [a,b]=e.touches;const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);game.scale=clamp(pinch.scale*(d/pinch.dist),CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();},{passive:true});
 viewport.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null},{passive:true});
 
@@ -3877,8 +3928,6 @@ $('#gameBack').onclick=()=>openModal(`<h2>Leave this board?</h2><p>Your current 
 $('#modalLayer').addEventListener('click',e=>{if(e.target.id==='modalLayer')closeModal()});
 document.addEventListener('click',e=>{if(e.target?.id==='leaveBoard'){closeModal();showScreen('home')}if(e.target?.id==='stayBoard')closeModal();});
 $('#hintBtn').onclick=useHint;
-$('#viewBtn').onclick=()=>{game.panMode=!game.panMode;$('#viewBtn').classList.toggle('active',game.panMode);$('#viewBtn').innerHTML=game.panMode?'<i class="ph ph-hand"></i><span>Pan</span>':'<i class="ph ph-magnifying-glass-plus"></i><span>View</span>';toast(game.panMode?'Drag the board to move it':'Arrow taps are active')};
-$('#zoomIn').onclick=()=>zoomBy(.2);$('#zoomOut').onclick=()=>zoomBy(-.2);$('#zoomReset').onclick=resetView;
 $('#skipBtn').onclick=()=>{
   if(game?.daily){toast('Daily boards cannot be skipped');return;}
   const token=state.skipTokens||0;
