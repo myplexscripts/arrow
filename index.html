@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-<meta name="theme-color" content="#f4f1ea" />
+<meta name="theme-color" content="#f7f4ed" />
 <title>Arrowflow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -834,6 +834,96 @@ button{border-radius:var(--flat-radius)!important}
   #splash .splash-bar:nth-child(2){transition-delay:25ms!important}
   #splash .splash-bar:nth-child(3){transition-delay:50ms!important}
 }
+
+/* ==========================================================================
+   ARROWFLOW PALETTE v5 - USER LOCKED
+   Do not alter these colour values.
+   ========================================================================== */
+:root {
+  --bg: #f7f4ed;
+  --surface: #ffffff;
+  --surface-2: #eee9df;
+  --ink: #1a1c23;
+  --muted: #646a77;
+  --line: #ded8cb;
+  --accent: #b83a31;
+  --accent-2: #237670;
+  --accent-3: #995c00;
+  --danger: #b83246;
+  --good: #1f6b4d;
+  --focus: #2453c7;
+  --hint: #2453c7;
+  --failed: #c73248;
+  --arrow-0: #0d85d0;
+  --arrow-1: #b03bc2;
+  --arrow-2: #199e3a;
+  --arrow-3: #7b51dc;
+  --arrow-4: #b8860b;
+  --arrow-5: #00897b;
+  --arrow-6: #d9531e;
+  --arrow-7: #c2185b;
+  --arrow-8: #3949ab;
+  --arrow-9: #558b2f;
+  --flat-bg: var(--bg);
+  --flat-panel: var(--surface);
+  --flat-panel-2: var(--surface-2);
+  --flat-ink: var(--ink);
+  --flat-muted: var(--muted);
+  --flat-line: var(--ink);
+  --flat-line-soft: var(--line);
+  --flat-blue: var(--arrow-0);
+  --flat-purple: var(--arrow-3);
+  --flat-pink: var(--arrow-1);
+  --flat-green: var(--arrow-2);
+  --flat-yellow: var(--arrow-4);
+  --flat-danger: var(--failed);
+}
+body.dark {
+  --bg: #141210;
+  --surface: #1e1b18;
+  --surface-2: #2b2723;
+  --ink: #f2eee3;
+  --muted: #9c9488;
+  --line: #3d3630;
+  --accent: #d86358;
+  --accent-2: #459892;
+  --accent-3: #d49c3b;
+  --danger: #e05569;
+  --good: #3ea87b;
+  --focus: #6d9bff;
+  --hint: #6d9bff;
+  --failed: #e05268;
+  --arrow-0: #3fc2ff;
+  --arrow-1: #f06ff5;
+  --arrow-2: #3ee065;
+  --arrow-3: #b19eff;
+  --arrow-4: #ffdf6d;
+  --arrow-5: #26dfd0;
+  --arrow-6: #ff8c42;
+  --arrow-7: #ff5c8a;
+  --arrow-8: #9fa8da;
+  --arrow-9: #aeea00;
+  --flat-bg: var(--bg);
+  --flat-panel: var(--surface);
+  --flat-panel-2: var(--surface-2);
+  --flat-ink: var(--ink);
+  --flat-muted: var(--muted);
+  --flat-line: var(--ink);
+  --flat-line-soft: var(--line);
+  --flat-blue: var(--arrow-0);
+  --flat-purple: var(--arrow-3);
+  --flat-pink: var(--arrow-1);
+  --flat-green: var(--arrow-2);
+  --flat-yellow: var(--arrow-4);
+  --flat-danger: var(--failed);
+}
+.screen:not(.active),
+.screen:not(.active) *,
+#game:not(.active) .board-viewport,
+#game:not(.active) .board-stage,
+#game:not(.active) .board-svg,
+#game:not(.active) .arrow-piece,
+#game:not(.active) .arrow-hit { pointer-events:none!important; }
 </style>
 </head>
 <body>
@@ -2673,14 +2763,34 @@ function sound(kind='tap'){
 }
 function toast(msg){ const t=$('#toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600); }
 function hideToast(){const t=$('#toast');clearTimeout(toast.t);t.classList.remove('show');}
+function isGameScreenActive(){
+  return $('#game')?.classList.contains('active')===true;
+}
 function showScreen(id){
   const current=$('.screen.active'); if(current) previousScreen=current.id;
-  $$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+  if(id!=='game'){
+    drag=null;
+    pinch=null;
+    if(game) game.panMode=false;
+    const stage=$('#boardStage');
+    if(stage) stage.style.pointerEvents='none';
+  }
+  $$('.screen').forEach(s=>{
+    const active=s.id===id;
+    s.classList.toggle('active',active);
+    s.setAttribute('aria-hidden',String(!active));
+    if('inert' in s) s.inert=!active;
+  });
+  if(id==='game'){
+    const stage=$('#boardStage');
+    if(stage) stage.style.pointerEvents='';
+  }
   if(id==='levels') renderLevels();
   if(id==='shop') renderShop();
   if(id==='settings') syncSettings();
   haptic(7);
 }
+
 
 const GAME_SEED = 'arrowflow-campaign-v2';
 const generatedLevelCache = new Map();
@@ -3125,27 +3235,15 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   if(tutorialPending)setTimeout(()=>beginTutorial(),300);
 }
 const ARROW_PALETTES={
-  light:[
-    ['#0f95e8','#c447d8','#1fae41','#6b63ea','#d6aa00'],
-    ['#1092d3','#9a5cff','#11a86f','#dbb100','#d64fc6'],
-    ['#007fc4','#c03fd1','#0ea34a','#5659dc','#c28f00'],
-    ['#1197c6','#8f58e4','#28a845','#c1a200','#c63fc1'],
-    ['#158ac8','#b042d8','#0f9f6f','#6575dc','#cc9800']
-  ],
-  dark:[
-    ['#2fd4ff','#ff7de3','#49ea5f','#8c86ff','#ffe34f'],
-    ['#49d3ff','#c89bff','#6cf26f','#ffd84f','#ff94ea'],
-    ['#3bc1ff','#ff8fe8','#67ef53','#7f93ff','#ffe864'],
-    ['#56d8ff','#a88dff','#57ea8d','#ffd85e','#ff9de2'],
-    ['#44cdff','#f78bff','#79f04d','#91a2ff','#ffd74a']
-  ]
+  light:['#0d85d0','#b03bc2','#199e3a','#7b51dc','#b8860b','#00897b','#d9531e','#c2185b','#3949ab','#558b2f'],
+  dark:['#3fc2ff','#f06ff5','#3ee065','#b19eff','#ffdf6d','#26dfd0','#ff8c42','#ff5c8a','#9fa8da','#aeea00']
 };
 
 function arrowColourComposition(level,arrows,cfg){
   const count=level<6?1:level<20?2:level<55?3:level<140?(level%3===0?2:3):2+(level%3);
   const modes=['vertical','horizontal','diagonal','radial','mirror'];
   const mode=count===1?'mono':modes[Math.floor((level-1)/4)%modes.length];
-  const familyIndex=Math.floor((level-1)/5)%ARROW_PALETTES.light.length;
+  const paletteOffset=Math.floor((level-1)/4)%ARROW_PALETTES.light.length;
   const width=Math.max(1,cfg.width),height=Math.max(1,cfg.height);
   const centreOf=a=>{
     let x=0,y=0;
@@ -3161,7 +3259,7 @@ function arrowColourComposition(level,arrows,cfg){
     return 0;
   };
   const assignments=new Map();
-  if(count===1){for(const a of arrows)assignments.set(a.id,0);return {count,mode,familyIndex,assignments};}
+  if(count===1){for(const a of arrows)assignments.set(a.id,0);return {count,mode,paletteOffset,assignments};}
 
   // Divide arrows by ranked spatial position instead of fixed coordinate thresholds.
   // This preserves bands/rings/mirroring while guaranteeing each colour occupies a
@@ -3169,13 +3267,14 @@ function arrowColourComposition(level,arrows,cfg){
   const ranked=arrows.map(a=>({a,t:positionValue(centreOf(a))})).sort((u,v)=>u.t-v.t||u.a.id-v.a.id);
   const n=Math.max(1,ranked.length);
   ranked.forEach((item,i)=>assignments.set(item.a.id,Math.min(count-1,Math.floor(i*count/n))));
-  return {count,mode,familyIndex,assignments};
+  return {count,mode,paletteOffset,assignments};
 }
 
 function arrowPaletteForState(comp){
   const theme=document.body.classList.contains('dark')?'dark':'light';
-  const families=ARROW_PALETTES[theme];
-  return families[comp.familyIndex%families.length];
+  const base=ARROW_PALETTES[theme];
+  const offset=(comp.paletteOffset||0)%base.length;
+  return base.slice(offset).concat(base.slice(0,offset));
 }
 
 function applyBoardArrowColours(){
@@ -3216,7 +3315,7 @@ function renderBoard(){
     const body=document.createElementNS('http://www.w3.org/2000/svg','path');body.classList.add('arrow-body');body.setAttribute('d',d);body.dataset.baseD=d;
     const head=document.createElementNS('http://www.w3.org/2000/svg','path');head.classList.add('arrow-head');head.setAttribute('d',headData(a,step,pad));
     const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('arrow-hit');hit.setAttribute('d',hitPathDataFromArrow(a,step,pad));hit.setAttribute('tabindex','0');hit.setAttribute('role','button');hit.setAttribute('aria-label',`Arrow pointing ${SHORT_TO_LONG_DIR[a.dir]}`);
-    const trigger=e=>{e.stopPropagation();if(!game.panMode)attemptArrow(a.id,g)};
+    const trigger=e=>{if(!isGameScreenActive())return;e.stopPropagation();if(!game.panMode)attemptArrow(a.id,g)};
     hit.addEventListener('click',trigger);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger(e)}});
     g.append(body,head,hit);svg.appendChild(g);
   });
@@ -3328,6 +3427,7 @@ async function animateBlockedTap(el,a){
   delete el.dataset.busy;
 }
 async function attemptArrow(id,el){
+  if(!isGameScreenActive()||!game)return;
   const currentGame=game;
   const a=currentGame?.arrows.find(x=>x.id===id);
   if(!a||!a.active||el.dataset.busy||currentGame.motionLocked)return;
@@ -3435,7 +3535,7 @@ function renderShop(){
 }
 
 function syncSettings(){
-  $$('[data-setting]').forEach(b=>{const on=!!state[b.dataset.setting];b.classList.toggle('on',on);b.setAttribute('role','switch');b.setAttribute('aria-checked',String(on));});document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#0a0c10':'#f4f1ea';
+  $$('[data-setting]').forEach(b=>{const on=!!state[b.dataset.setting];b.classList.toggle('on',on);b.setAttribute('role','switch');b.setAttribute('aria-checked',String(on));});document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#141210':'#f7f4ed';
 }
 
 function resetView(){game.scale=1;game.x=0;game.y=0;game.panMode=false;applyStageTransform();$('#viewBtn').classList.remove('active');}
@@ -3445,13 +3545,13 @@ function zoomBy(delta){if(!game||!state.boardMotion)return;game.scale=clamp(game
 let drag=null,pinch=null;
 const viewport=$('#boardViewport');
 viewport.addEventListener('pointerdown',e=>{
-  if(!game||!game.panMode||!state.boardMotion)return;viewport.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:game.x,oy:game.y};e.preventDefault();
+  if(!isGameScreenActive()||!game||!game.panMode||!state.boardMotion)return;viewport.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:game.x,oy:game.y};e.preventDefault();
 });
-viewport.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;game.x=drag.ox+(e.clientX-drag.x);game.y=drag.oy+(e.clientY-drag.y);applyStageTransform();});
+viewport.addEventListener('pointermove',e=>{if(!isGameScreenActive()||!drag||e.pointerId!==drag.id)return;game.x=drag.ox+(e.clientX-drag.x);game.y=drag.oy+(e.clientY-drag.y);applyStageTransform();});
 viewport.addEventListener('pointerup',e=>{if(drag&&e.pointerId===drag.id)drag=null});
-viewport.addEventListener('wheel',e=>{if(!game||!state.boardMotion)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
-viewport.addEventListener('touchstart',e=>{if(!game||!state.boardMotion||e.touches.length!==2)return;const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};},{passive:true});
-viewport.addEventListener('touchmove',e=>{if(!pinch||e.touches.length!==2)return;const [a,b]=e.touches;const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);game.scale=clamp(pinch.scale*(d/pinch.dist),CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();},{passive:true});
+viewport.addEventListener('wheel',e=>{if(!isGameScreenActive()||!game||!state.boardMotion)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
+viewport.addEventListener('touchstart',e=>{if(!isGameScreenActive()||!game||!state.boardMotion||e.touches.length!==2)return;const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};},{passive:true});
+viewport.addEventListener('touchmove',e=>{if(!isGameScreenActive()||!pinch||e.touches.length!==2)return;const [a,b]=e.touches;const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);game.scale=clamp(pinch.scale*(d/pinch.dist),CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();},{passive:true});
 viewport.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null},{passive:true});
 
 function clearTutorialPulse(){
