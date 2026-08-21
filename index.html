@@ -1177,6 +1177,30 @@ body.dark {
     return largestConnectedComponent({ width: mask.width, height: mask.height, cells });
   }
 
+  function trimMask(mask, padding = 1) {
+    if (!mask.cells.size) return mask;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const k of mask.cells) {
+      const [x, y] = k.split(',').map(Number);
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+    const shiftX = padding - minX;
+    const shiftY = padding - minY;
+    const cells = new Set();
+    for (const k of mask.cells) {
+      const [x, y] = k.split(',').map(Number);
+      cells.add(key(x + shiftX, y + shiftY));
+    }
+    return {
+      width: (maxX - minX + 1) + padding * 2,
+      height: (maxY - minY + 1) + padding * 2,
+      cells
+    };
+  }
+
   function bitmapMask(bitmap, width, height) {
     const srcH = bitmap.length;
     const srcW = bitmap[0].length;
@@ -1383,7 +1407,7 @@ body.dark {
       mask = createPatternMask('rectangle', width, height, rng);
     }
 
-    return removeTinySpurs(mask, 1);
+    return trimMask(removeTinySpurs(mask, 1), 1);
   }
 
   function transformPattern(mask, transform = {}) {
@@ -1416,37 +1440,37 @@ body.dark {
     const level = Math.max(1, Math.floor(levelNumber || 1));
     if (level <= 10) {
       return {
-        tier: 'easy', width: 9 + Math.floor((level - 1) / 4), height: 9 + Math.floor((level - 1) / 5),
-        arrowsMin: 6, arrowsMax: 12, density: lerp(0.62, 0.72, (level - 1) / 9),
-        minLen: 2, maxLen: 8, targetBends: [1, 3], initialLegal: [1, 3], candidateCount: 4
+        tier: 'easy', width: 8 + Math.floor((level - 1) / 4), height: 8 + Math.floor((level - 1) / 5),
+        arrowsMin: 10, arrowsMax: 20, density: lerp(0.90, 0.95, (level - 1) / 9),
+        minLen: 2, maxLen: 6, targetBends: [1, 4], initialLegal: [1, 3], candidateCount: 5
       };
     }
     if (level <= 25) {
       return {
-        tier: 'medium', width: 12 + Math.floor((level - 11) / 6), height: 12 + Math.floor((level - 11) / 7),
-        arrowsMin: 12, arrowsMax: 22, density: 0.76, minLen: 2, maxLen: 11,
-        targetBends: [1, 5], initialLegal: [1, 4], candidateCount: 4
+        tier: 'medium', width: 11 + Math.floor((level - 11) / 6), height: 11 + Math.floor((level - 11) / 7),
+        arrowsMin: 14, arrowsMax: 28, density: 0.94, minLen: 2, maxLen: 8,
+        targetBends: [1, 5], initialLegal: [1, 4], candidateCount: 5
       };
     }
     if (level <= 50) {
       return {
-        tier: 'medium', width: 14 + Math.floor((level - 26) / 9), height: 15 + Math.floor((level - 26) / 10),
-        arrowsMin: 15, arrowsMax: 30, density: 0.80, minLen: 2, maxLen: 14,
-        targetBends: [2, 6], initialLegal: [1, 4], candidateCount: 5
+        tier: 'medium', width: 13 + Math.floor((level - 26) / 9), height: 14 + Math.floor((level - 26) / 10),
+        arrowsMin: 18, arrowsMax: 34, density: 0.95, minLen: 2, maxLen: 10,
+        targetBends: [2, 6], initialLegal: [1, 4], candidateCount: 6
       };
     }
     if (level <= 100) {
       return {
-        tier: 'hard', width: 17 + Math.floor((level - 51) / 17), height: 18 + Math.floor((level - 51) / 20),
-        arrowsMin: 25, arrowsMax: 45, density: 0.84, minLen: 2, maxLen: 18,
-        targetBends: [2, 8], initialLegal: [1, 3], candidateCount: 5
+        tier: 'hard', width: 16 + Math.floor((level - 51) / 17), height: 17 + Math.floor((level - 51) / 20),
+        arrowsMin: 28, arrowsMax: 52, density: 0.96, minLen: 2, maxLen: 12,
+        targetBends: [2, 8], initialLegal: [1, 3], candidateCount: 6
       };
     }
     return {
-      tier: 'hard', width: clamp(19 + Math.floor(Math.log2(level / 100 + 1) * 2), 19, 24),
-      height: clamp(20 + Math.floor(Math.log2(level / 100 + 1) * 2), 20, 26),
-      arrowsMin: 30, arrowsMax: 70, density: 0.87, minLen: 2, maxLen: 22,
-      targetBends: [3, 8], initialLegal: [1, 3], candidateCount: 6
+      tier: 'hard', width: clamp(18 + Math.floor(Math.log2(level / 100 + 1) * 2), 18, 24),
+      height: clamp(19 + Math.floor(Math.log2(level / 100 + 1) * 2), 19, 26),
+      arrowsMin: 34, arrowsMax: 76, density: 0.965, minLen: 2, maxLen: 14,
+      targetBends: [3, 8], initialLegal: [1, 3], candidateCount: 7
     };
   }
 
@@ -1454,21 +1478,21 @@ body.dark {
     // Recognisable silhouettes should be drawn by the arrows themselves.
     // Keep negative-space shapes hollow where the mask is hollow, but densely
     // occupy the mask so a cross reads as a cross, a heart as a heart, etc.
-    if (pattern === 'rectangle' || pattern === 'square') return Math.max(config.density, 0.90);
-    if (pattern === 'cross') return Math.max(config.density, 0.975);
-    if (['crescent','key','question','lightning'].includes(pattern)) return Math.max(config.density, 0.93);
-    return Math.max(config.density, 0.965);
+    if (pattern === 'rectangle' || pattern === 'square') return Math.max(config.density, 0.975);
+    if (pattern === 'cross') return Math.max(config.density, 0.99);
+    if (['crescent','key','question','lightning'].includes(pattern)) return Math.max(config.density, 0.955);
+    return Math.max(config.density, 0.975);
   }
 
   function patternCoverageFloor(pattern, config) {
     const target = patternCoverageTarget(pattern, config);
-    return Math.max(config.density, target - 0.025);
+    return Math.max(config.density, target - 0.015);
   }
 
   function patternBandFillFloor(pattern) {
-    if (pattern === 'cross') return 0.88;
-    if (['rectangle','square','diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.80;
-    return 0.72;
+    if (pattern === 'cross') return 0.94;
+    if (['rectangle','square','diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.90;
+    return 0.84;
   }
 
   function patternPool(level) {
@@ -1981,14 +2005,14 @@ body.dark {
       // Silhouette boards need enough tail budget to actually fill their mask.
       // The logical heads stay fixed, so extending tails this way preserves the
       // reverse-construction proof while eliminating sparse, outline-like shapes.
-      const denseCap = Math.ceil(config.maxLen * 1.55);
+      const denseCap = Math.ceil(config.maxLen * 2.15);
       growthCaps.set(a.id, Math.max(a.cells.length, cap, denseCap));
     }
 
     const denseBendCap = config.targetBends[1] + (config.tier === 'easy' ? 2 : config.tier === 'medium' ? 3 : 5);
     let progress = true;
     let passes = 0;
-    while (progress && occupiedCount < targetOccupiedCells && passes++ < config.maxLen * 7) {
+    while (progress && occupiedCount < targetOccupiedCells && passes++ < config.maxLen * 14) {
       progress = false;
       for (const arrow of rng.shuffle(arrows)) {
         if (occupiedCount >= targetOccupiedCells) break;
@@ -2013,13 +2037,13 @@ body.dark {
           if (isTurn && bendCount(arrow.cells) >= denseBendCap) continue;
 
           let score = 1;
-          score += countOccupiedNeighbours(n,occupied) * 1.4;
+          score += countOccupiedNeighbours(n,occupied) * 2.2;
           // Blocking arrows with lower ids is safe and adds useful dependencies.
           let safeBlocks=0;
           for (const other of arrows) if (other.id < arrow.id && raysById.get(other.id).has(nk)) safeBlocks++;
           score += safeBlocks * 2.2;
-          if (isTurn) score += bendCount(arrow.cells) < config.targetBends[0] ? 1.2 : 0.15;
-          else score += 0.45;
+          if (isTurn) score += bendCount(arrow.cells) < config.targetBends[0] ? 1.4 : 0.25;
+          else score += 0.85;
 
           // Avoid sealing isolated one-cell holes where possible.
           let freeN=0;
@@ -2060,8 +2084,8 @@ body.dark {
     const fillTarget = patternCoverageTarget(pattern, config);
     const densityTargetCells = Math.floor(maskCellCount * fillTarget);
 
-    const minByCells = Math.max(config.arrowsMin, Math.floor(densityTargetCells / Math.max(7, config.maxLen * 0.65)));
-    const maxByCells = Math.min(config.arrowsMax, Math.floor(densityTargetCells / config.minLen));
+    const minByCells = Math.max(config.arrowsMin, Math.floor(densityTargetCells / Math.max(5, config.maxLen * 0.52)));
+    const maxByCells = Math.min(config.arrowsMax, Math.floor(densityTargetCells / Math.max(2, config.minLen)));
     const progressWithinTier = levelNumber <= 10 ? (levelNumber-1)/9 : levelNumber <= 50 ? (levelNumber-11)/39 : Math.min(1,(levelNumber-51)/100);
     const targetCount = clamp(
       Math.round(lerp(config.arrowsMin, config.arrowsMax, clamp(progressWithinTier,0,1))),
@@ -2077,7 +2101,7 @@ body.dark {
     let forcedSuccessorOptions = null;
     let chainsStarted = 0;
 
-    while (arrows.length < targetCount && occupiedCells < densityTargetCells && cycles < targetCount * 4) {
+    while (arrows.length < targetCount && occupiedCells < densityTargetCells && cycles < targetCount * 7) {
       cycles++;
       const step = arrows.length;
       const remainingArrowSlots = Math.max(1, targetCount - arrows.length);
@@ -2990,7 +3014,7 @@ function adaptGeneratedLevel(raw,level){
     generatorBoard:ArrowMazeGenerator.boardFromLevel(raw)
   };
 }
-function levelCacheKey(level){ return `${GAME_SEED}:${level}`; }
+function levelCacheKey(level){ return `dense2:${GAME_SEED}:${level}`; }
 function generateLevel(level){
   return adaptGeneratedLevel(buildAndCacheRawLevel(level),level);
 }
