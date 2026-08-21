@@ -52,16 +52,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .icon-btn{width:var(--tap);height:var(--tap);border-radius:17px;background:rgba(255,255,255,.56);display:grid;place-items:center;font-size:1.55rem;border:1px solid rgba(23,32,51,.07)}
 .icon-btn:active{transform:scale(.96)}
 .scroll{overflow:auto;overscroll-behavior:contain;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}
-.kicker{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.875rem;color:var(--accent)}
+.kicker{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:1rem;color:var(--accent)}
 .title{font-size:clamp(2rem,8vw,3rem);line-height:1.02;letter-spacing:-.055em;margin:.3rem 0 .875rem}
-.subtitle{font-size:.98rem;line-height:1.55;color:var(--muted);margin:0}
+.subtitle{font-size:1rem;line-height:1.55;color:var(--muted);margin:0}
 .card{background:rgba(255,253,248,.92);border:1px solid rgba(23,32,51,.08);border-radius:var(--radius-lg);box-shadow:0 12px 36px rgba(36,31,24,.07)}
-.primary,.secondary,.ghost{min-height:54px;border-radius:17px;font-weight:800;padding:0 18px;font-size:.96rem;display:flex;align-items:center;justify-content:center;gap:9px}
+.primary,.secondary,.ghost{min-height:54px;border-radius:17px;font-weight:800;padding:0 18px;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:9px}
 .primary{background:var(--ink);color:white;box-shadow:0 8px 0 rgba(23,32,51,.12)}
 .primary:active{transform:translateY(3px);box-shadow:0 5px 0 rgba(23,32,51,.12)}
 .secondary{background:var(--accent);color:white;box-shadow:0 8px 0 rgba(255,109,90,.18)}
 .ghost{background:rgba(255,255,255,.7);border:1px solid rgba(23,32,51,.08)}
-.chip{height:44px;border-radius:14px;background:rgba(255,255,255,.58);border:1px solid rgba(23,32,51,.06);padding:0 13px;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.88rem}
+.chip{height:44px;border-radius:14px;background:rgba(255,255,255,.58);border:1px solid rgba(23,32,51,.06);padding:0 13px;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:1rem}
 .chip i{font-size:1.05rem}
 
 /* splash / loading wipe */
@@ -83,29 +83,29 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .home-center{width:100%;max-width:390px;text-align:center;display:flex;flex-direction:column;align-items:center}
 .home-emblem{width:92px;height:92px;border-radius:28px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:24px;box-shadow:0 12px 34px rgba(36,31,24,.07)}
 .home-emblem svg{width:62px;height:62px}.home-emblem path,.home-emblem polyline{fill:none;stroke:var(--arrow-0);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.home-emblem .accent{stroke:var(--arrow-1)}
-.home-level{display:inline-flex;align-items:center;min-height:32px;padding:0 11px;border-radius:999px;background:var(--surface-2);font-size:.875rem;font-weight:800;color:var(--muted);margin-bottom:12px}
+.home-level{display:inline-flex;align-items:center;min-height:32px;padding:0 11px;border-radius:999px;background:var(--surface-2);font-size:1rem;font-weight:800;color:var(--muted);margin-bottom:12px}
 .home-center .title{margin:0 0 10px;font-size:clamp(2rem,9vw,2.85rem)}
 .home-center .subtitle{max-width:320px}
 .home-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
 .home-actions .primary{grid-column:1/-1}
 .home-nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.nav-mini{min-height:54px;border-radius:17px;background:transparent;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:.875rem;font-weight:800;color:var(--muted)}
+.nav-mini{min-height:54px;border-radius:17px;background:transparent;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:1rem;font-weight:800;color:var(--muted)}
 .nav-mini i{font-size:1.15rem;color:var(--ink)}
 
 /* levels */
 .level-summary{display:flex;justify-content:space-between;align-items:center;margin:12px 0 16px;padding:18px}
-.level-summary strong{font-size:1.55rem;letter-spacing:-.04em}.level-summary span{color:var(--muted);font-size:.875rem}
+.level-summary strong{font-size:1.55rem;letter-spacing:-.04em}.level-summary span{color:var(--muted);font-size:1rem}
 .level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding-bottom:20px}
 .level-cell{aspect-ratio:1;border-radius:18px;background:var(--surface);border:1px solid rgba(23,32,51,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;font-weight:800;box-shadow:0 5px 14px rgba(36,31,24,.05)}
 .level-cell.current{background:var(--ink);color:#fff;transform:scale(1.03)}
-.level-cell.locked{opacity:.42}.level-cell .stars{font-size:.875rem;letter-spacing:1px;color:var(--accent-3)}
+.level-cell.locked{opacity:.42}.level-cell .stars{font-size:1rem;letter-spacing:1px;color:var(--accent-3)}
 .level-cell.current .stars{color:#ffd46e}.level-cell i{font-size:1.1rem}
 
 /* game */
 #game{padding-left:10px;padding-right:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
-.game-top{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:8px;flex:0 0 auto}
-.level-title{text-align:center}.level-title strong{font-size:1.18rem}.level-title small{display:none}
-.game-stats{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:10px 8px 4px}
+.game-top{display:grid;grid-template-columns:52px 1fr;align-items:center;gap:8px;flex:0 0 auto}
+.level-title{text-align:right}.level-title strong{font-size:1.18rem}.level-title small{display:none}
+.game-stats{display:grid;grid-template-columns:1fr 1fr;align-items:center;margin:10px 8px 4px}
 .game-stats .left{justify-self:start}.game-stats .right{justify-self:end}.hearts{display:flex;gap:5px;color:var(--danger);font-size:1.6rem}.heart.lost{color:#d8d6d0;transform:scale(.86)}
 .board-shell{flex:1;min-height:0;position:relative;margin:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden}
 .board-viewport{width:100%;height:100%;min-height:0;position:relative;touch-action:none;overflow:hidden;border-radius:22px;background:rgba(255,253,248,.24)}
@@ -127,8 +127,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 @keyframes hintPulse{50%{opacity:.78;transform:scale(1.01)}}
 .game-tools{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:9px;padding:7px 0 1px}
 .tool{height:58px;min-width:58px;padding:0 15px;border-radius:20px;background:var(--surface);border:1px solid rgba(23,32,51,.08);display:flex;align-items:center;justify-content:center;gap:7px;font-weight:800;box-shadow:0 9px 26px rgba(36,31,24,.08);position:relative}
-.tool i{font-size:1.35rem}.tool .cost{font-size:.875rem;color:var(--muted)}.tool.active{box-shadow:inset 0 0 0 2px var(--accent-2)}
-.tool-badge{position:absolute;right:-4px;top:-5px;background:var(--accent);color:#fff;border-radius:999px;min-width:23px;height:23px;display:grid;place-items:center;font-size:.875rem;border:3px solid var(--bg)}
+.tool i{font-size:1.35rem}.tool .qty{font-size:1rem;font-weight:800;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:2px 10px;min-width:30px;text-align:center}.tool.active{box-shadow:inset 0 0 0 2px var(--accent-2)}
 
 
 
@@ -136,8 +135,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .modal-layer{position:absolute;inset:0;z-index:40;background:rgba(23,32,51,.30);display:flex;align-items:flex-end;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:.2s}
 .modal-layer.show{opacity:1;pointer-events:auto}.sheet{width:min(100%,560px);background:var(--surface);border-radius:30px;padding:22px;box-shadow:0 28px 70px rgba(23,32,51,.24);transform:translateY(24px);transition:.25s}.modal-layer.show .sheet{transform:none}
 .sheet h2{margin:0 0 8px;letter-spacing:-.04em}.sheet p{margin:0 0 18px;color:var(--muted);line-height:1.5}.sheet-actions{display:grid;gap:9px}
-.tutorial{position:relative;z-index:5;display:none;flex:0 0 auto;padding:6px 8px 9px;background:transparent;pointer-events:auto}.tutorial.show{display:block}.tutorial-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px 15px;width:100%;margin:0;pointer-events:auto;box-shadow:0 10px 24px rgba(0,0,0,.14)}.tutorial-card .step{font-size:.875rem;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.1em}.tutorial-card h3{font-size:1.05rem;margin:3px 0 4px;letter-spacing:-.025em}.tutorial-card p{margin:0 0 10px;color:var(--muted);line-height:1.4;font-size:.875rem}.tutorial-card button{min-height:44px}.tutorial-focus{display:none!important}
-.toast{position:absolute;left:50%;bottom:98px;z-index:70;transform:translate(-50%,18px);opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:11px 16px;font-weight:800;font-size:.875rem;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+.tutorial{position:relative;z-index:5;display:none;flex:0 0 auto;padding:6px 8px 9px;background:transparent;pointer-events:auto}.tutorial.show{display:block}.tutorial-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px 15px;width:100%;margin:0;pointer-events:auto;box-shadow:0 10px 24px rgba(0,0,0,.14)}.tutorial-card .step{font-size:1rem;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.1em}.tutorial-card h3{font-size:1.05rem;margin:3px 0 4px;letter-spacing:-.025em}.tutorial-card p{margin:0 0 10px;color:var(--muted);line-height:1.4;font-size:1rem}.tutorial-card button{min-height:44px}.tutorial-focus{display:none!important}
+.toast{position:absolute;left:50%;bottom:98px;z-index:70;transform:translate(-50%,18px);opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:11px 16px;font-weight:800;font-size:1rem;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* win */
 .win-wrap{flex:1;display:flex;align-items:center;justify-content:center}.win-card{width:min(100%,520px);padding:26px;text-align:center;position:relative;overflow:hidden}.win-card:before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,109,90,.12) 8% 10%,transparent 10% 18%,rgba(78,167,161,.11) 18% 20%,transparent 20% 28%);animation:spin 20s linear infinite}.win-card>*{position:relative}.win-icon{width:94px;height:94px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:2.5rem;margin:0 auto 18px;transform:rotate(-4deg)}
@@ -145,9 +144,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .win-card h1{font-size:2.1rem;letter-spacing:-.055em;margin:0}.win-stars{font-size:2rem;color:var(--accent-3);letter-spacing:5px;margin:10px 0}.win-reward{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.reward-pill{background:var(--surface-2);border-radius:16px;padding:10px 14px;font-weight:800}.win-actions{display:grid;gap:10px}.confetti{position:absolute;width:8px;height:16px;border-radius:4px;top:-20px;animation:confetti 1.5s ease-out forwards}@keyframes confetti{to{transform:translate(var(--x),680px) rotate(640deg);opacity:.1}}
 
 /* shop, settings, info */
-.section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:.96rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:.875rem}.buy{height:44px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:.875rem}
-.setting-list{display:grid;gap:10px;padding:10px 0}.setting-row{display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:13px;padding:15px}.setting-row i{width:46px;height:46px;border-radius:15px;background:var(--surface-2);display:grid;place-items:center;font-size:1.2rem}.setting-row h3{margin:0;font-size:.92rem}.setting-row p{margin:2px 0 0;color:var(--muted);font-size:.875rem}.switch{width:50px;height:30px;border-radius:999px;background:#d5d2ca;padding:4px;transition:.2s}.switch:before{content:"";display:block;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.12);transition:.2s}.switch.on{background:var(--accent-2)}.switch.on:before{transform:translateX(20px)}
-.info-card{padding:20px;margin-top:12px}.info-card h2{letter-spacing:-.04em}.info-card p{color:var(--muted);line-height:1.6;font-size:.9rem}.field{display:grid;gap:7px;margin-top:12px}.field label{font-size:.875rem;font-weight:800}.field input,.field textarea{width:100%;border:1px solid rgba(23,32,51,.12);background:var(--surface);border-radius:16px;padding:14px;min-height:50px}.field textarea{min-height:120px;resize:none}
+.section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:1rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:1rem}.buy{height:44px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:1rem}
+.setting-list{display:grid;gap:10px;padding:10px 0}.setting-row{display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:13px;padding:15px}.setting-row i{width:46px;height:46px;border-radius:15px;background:var(--surface-2);display:grid;place-items:center;font-size:1.2rem}.setting-row h3{margin:0;font-size:1rem}.setting-row p{margin:2px 0 0;color:var(--muted);font-size:1rem}.switch{width:50px;height:30px;border-radius:999px;background:#d5d2ca;padding:4px;transition:.2s}.switch:before{content:"";display:block;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.12);transition:.2s}.switch.on{background:var(--accent-2)}.switch.on:before{transform:translateX(20px)}
+.info-card{padding:20px;margin-top:12px}.info-card h2{letter-spacing:-.04em}.info-card p{color:var(--muted);line-height:1.6;font-size:1rem}.field{display:grid;gap:7px;margin-top:12px}.field label{font-size:1rem;font-weight:800}.field input,.field textarea{width:100%;border:1px solid rgba(23,32,51,.12);background:var(--surface);border-radius:16px;padding:14px;min-height:50px}.field textarea{min-height:120px;resize:none}
 
 
 /* game polish + accessibility sizing */
@@ -157,8 +156,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   --game-shadow:0 5px 0 rgba(23,32,51,.10);
 }
 .kicker,.home-level,.nav-mini,.level-summary span,.level-cell .stars,.level-title small,
-.tool .cost,.tool-badge,.tutorial-card .step,.toast,.shop-item p,.buy,.setting-row p,.field label{
-  font-size:.875rem;
+.tool .qty,.tutorial-card .step,.toast,.shop-item p,.buy,.setting-row p,.field label{
+  font-size:1rem;
 }
 .chip,.buy{min-height:44px;height:auto}
 .switch{width:56px;height:44px;padding:6px;border:1px solid var(--line)}
@@ -172,7 +171,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
   background-size:22px 22px;
 }
 .game-top{margin:2px 4px 0}
-.level-title{justify-self:center;min-width:144px;padding:8px 16px 9px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--game-shadow)}
+.level-title{justify-self:end;min-width:144px;padding:8px 16px 9px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--game-shadow)}
 .level-title strong{display:block;font-weight:800;letter-spacing:-.035em}
 .game-stats{margin:10px 6px 8px;min-height:50px;padding:0 3px}
 .game-stats .chip{background:var(--surface);border:1px solid var(--line);box-shadow:0 4px 0 rgba(23,32,51,.08);font-weight:800}
@@ -183,7 +182,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .game-tools{gap:8px;padding-top:9px}
 .tool{min-height:58px;border-radius:18px;border:1px solid var(--line);box-shadow:0 4px 0 rgba(23,32,51,.10);background:var(--surface)}
 .tool:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(23,32,51,.10)}
-.tool-badge{min-width:26px;height:26px;border-width:2px}
+.tool .qty{min-width:26px;border-width:2px}
 
 
 /* More tactile global controls. */
@@ -203,15 +202,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .secondary{background:var(--accent-2);box-shadow:0 5px 0 color-mix(in srgb,var(--accent-2) 35%,transparent)}
 .home-emblem{position:relative;isolation:isolate;box-shadow:0 6px 0 color-mix(in srgb,var(--arrow-3) 22%,transparent),0 18px 42px rgba(36,31,24,.08)}
 .home-emblem:before{content:"";position:absolute;inset:9px;border:1px dashed color-mix(in srgb,var(--arrow-0) 30%,transparent);border-radius:20px;z-index:-1}
-.game-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+.game-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
 .tool{width:100%;min-width:0;height:68px;flex-direction:column;gap:2px;padding:7px 8px 8px}
 .tool i{font-size:1.4rem;line-height:1}
 .tool>i:first-child{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:var(--surface-2);border:1px solid color-mix(in srgb,var(--line) 75%,transparent)}
-.tool .cost{position:absolute;right:8px;bottom:7px;font-weight:800}
+.tool .qty{font-weight:800}
 #hintBtn{border-bottom:3px solid var(--arrow-4)}
 
 #skipBtn{border-bottom:3px solid var(--arrow-3)}
-#remainingChip{border-left:3px solid var(--arrow-0)}
+#lifeBtn{border-bottom:3px solid var(--danger)}
+.game-stats .left{border-left:3px solid var(--arrow-0)}
 .game-stats .right{border-right:3px solid var(--arrow-3)}
 
 /* The success animation belongs to the reward emblem, not the whole card. */
@@ -352,7 +352,7 @@ body.dark{
 html,body{font-size:16px}
 body,button,input,textarea{font-size:1rem}
 .kicker,.subtitle,.home-level,.nav-mini,.level-summary span,.level-cell,.level-cell .stars,
-.primary,.secondary,.ghost,.chip,.tool,.tool .cost,.tool-badge,.tutorial-card .step,
+.primary,.secondary,.ghost,.chip,.tool,.tool .qty,.tutorial-card .step,
 .tutorial-card p,.toast,.shop-item h3,.shop-item p,.buy,.setting-row h3,.setting-row p,
 .section-title,.field label,.reward-pill,.sheet p,.sheet button,.info-card p,small{font-size:1rem!important}
 i[class^="ph"],i[class*=" ph-"]{font-size:max(1rem,1em)}
@@ -431,7 +431,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px soli
 .level-title{min-width:138px;padding:8px 15px;border-radius:17px;background:var(--game-panel-2)}
 .game-stats{margin:10px 4px 9px;gap:8px}
 .game-stats .chip{background:var(--game-panel);border-radius:16px;padding-inline:12px}
-#remainingChip{border-bottom:4px solid var(--game-blue)}
+.game-stats .left{border-bottom:4px solid var(--game-blue)}
 .game-stats .right{border-bottom:4px solid var(--game-purple)}
 .hearts{min-height:48px;padding:7px 11px;border-radius:17px;gap:6px;color:var(--game-danger)}
 .heart{min-width:24px;min-height:24px}
@@ -445,7 +445,8 @@ body.dark .board-viewport{background:#0d1321;border-color:var(--game-outline);bo
 #hintBtn{border-bottom:5px solid var(--game-gold)}
 
 #skipBtn{border-bottom:5px solid var(--game-purple)}
-.tool-badge{min-width:28px;height:28px;border:2px solid var(--game-outline);background:var(--game-pink);color:#fff}
+#lifeBtn{border-bottom:5px solid var(--game-danger)}
+.tool .qty{min-width:28px;border:2px solid var(--game-outline);background:var(--game-pink);color:#fff}
 
 /* Gentle tutorial target. It keeps the arrow's own colour. */
 .arrow-piece.tutorialPulse{animation:tutorialArrowPulse 1.15s ease-in-out infinite;transform-origin:center;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--arrow-color,var(--game-blue)) 60%,transparent))}
@@ -575,13 +576,13 @@ html,body{background:var(--flat-bg);color:var(--flat-ink)}
 }
 .switch{border-radius:var(--flat-radius-round)!important}
 .switch:before{border-radius:50%!important}
-.tool-badge{border-radius:var(--flat-radius-round)!important}
+.tool .qty{border-radius:var(--flat-radius-round)!important}
 
 /* Typography and icon baseline. */
 html,body{font-size:16px}
 body,button,input,textarea{font-size:1rem}
 .kicker,.subtitle,.home-level,.nav-mini,.level-summary span,.level-cell,.level-cell .stars,
-.primary,.secondary,.ghost,.chip,.tool,.tool .cost,.tool-badge,.tutorial-card .step,
+.primary,.secondary,.ghost,.chip,.tool,.tool .qty,.tutorial-card .step,
 .tutorial-card p,.toast,.shop-item h3,.shop-item p,.buy,.setting-row h3,.setting-row p,
 .section-title,.field label,.reward-pill,.sheet p,.sheet button,.info-card p,small{font-size:1rem!important}
 i[class^="ph"],i[class*=" ph-"]{font-size:max(1rem,1em)}
@@ -668,16 +669,25 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .game-stats .chip,.hearts{
   min-height:46px;background:var(--flat-panel)!important;border:2px solid var(--flat-line)!important;padding:6px 10px!important
 }
-#remainingChip:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--flat-blue)}
+.game-stats .left:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--flat-blue)}
 .game-stats .right:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--flat-purple)}
 .hearts{gap:6px;display:flex;align-items:center}
 .heart i{font-size:1.4rem!important}
 .board-viewport{
   background:var(--flat-panel)!important;border:2px solid var(--flat-line)!important;
-  background-image:radial-gradient(circle,color-mix(in srgb,var(--flat-line-soft) 35%,transparent) 1px,transparent 1.2px)!important;
-  background-size:18px 18px!important
 }
-body.dark .board-viewport{background-color:#0c1219!important;background-image:radial-gradient(circle,rgba(255,255,255,.08) 1px,transparent 1.2px)!important}
+/* The dot grid used to be a CSS background on .board-viewport (the
+   untransformed outer container), which meant it never lined up with the
+   arrows and never moved/scaled when the board was panned or zoomed - only
+   #boardStage (an inner element) gets that transform. It's now drawn as an
+   SVG pattern inside the board SVG itself, in renderBoard(), one dot per
+   grid cell centre using the exact same step/pad the arrows are laid out
+   with - so it's always aligned and always rides along with pan/zoom for
+   free, same as everything else in the SVG. This class just supplies the
+   dot's colour per theme. */
+.board-dot{fill:color-mix(in srgb,var(--flat-line-soft) 45%,transparent)}
+body.dark .board-dot{fill:rgba(255,255,255,.12)}
+body.dark .board-viewport{background-color:#0c1219!important}
 
 
 .game-tools{gap:6px;padding-top:8px}
@@ -690,7 +700,7 @@ body.dark .board-viewport{background-color:#0c1219!important;background-image:ra
 #hintBtn:after{background:var(--flat-yellow)}
 
 #skipBtn:after{background:var(--flat-purple)}
-.tool-badge{min-width:26px;height:26px;border:2px solid var(--flat-line)!important;background:var(--flat-pink)!important;color:#fff!important}
+.tool .qty{min-width:26px;border:2px solid var(--flat-line)!important;background:var(--flat-pink)!important;color:#fff!important}
 
 /* Modals: flat overlays with a strong title bar. */
 .modal-layer,.tutorial{background:rgba(9,13,19,.72)!important;backdrop-filter:none!important}
@@ -763,7 +773,7 @@ body.dark .shop-balance{background:var(--flat-purple)!important;color:#fff!impor
 /* Final radius enforcement for the flat system. */
 button{border-radius:var(--flat-radius)!important}
 .level-summary,.splash-logo,.board-grid,.shop-balance{border-radius:var(--flat-radius-lg)!important}
-.tool-badge{border-radius:var(--flat-radius-round)!important}
+.tool .qty{border-radius:var(--flat-radius-round)!important}
 .confetti{border-radius:4px!important}
 
 
@@ -773,8 +783,8 @@ button{border-radius:var(--flat-radius)!important}
 .home-emblem:before,.home-emblem:after,
 .home-actions .ghost:after,#dailyBtn:after,.home-nav .nav-mini:after,
 .level-cell.current:after,
-#remainingChip:after,.game-stats .right:after,
-#hintBtn:after,#skipBtn:after,
+.game-stats .left:after,.game-stats .right:after,
+#hintBtn:after,#skipBtn:after,#lifeBtn:after,
 .sheet:before,.tutorial-card:before,.win-card:after{
   content:none!important;
   display:none!important;
@@ -970,11 +980,10 @@ body.dark {
   </section>
 
   <section class="screen" id="game">
-    <div class="game-top"><button class="icon-btn" id="gameBack" aria-label="Back"><i class="ph ph-caret-left"></i></button><div class="level-title"><strong id="gameLevel">Level 1</strong><small id="difficultyLabel">Warm up</small></div><button class="icon-btn" data-nav="settings" aria-label="Settings"><i class="ph ph-gear-six"></i></button></div>
+    <div class="game-top"><button class="icon-btn" id="gameBack" aria-label="Back"><i class="ph ph-caret-left"></i></button><div class="level-title"><strong id="gameLevel">Level 1</strong><small id="difficultyLabel">Warm up</small></div></div>
     <div class="game-stats">
-      <button class="chip left" id="remainingChip"><i class="ph ph-arrow-up-right"></i><span id="remainingCount">0</span></button>
-      <div class="hearts" id="hearts"></div>
-      <button class="chip right" data-nav="shop"><i class="ph ph-sketch-logo"></i><span data-coins>0</span></button>
+      <div class="hearts left" id="hearts"></div>
+      <button class="chip right" id="gemCounter" aria-label="Gems"><i class="ph ph-sketch-logo"></i><span data-coins>0</span></button>
     </div>
       <div class="tutorial" id="tutorial"><div class="tutorial-card" id="tutorialCard"></div></div>
     <div class="board-shell">
@@ -983,8 +992,9 @@ body.dark {
       </div>
     </div>
     <div class="game-tools">
-      <button class="tool" id="hintBtn"><i class="ph ph-lightbulb"></i><span>Hint</span><span class="cost" id="hintCost"></span><span class="tool-badge" id="hintInventory">0</span></button>
-      <button class="tool" id="skipBtn"><i class="ph ph-skip-forward"></i><span>Skip</span></button>
+      <button class="tool" id="hintBtn"><i class="ph ph-lightbulb"></i><span>Hint</span><span class="qty" id="hintQty">x0</span></button>
+      <button class="tool" id="lifeBtn"><i class="ph ph-heart-straight"></i><span>Life</span><span class="qty" id="lifeQty">x0</span></button>
+      <button class="tool" id="skipBtn"><i class="ph ph-skip-forward"></i><span>Skip</span><span class="qty" id="skipQty">x0</span></button>
     </div>
   </section>
 
@@ -3503,7 +3513,7 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   if(!daily){state.currentLevel=level;saveState();}
   game={...data,level,dailyKey,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,reward:0,tutorialActionDone:false,motionLocked:false,exitAnimations:new Set()};
   $('#gameLevel').textContent=daily?'Daily':`Level ${level}`; $('#difficultyLabel').textContent='';
-  renderBoard(); renderHearts(); updateRemaining(); resetView(); showScreen('game');
+  renderBoard(); renderHearts(); updateToolQuantities(); resetView(); showScreen('game');
   $('#skipBtn').style.display=daily?'none':'flex';
   if(!daily)warmNextLevels(level,2);
   if(tutorialPending)setTimeout(()=>beginTutorial(),300);
@@ -3583,6 +3593,27 @@ function renderBoard(){
   const palette=arrowPaletteForState(game.colourComposition);
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.classList.add('board-svg');svg.setAttribute('viewBox',`0 0 ${unitsW} ${unitsH}`);svg.setAttribute('width',physicalW);svg.setAttribute('height',physicalH);svg.setAttribute('aria-label','Intertwined arrow maze');
+
+  // One dot per grid-cell centre, drawn inside the same SVG (and so the same
+  // coordinate space) as the arrows, at exactly the cell-centre formula
+  // visualPointsForArrow uses (pad + (i+0.5)*step). Living here instead of
+  // as a CSS background on the outer viewport means it's mechanically
+  // guaranteed to line up with the arrows and to pan/zoom with them, since
+  // it's subject to the exact same viewBox scaling and the exact same outer
+  // CSS transform - there's no separate coordinate system to keep in sync.
+  const patternId=`boardDots${game.level ?? 0}${game.daily?'d':''}${Date.now()%100000}`;
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const pattern=document.createElementNS('http://www.w3.org/2000/svg','pattern');
+  pattern.setAttribute('id',patternId);pattern.setAttribute('patternUnits','userSpaceOnUse');
+  pattern.setAttribute('x',pad);pattern.setAttribute('y',pad);pattern.setAttribute('width',step);pattern.setAttribute('height',step);
+  const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.classList.add('board-dot');dot.setAttribute('cx',step/2);dot.setAttribute('cy',step/2);dot.setAttribute('r',Math.max(1,step*.05));
+  pattern.appendChild(dot);defs.appendChild(pattern);svg.appendChild(defs);
+  const dotsRect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  dotsRect.setAttribute('x',0);dotsRect.setAttribute('y',0);dotsRect.setAttribute('width',unitsW);dotsRect.setAttribute('height',unitsH);
+  dotsRect.setAttribute('fill',`url(#${patternId})`);dotsRect.setAttribute('aria-hidden','true');
+  svg.appendChild(dotsRect);
+
   game.arrows.forEach(a=>{
     const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('arrow-piece');g.dataset.id=a.id;
     const colourIndex=game.colourComposition.assignments.get(a.id)??0;
@@ -3714,7 +3745,6 @@ async function attemptArrow(id,el){
   if(isLegal(a)){
     sound('good');haptic(16);
     a.active=false;
-    updateRemaining();
 
     let exitPromise;
     exitPromise=animateArrowOut(el,a).catch(err=>console.error(err)).finally(()=>{
@@ -3752,27 +3782,65 @@ async function attemptArrow(id,el){
     if(game===currentGame)currentGame.motionLocked=false;
   }
 }
-function updateRemaining(){ const n=game.arrows.filter(a=>a.active).length;$('#remainingCount').textContent=n; }
 function renderHearts(){
   const h=$('#hearts');h.innerHTML='';
   for(let i=0;i<CONSTANTS.STARTING_LIVES;i++){const s=document.createElement('span');s.className='heart'+(i>=game.lives?' lost':'');s.innerHTML=i>=game.lives?'<i class="ph ph-heart-straight"></i>':'<i class="ph-fill ph-heart-straight"></i>';h.appendChild(s);}
   if(game.lives>CONSTANTS.STARTING_LIVES){const extra=document.createElement('span');extra.className='heart';extra.innerHTML=`<i class="ph-fill ph-heart-straight"></i><small style="font-size:1rem">+${game.lives-CONSTANTS.STARTING_LIVES}</small>`;h.appendChild(extra)}
 }
 function clearHint(){ $$('.arrow-piece.legalHint').forEach(x=>x.classList.remove('legalHint')); }
-function useHint(){
-  if(!game||game.motionLocked) return; const legal=game.arrows.filter(a=>a.active&&isLegal(a)); if(!legal.length)return;
-  if(state.hints>0){state.hints--;saveState();}
-  else if(state.coins>=CONSTANTS.HINT_COST){state.coins-=CONSTANTS.HINT_COST;saveState();}
-  else {toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');showScreen('shop');return;}
-  const a=legal[Math.floor(Math.random()*legal.length)];const el=$(`.arrow-piece[data-id="${a.id}"]`);clearHint();el?.classList.add('legalHint');sound('coin');haptic(12);updateHintUI();setTimeout(()=>el?.classList.remove('legalHint'),4000);
+// Hint, Life and Skip all follow the same shape now: tapping the tool button
+// opens a small confirm sheet that either offers to spend inventory ("use")
+// or, once that's empty, offers to spend gems directly for one ("buy") -
+// never both options at once, and never silently spent on tap.
+function openHintModal(){
+  if(!game||game.motionLocked)return;
+  const legal=game.arrows.filter(a=>a.active&&isLegal(a));
+  if(!legal.length){toast('No legal move to hint right now');return;}
+  const n=state.hints||0;
+  const body=n>0
+    ?`<h2>Use a hint?</h2><p>You have ${n} hint${n===1?'':'s'} left.</p><div class="sheet-actions"><button class="primary" id="confirmHint">Use hint</button><button class="ghost" id="cancelHint">Cancel</button></div>`
+    :`<h2>Out of hints</h2><p>Buy one hint for <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.HINT_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmHint">Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.HINT_COST}</button><button class="ghost" id="cancelHint">Cancel</button></div>`;
+  openModal(body);
+  $('#confirmHint').onclick=()=>{
+    if(n>0)state.hints--;
+    else if(state.coins>=CONSTANTS.HINT_COST)state.coins-=CONSTANTS.HINT_COST;
+    else{closeModal();toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');return;}
+    saveState();
+    const a=legal[Math.floor(Math.random()*legal.length)];const el=$(`.arrow-piece[data-id="${a.id}"]`);clearHint();el?.classList.add('legalHint');sound('coin');haptic(12);updateToolQuantities();setTimeout(()=>el?.classList.remove('legalHint'),4000);
+    closeModal();
+  };
+  $('#cancelHint').onclick=closeModal;
 }
-function updateHintUI(){ $('#hintInventory').textContent=state.hints;$('#hintCost').textContent=state.hints?`x${state.hints}`:`${CONSTANTS.HINT_COST}`; }
+function openLifeModal(){
+  if(!game||game.motionLocked)return;
+  const n=state.lifeCredits||0;
+  const body=n>0
+    ?`<h2>Add a life?</h2><p>You have ${n} life credit${n===1?'':'s'}.</p><div class="sheet-actions"><button class="primary" id="confirmLife">Use a life credit</button><button class="ghost" id="cancelLife">Cancel</button></div>`
+    :`<h2>Out of life credits</h2><p>Buy one extra life for <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmLife">Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}</button><button class="ghost" id="cancelLife">Cancel</button></div>`;
+  openModal(body);
+  $('#confirmLife').onclick=()=>{
+    if(n>0)state.lifeCredits--;
+    else if(state.coins>=CONSTANTS.EXTRA_LIFE_COST)state.coins-=CONSTANTS.EXTRA_LIFE_COST;
+    else{closeModal();toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');return;}
+    game.lives++;saveState();renderHearts();updateToolQuantities();sound('coin');haptic(12);toast('Life added');closeModal();
+  };
+  $('#cancelLife').onclick=closeModal;
+}
+// Shared refresh for the quantity marker on all three tool buttons - the
+// single "xN" label replaces both the old floating count bubble and the
+// separate cost text, and always shows a number (including x0) instead of
+// switching to a bare price once empty.
+function updateToolQuantities(){
+  const hq=$('#hintQty');if(hq)hq.textContent=`x${state.hints||0}`;
+  const lq=$('#lifeQty');if(lq)lq.textContent=`x${state.lifeCredits||0}`;
+  const sq=$('#skipQty');if(sq)sq.textContent=`x${state.skipTokens||0}`;
+}
 function showOutOfLives(){
   const creditButton = state.lifeCredits ? `<button class="ghost" id="creditLife">Use extra life credit · ${state.lifeCredits} left</button>` : '';
   openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry the level or spend <i class="ph ph-sketch-logo" aria-hidden="true"></i> on one extra life.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}</button></div>`);
   $('#retryNow').onclick=()=>{closeModal();startLevel(game.level,{daily:game.daily,dailyKey:game.dailyKey})};
-  if($('#creditLife')) $('#creditLife').onclick=()=>{state.lifeCredits--;game.lives=1;saveState();renderHearts();closeModal();toast('Extra life used')};
-  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();closeModal();toast('Extra life added')};
+  if($('#creditLife')) $('#creditLife').onclick=()=>{state.lifeCredits--;game.lives=1;saveState();renderHearts();updateToolQuantities();closeModal();toast('Extra life used')};
+  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();updateToolQuantities();closeModal();toast('Extra life added')};
 }
 function finishLevel(){
   clearHint();sound('win');haptic([20,40,20]);
@@ -3808,7 +3876,7 @@ function renderShop(){
     {icon:'ph-skip-forward',name:'Skip token',desc:'Unlock the next level instantly',price:CONSTANTS.SKIP_COST,buy:()=>{state.skipTokens=(state.skipTokens||0)+1}}
   ];
   const list=$('#shopList');list.innerHTML='';
-  items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy"><i class="ph ph-sketch-logo" aria-hidden="true"></i> ${it.price}</button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateHintUI();};list.appendChild(d)});
+  items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy"><i class="ph ph-sketch-logo" aria-hidden="true"></i> ${it.price}</button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateToolQuantities();};list.appendChild(d)});
 }
 
 function syncSettings(){
@@ -3952,12 +4020,13 @@ $('#dailyBtn').onclick=()=>{const now=new Date();const day=Math.floor(Date.now()
 $('#gameBack').onclick=()=>openModal(`<h2>Leave this board?</h2><p>Your current attempt will restart when you return.</p><div class="sheet-actions"><button class="primary" id="leaveBoard">Leave level</button><button class="ghost" id="stayBoard">Keep playing</button></div>`);
 $('#modalLayer').addEventListener('click',e=>{if(e.target.id==='modalLayer')closeModal()});
 document.addEventListener('click',e=>{if(e.target?.id==='leaveBoard'){closeModal();showScreen('home')}if(e.target?.id==='stayBoard')closeModal();});
-$('#hintBtn').onclick=useHint;
+$('#hintBtn').onclick=openHintModal;
+$('#lifeBtn').onclick=openLifeModal;
 $('#skipBtn').onclick=()=>{
   if(game?.daily){toast('Daily boards cannot be skipped');return;}
   const token=state.skipTokens||0;
-  openModal(`<h2>Skip this level?</h2><p>${token?`You have ${token} skip token${token===1?'':'s'}.`:`Skipping costs <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.SKIP_COST}.`}</p><div class="sheet-actions"><button class="primary" id="confirmSkip">Skip level</button><button class="ghost" id="cancelSkip">Cancel</button></div>`);
-  $('#confirmSkip').onclick=()=>{if(game?.daily){closeModal();return;}if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
+  openModal(`<h2>Skip this level?</h2><p>${token?`You have ${token} skip token${token===1?'':'s'}.`:`Skipping costs <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.SKIP_COST}.`}</p><div class="sheet-actions"><button class="primary" id="confirmSkip">${token?'Use skip token':`Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.SKIP_COST}`}</button><button class="ghost" id="cancelSkip">Cancel</button></div>`);
+  $('#confirmSkip').onclick=()=>{if(game?.daily){closeModal();return;}if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();updateToolQuantities();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
 };
 $('#nextBtn').onclick=()=>{if(game.daily)return showScreen('home');startLevel(state.currentLevel)};
 $$('[data-setting]').forEach(b=>b.onclick=()=>{const k=b.dataset.setting;state[k]=!state[k];saveState();syncSettings();if(k==='dark'){if(game&&$('#game').classList.contains('active'))applyBoardArrowColours();toast(state.dark?'Dark mode on':'Dark mode off')}});
@@ -3995,7 +4064,7 @@ window.ArrowflowDebug={
 };
 
 function bootArrowflow(){
-  updateWallets();updateHintUI();syncSettings();renderLevels();renderShop();
+  updateWallets();updateToolQuantities();syncSettings();renderLevels();renderShop();
   // Start the current + next two campaign boards off-thread immediately.
   beginWarmWindow(state.currentLevel);
   // The splash is a short branded transition, not a forced wait for generation.
