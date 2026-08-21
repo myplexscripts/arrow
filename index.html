@@ -1478,7 +1478,10 @@ body.dark {
     // Recognisable silhouettes should be drawn by the arrows themselves.
     // Keep negative-space shapes hollow where the mask is hollow, but densely
     // occupy the mask so a cross reads as a cross, a heart as a heart, etc.
-    if (pattern === 'rectangle' || pattern === 'square') return Math.max(config.density, 0.975);
+    // Rectangle/square have no negative space at all, and the generator can
+    // now reliably close every remaining cell (see stitchRemainingGaps), so
+    // these should read as a single solid block with zero visible gaps.
+    if (pattern === 'rectangle' || pattern === 'square') return 0.995;
     if (pattern === 'cross') return Math.max(config.density, 0.99);
     if (['crescent','key','question','lightning'].includes(pattern)) return Math.max(config.density, 0.955);
     return Math.max(config.density, 0.975);
@@ -1486,12 +1489,14 @@ body.dark {
 
   function patternCoverageFloor(pattern, config) {
     const target = patternCoverageTarget(pattern, config);
+    if (pattern === 'rectangle' || pattern === 'square') return 0.985;
     return Math.max(config.density, target - 0.015);
   }
 
   function patternBandFillFloor(pattern) {
     if (pattern === 'cross') return 0.94;
-    if (['rectangle','square','diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.90;
+    if (pattern === 'rectangle' || pattern === 'square') return 0.97;
+    if (['diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.90;
     return 0.84;
   }
 
@@ -1608,7 +1613,30 @@ body.dark {
   }
 
   function legalArrows(arrows, board) {
-    return arrows.filter(a => canEscape(a, arrows, board));
+    // legalArrows used to call canEscape() per arrow, and canEscape rebuilds
+    // a full occupancy map from scratch every time (buildOccupancy iterates
+    // every cell of every arrow) - so a single legalArrows call cost
+    // O(arrows * totalCells). This function is the hottest path in level
+    // generation (called thousands of times per board, often many times
+    // over the exact same `arrows` array during a single placeArrow
+    // attempt loop), so that quadratic-ish cost dominated generation time
+    // on anything but small boards. Building the occupancy map once and
+    // reusing it for every arrow's ray check drops this to
+    // O(totalCells + arrows * avgRayLength), which is the same computation,
+    // just without the redundant rebuilding - the accept/reject result for
+    // every arrow is identical to the canEscape-based version.
+    const occ = new Map();
+    for (const a of arrows) for (const c of a.cells) occ.set(key(c.x, c.y), a.id);
+    return arrows.filter(a => {
+      if (!a || !Array.isArray(a.cells) || a.cells.length < 2) return false;
+      const dir = DIRS[a.direction];
+      if (!dir) return false;
+      if (directionFromCells(a.cells) !== a.direction) return false;
+      for (const c of escapeRayCells(a, board)) {
+        if (occ.has(key(c.x, c.y))) return false; // blocked by self or another arrow
+      }
+      return true;
+    });
   }
 
   function dependencyGraph(arrows, board) {
@@ -1972,11 +2000,25 @@ body.dark {
       const strictEnough = desiredBlocks > 0 && c.blocksLegal.length >= Math.min(desiredBlocks, 2);
       if (strictEnough && (!bestStrict || c.score > bestStrict.score)) bestStrict = c;
       if (constraints.requireSuccessor) {
-        const successorOptions = getSuccessorGateOptions(c.arrow, board, arrows);
-        if (successorOptions.length) {
-          c.successorOptions = successorOptions;
-          if (!bestChain || c.score > bestChain.score) bestChain = c;
-          if (strictEnough && (!bestStrictChain || c.score > bestStrictChain.score)) bestStrictChain = c;
+        // getSuccessorGateOptions does a full-board headOptions() scan
+        // (O(maskCells * boardDim)). Running it for every accepted
+        // candidate in this loop - most of which can't possibly become
+        // bestChain/bestStrictChain because their score already trails -
+        // was the dominant cost of level generation on anything but small
+        // boards. A candidate can only ever change bestChain/bestStrictChain
+        // by beating their *current* score, so skip the expensive check
+        // whenever that's already impossible; this changes nothing about
+        // which candidate ultimately gets chosen, only how much work it
+        // takes to find out.
+        const couldImproveChain = !bestChain || c.score > bestChain.score;
+        const couldImproveStrictChain = strictEnough && (!bestStrictChain || c.score > bestStrictChain.score);
+        if (couldImproveChain || couldImproveStrictChain) {
+          const successorOptions = getSuccessorGateOptions(c.arrow, board, arrows);
+          if (successorOptions.length) {
+            c.successorOptions = successorOptions;
+            if (!bestChain || c.score > bestChain.score) bestChain = c;
+            if (strictEnough && (!bestStrictChain || c.score > bestStrictChain.score)) bestStrictChain = c;
+          }
         }
       }
     }
@@ -1996,6 +2038,33 @@ body.dark {
 
     // Escape rays are stable because tail growth never changes heads/directions.
     const raysById = new Map(arrows.map(a => [a.id, new Set(escapeRayCells(a,board).map(c=>key(c.x,c.y)))]));
+
+    // Precompute, once, what each arrow must avoid (its own ray plus the
+    // rays of every higher-id arrow) as a suffix union over descending id,
+    // and a reverse index of which arrow ids' rays pass through each cell.
+    // The inner growth loop used to rebuild both of these from scratch for
+    // every arrow on every pass (O(arrows^2) per pass) - on a 30-40 arrow
+    // hard-tier board with ~200 passes that is millions of Set operations
+    // for no reason, since none of this depends on tail growth at all.
+    const forbiddenById = new Map();
+    const rayOwnersByCell = new Map();
+    {
+      const sortedDesc = arrows.slice().sort((a,b)=>b.id-a.id);
+      let unionSoFar = new Set();
+      for (const a of sortedDesc) {
+        const forbidden = new Set(unionSoFar);
+        for (const c of raysById.get(a.id)) forbidden.add(c);
+        forbiddenById.set(a.id, forbidden);
+        for (const c of raysById.get(a.id)) unionSoFar.add(c);
+      }
+      for (const a of arrows) {
+        for (const c of raysById.get(a.id)) {
+          if (!rayOwnersByCell.has(c)) rayOwnersByCell.set(c, []);
+          rayOwnersByCell.get(c).push(a.id);
+        }
+      }
+    }
+
     const growthCaps = new Map();
     for (const a of arrows) {
       let cap;
@@ -2019,12 +2088,7 @@ body.dark {
         if (arrow.cells.length >= growthCaps.get(arrow.id)) continue;
         if (bendCount(arrow.cells) >= denseBendCap) continue;
 
-        const forbidden = new Set(raysById.get(arrow.id));
-        for (const other of arrows) {
-          if (other.id > arrow.id) {
-            for (const k of raysById.get(other.id)) forbidden.add(k);
-          }
-        }
+        const forbidden = forbiddenById.get(arrow.id);
 
         const tail = arrow.cells[0];
         const second = arrow.cells[1];
@@ -2040,18 +2104,24 @@ body.dark {
           score += countOccupiedNeighbours(n,occupied) * 2.2;
           // Blocking arrows with lower ids is safe and adds useful dependencies.
           let safeBlocks=0;
-          for (const other of arrows) if (other.id < arrow.id && raysById.get(other.id).has(nk)) safeBlocks++;
+          for (const oid of rayOwnersByCell.get(nk) || []) if (oid < arrow.id) safeBlocks++;
           score += safeBlocks * 2.2;
           if (isTurn) score += bendCount(arrow.cells) < config.targetBends[0] ? 1.4 : 0.25;
           else score += 0.85;
 
-          // Avoid sealing isolated one-cell holes where possible.
+          // Warnsdorff-style bias: a growing tail should consume the most
+          // cramped cells (fewest onward free neighbours) first, exactly like
+          // the classic knight's-tour heuristic for filling a grid without
+          // stranding cells. Cells with 0 onward neighbours are dead ends -
+          // they must be visited now or never, so reward them, not penalise
+          // them (the old code did the opposite and is why corners/pockets
+          // were left as permanent gaps).
           let freeN=0;
           for (const nd of DIR_LIST) {
             const qk=key(n.x+nd.x,n.y+nd.y);
             if (board.mask.cells.has(qk) && !occupied.has(qk)) freeN++;
           }
-          if (freeN===0) score -= 2;
+          score += (4 - freeN) * 1.6;
           choices.push({n,score:Math.max(0.05,score)});
         }
         if (!choices.length) continue;
@@ -2063,6 +2133,112 @@ body.dark {
       }
     }
     return occupiedCount;
+  }
+
+  // ---------- gap stitching (post-pass) ----------
+
+  /**
+   * Batch-peel clearability check, O(arrows * avgRayLength) per pass instead
+   * of rebuilding a full occupancy map per arrow (what canEscape/legalArrows
+   * do, correctly but redundantly, for one-off use). `occMap` is cell key ->
+   * owning arrow id for every currently-occupied cell; `raysById` is each
+   * arrow's escape-ray cells, which never change here since only tails
+   * (never heads/directions) are ever edited. Removing every currently-legal
+   * arrow each round instead of one at a time is safe: two simultaneously
+   * legal arrows cannot sit on each other's ray by definition, so clearing
+   * both together (in either relative order) is always valid.
+   */
+  function batchClear(ids, occMap, raysById) {
+    let remaining = new Set(ids);
+    const order = [];
+    while (remaining.size) {
+      const toRemove = [];
+      for (const id of remaining) {
+        let clear = true;
+        for (const rk of raysById.get(id)) {
+          const owner = occMap.get(rk);
+          if (owner == null) continue;
+          if (owner === id) { clear = false; break; }         // self-block
+          if (remaining.has(owner)) { clear = false; break; }  // still-present blocker
+        }
+        if (clear) toRemove.push(id);
+      }
+      if (!toRemove.length) return null;
+      for (const id of toRemove) { remaining.delete(id); order.push(id); }
+    }
+    return order;
+  }
+
+  /**
+   * Deterministically closes remaining mask gaps by extending arrow tails
+   * one cell at a time, accepting an extension whenever the resulting board
+   * is still fully clearable. This is strictly more permissive than the
+   * construction-time ray heuristic used during initial growth (that rule -
+   * "never touch the ray of a later-inserted arrow" - is sufficient but not
+   * necessary for solvability), so it recovers pockets that are
+   * geometrically reachable but were rejected purely by that conservative
+   * shortcut. Mutates `arrows` in place; only ever prepends a tail cell, so
+   * arrow count, difficulty pacing and every existing dependency edge are
+   * left untouched - only empty cells get consumed.
+   */
+  function stitchRemainingGaps(board, arrows, config, rng) {
+    const raysById = new Map(arrows.map(a => [a.id, escapeRayCells(a, board).map(c => key(c.x, c.y))]));
+    const occMap = new Map();
+    for (const a of arrows) for (const c of a.cells) occMap.set(key(c.x, c.y), a.id);
+    const allIds = arrows.map(a => a.id);
+
+    let progress = true;
+    let rounds = 0;
+    const maxRounds = 8;
+    while (progress && rounds++ < maxRounds) {
+      progress = false;
+      const gaps = [];
+      for (const k of board.mask.cells) if (!occMap.has(k)) gaps.push(k);
+      if (!gaps.length) break;
+
+      const freeNeighbourCount = (k) => {
+        const [x, y] = k.split(',').map(Number);
+        let n = 0;
+        for (const d of DIR_LIST) {
+          const nk = key(x + d.x, y + d.y);
+          if (board.mask.cells.has(nk) && !occMap.has(nk)) n++;
+        }
+        return n;
+      };
+      // Most-stranded cells first (Warnsdorff again): a cell with 0-1 free
+      // neighbours only gets harder to reach as its neighbours fill in.
+      const ordered = rng.shuffle(gaps).sort((a, b) => freeNeighbourCount(a) - freeNeighbourCount(b));
+
+      for (const gk of ordered) {
+        if (occMap.has(gk)) continue;
+        const [gx, gy] = gk.split(',').map(Number);
+
+        const adjacentTailArrows = arrows.filter(a => {
+          const tail = a.cells[0];
+          return Math.abs(tail.x - gx) + Math.abs(tail.y - gy) === 1;
+        });
+        if (!adjacentTailArrows.length) continue;
+
+        for (const arrow of rng.shuffle(adjacentTailArrows)) {
+          occMap.set(gk, arrow.id);
+          const order = batchClear(allIds, occMap, raysById);
+          if (order) {
+            arrow.cells = [{ x: gx, y: gy }, ...arrow.cells];
+            progress = true;
+            break;
+          }
+          occMap.delete(gk);
+        }
+      }
+    }
+  }
+
+  /** Real solution order for a level, using the exact gameplay canEscape rule. */
+  function computeBatchSolution(arrows, board) {
+    const raysById = new Map(arrows.map(a => [a.id, escapeRayCells(a, board).map(c => key(c.x, c.y))]));
+    const occMap = new Map();
+    for (const a of arrows) for (const c of a.cells) occMap.set(key(c.x, c.y), a.id);
+    return batchClear(arrows.map(a => a.id), occMap, raysById);
   }
 
   function buildCandidate(levelNumber, seed, options = {}) {
@@ -2197,16 +2373,35 @@ body.dark {
       // If the chain physically runs out of room, only start another source when
       // doing so stays inside the intended starting-move budget. Otherwise stop
       // adding arrows and let the safe tail-growth pass do the remaining packing.
+      // NOTE: legalNow >= plan.targetInitialLegal used to short-circuit these
+      // fallbacks with an unconditional `break`, which aborted ALL remaining
+      // density filling the instant the dependency-constrained attempt failed
+      // once - even though a free (non-blocking) placement had never been
+      // tried. That is the main reason boards shipped with large untouched
+      // empty blocks: legal-count is a soft pacing preference, coverage is
+      // the hard requirement, so a free placement must always be attempted
+      // before giving up on a region.
       if (!filler && forcedChain) {
         fillForcedOptions = null;
-        if (legalNow >= plan.targetInitialLegal) break;
         filler = placeArrow(board, arrows, config, rng, 0, Math.max(config.minLen, Math.min(targetLength,10)), 96,
           { requireBlockableHead:false, requireDependency:false, requireSuccessor:wantsSuccessor });
       }
       if (!filler && !forcedChain && desiredBlocks > 0) {
-        if (legalNow >= plan.targetInitialLegal) break;
         filler = placeArrow(board, arrows, config, rng, 0, Math.max(config.minLen, Math.min(targetLength,10)), 96,
           { requireBlockableHead:false, requireDependency:false, requireSuccessor:wantsSuccessor });
+      }
+      // Last-ditch exhaustive attempt: random sampling (even 96 attempts) can
+      // still miss a small remaining pocket by bad luck on a large board.
+      // Deterministically try every legal head option once before giving up.
+      if (!filler) {
+        const allOptions = headOptions(board, arrows);
+        let bestExhaustive = null;
+        for (const option of allOptions) {
+          const len = clamp(Math.min(targetLength, 10), config.minLen, config.maxLen);
+          const c = generatePathCandidate(board, arrows, option, config, rng, len, 0);
+          if (c && (!bestExhaustive || c.score > bestExhaustive.score)) bestExhaustive = c;
+        }
+        if (bestExhaustive) filler = bestExhaustive;
       }
       if (!filler) break;
       filler.arrow.id = arrows.length + 1;
@@ -2247,8 +2442,25 @@ body.dark {
     // preserving legality at each construction turn.
     orientArrowsForDependencies(board, arrows);
 
-    // Guaranteed solution is reverse insertion order.
-    const solution = arrows.slice().reverse().map(a => a.id);
+    // Final gap-stitch pass. Tail growth and filler insertion are both
+    // deliberately conservative (they only ever touch rays of arrows
+    // constructed *later*, which is a sufficient but not necessary condition
+    // for solvability). That leaves some pockets - usually small, sometimes
+    // large - that are geometrically reachable but rejected purely because
+    // of that conservative rule. Here we test the *actual* condition that
+    // matters (is the resulting board still fully clearable?) using the same
+    // canEscape logic gameplay uses, and keep any tail extension that passes.
+    // This is strictly more permissive than the construction-order rule, so
+    // it never contradicts it - it just recovers cells the safe rule left on
+    // the table.
+    stitchRemainingGaps(board, arrows, config, rng);
+
+    // Recompute a guaranteed solution against the final board. Stitching can
+    // make the plain reverse-insertion-order solution invalid (a stitched
+    // arrow may not be legal at the exact moment reverse order would remove
+    // it, even though a valid order still exists), so derive the order from
+    // the same clearability check instead of assuming it.
+    const solution = computeBatchSolution(arrows, board) || arrows.slice().reverse().map(a => a.id);
     const level = {
       seed: String(seed),
       levelNumber,
@@ -2536,13 +2748,33 @@ body.dark {
     if (!best) {
       // Structural fallback. This is still reverse-constructed, not random + hope.
       // Increase placement attempts and use rectangle because it has maximal routing room.
-      for (let i=0; i<8 && !best; i++) {
+      // Same coverage/band floor applies here - this used to accept the first
+      // *valid* candidate regardless of density, which is how sparse boards
+      // like the one that motivated this fix (rectangle stuck at ~94%
+      // coverage) were slipping through even though better candidates were
+      // only a few more attempts away. Time-boxed rather than a flat attempt
+      // count: this path can also be entered for *other* patterns whose own
+      // floor was hard to hit, and on large boards each attempt is expensive
+      // - a fixed "try 8 full builds" cap turned into 10-15s worst cases on
+      // 50+ cell boards. Bounding by wall-clock keeps latency predictable
+      // regardless of board size; we still always keep the best candidate
+      // found even if the floor is never cleared in the budget.
+      const fallbackDeadline = Date.now() + (options.fallbackBudgetMs ?? 2500);
+      let bestFallbackValid = null;
+      for (let i=0; i<8 && Date.now() < fallbackDeadline; i++) {
         const c = buildCandidate(levelNumber, `${baseSeed}:fallback:${i}`, {
           ...options, pattern:'rectangle', placementAttempts:70
         });
         const validation = validateLevel(c, {checkAlternateStrategies:false});
-        if (validation.valid) best = c;
+        if (!validation.valid) continue;
+        if (!bestFallbackValid || c.generationScore > bestFallbackValid.generationScore) bestFallbackValid = c;
+        const fillFloor = patternCoverageFloor(c.pattern, cfg);
+        const coverage = maskCoverage(c);
+        const fullness = shapeFullnessMetrics(c);
+        const bandFloor = patternBandFillFloor(c.pattern);
+        if (coverage >= fillFloor && fullness.minBand >= bandFloor) { best = c; break; }
       }
+      if (!best) best = bestFallbackValid;
     }
 
     if (!best && bestValid) best = bestValid;
