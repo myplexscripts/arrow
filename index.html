@@ -16,13 +16,21 @@
   --surface:#fffdf8;
   --surface-2:#ebe7dd;
   --ink:#172033;
-  --muted:#7f8796;
+  --muted:#626b78;
   --line:#d9d5cb;
-  --accent:#ff6d5a;
-  --accent-2:#4ea7a1;
-  --accent-3:#f0b54a;
-  --danger:#e94b5f;
-  --good:#4b9c76;
+  --accent:#c84439;
+  --accent-2:#287f79;
+  --accent-3:#a86600;
+  --danger:#c9364c;
+  --good:#267456;
+  --focus:#275fd6;
+  --hint:#2f6fdf;
+  --failed:#d83d55;
+  --arrow-0:#0f95e8;
+  --arrow-1:#c447d8;
+  --arrow-2:#1fae41;
+  --arrow-3:#6b63ea;
+  --arrow-4:#d6aa00;
   --shadow:0 18px 50px rgba(36,31,24,.12);
   --radius-xl:30px;
   --radius-lg:22px;
@@ -33,7 +41,7 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;background:#ded9cf;color:var(--ink);font-family:Manrope,system-ui,sans-serif}
 button,input,textarea{font:inherit;color:inherit}
 button{border:0;background:none;cursor:pointer}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 65%,white);outline-offset:3px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .app{position:relative;width:100%;max-width:480px;height:100dvh;height:100svh;margin:0 auto;overflow:hidden;background:
   radial-gradient(circle at 18% 4%,rgba(255,109,90,.08),transparent 27%),
   radial-gradient(circle at 90% 92%,rgba(78,167,161,.07),transparent 28%),var(--bg);box-shadow:0 0 42px rgba(28,24,18,.14)}
@@ -67,24 +75,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 /* home */
 #home{padding-left:22px;padding-right:22px}
 .home-head{display:flex;align-items:center;justify-content:space-between;padding-top:6px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.05rem}
-.brand-mark{width:46px;height:46px;border-radius:15px;background:var(--ink);color:white;display:grid;place-items:center}
-.brand-mark svg{width:34px;height:34px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem}
+.brand-mark{width:42px;height:42px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.brand-mark svg{width:30px;height:30px}
 .wallet{display:flex;gap:8px}
-.home-hero{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;padding:16px 0 10px}
-.hero-art{position:relative;min-height:250px;max-height:330px;height:34vh;margin:10px 0 20px;border-radius:34px;background:var(--surface);border:1px solid rgba(23,32,51,.08);overflow:hidden;box-shadow:var(--shadow)}
-.hero-art:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(23,32,51,.09) 1.25px,transparent 1.25px);background-size:18px 18px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.2),#000)}
-.hero-arrow{position:absolute;inset:8%;filter:drop-shadow(0 7px 12px rgba(23,32,51,.06))}
-.hero-arrow path,.hero-arrow polyline{stroke:var(--ink);stroke-width:5.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.hero-arrow .accent{stroke:var(--accent)}
-.hero-copy{position:absolute;left:24px;bottom:22px;right:24px;display:flex;align-items:end;justify-content:space-between;gap:12px}
-.hero-copy strong{font-size:1.55rem;letter-spacing:-.05em;line-height:1}
-.hero-copy span{font-size:.78rem;color:var(--muted);font-weight:700}
-.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-hero{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:20px 0}
+.home-center{width:100%;max-width:390px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.home-emblem{width:92px;height:92px;border-radius:28px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:24px;box-shadow:0 12px 34px rgba(36,31,24,.07)}
+.home-emblem svg{width:62px;height:62px}.home-emblem path,.home-emblem polyline{fill:none;stroke:var(--arrow-0);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.home-emblem .accent{stroke:var(--arrow-1)}
+.home-level{display:inline-flex;align-items:center;min-height:32px;padding:0 11px;border-radius:999px;background:var(--surface-2);font-size:.76rem;font-weight:800;color:var(--muted);margin-bottom:12px}
+.home-center .title{margin:0 0 10px;font-size:clamp(2rem,9vw,2.85rem)}
+.home-center .subtitle{max-width:320px}
+.home-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
 .home-actions .primary{grid-column:1/-1}
-.home-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:14px}
-.nav-mini{min-height:62px;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(23,32,51,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:.72rem;font-weight:800;color:var(--muted)}
-.nav-mini i{font-size:1.3rem;color:var(--ink)}
+.home-nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.nav-mini{min-height:54px;border-radius:17px;background:transparent;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;font-size:.82rem;font-weight:800;color:var(--muted)}
+.nav-mini i{font-size:1.15rem;color:var(--ink)}
 
 /* levels */
 .level-summary{display:flex;justify-content:space-between;align-items:center;margin:12px 0 16px;padding:18px}
@@ -108,17 +114,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .board-svg{display:block;overflow:visible;touch-action:none}
 .arrow-piece{cursor:pointer;transform-box:fill-box;transform-origin:center;pointer-events:auto}
 .arrow-piece .arrow-body,.arrow-piece .arrow-head{vector-effect:non-scaling-stroke;transition:stroke .16s ease,fill .16s ease,filter .16s ease,opacity .16s ease}
-.arrow-piece .arrow-body{stroke:var(--ink);fill:none;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
-.arrow-piece .arrow-head{fill:none;stroke:var(--ink);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:3}
+.arrow-piece .arrow-body{stroke:var(--arrow-color,var(--ink));fill:none;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+.arrow-piece .arrow-head{fill:none;stroke:var(--arrow-color,var(--ink));stroke-width:4.2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:3}
 .arrow-piece .arrow-hit{stroke:transparent;fill:none;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;pointer-events:stroke}
-.arrow-piece.legalHint .arrow-body{stroke:#4a90ff;fill:none}
-.arrow-piece.legalHint .arrow-head{fill:none;stroke:#4a90ff}
-.arrow-piece.legalHint{filter:drop-shadow(0 0 7px rgba(74,144,255,.26));animation:hintPulse 1s ease-in-out infinite}
-.arrow-piece.clearing{pointer-events:none;filter:drop-shadow(0 0 9px rgba(74,144,255,.32))}
-.arrow-piece.clearing .arrow-body{stroke:#4d9df8;fill:none}
-.arrow-piece.clearing .arrow-head{fill:none;stroke:#4d9df8}
-.arrow-piece.failed .arrow-body{stroke:#f25564;fill:none}
-.arrow-piece.failed .arrow-head{fill:none;stroke:#f25564}
+.arrow-piece.legalHint .arrow-body{stroke:var(--hint);fill:none}
+.arrow-piece.legalHint .arrow-head{fill:none;stroke:var(--hint)}
+.arrow-piece.legalHint{filter:drop-shadow(0 0 7px color-mix(in srgb,var(--hint) 32%,transparent));animation:hintPulse 1s ease-in-out infinite}
+.arrow-piece.clearing{pointer-events:none;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--arrow-color,var(--ink)) 30%,transparent))}
+.arrow-piece.failed .arrow-body{stroke:var(--failed);fill:none}
+.arrow-piece.failed .arrow-head{fill:none;stroke:var(--failed)}
 .arrow-piece.cleared{visibility:hidden;pointer-events:none}
 @keyframes hintPulse{50%{opacity:.78;transform:scale(1.01)}}
 .game-tools{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:9px;padding:7px 0 1px}
@@ -141,16 +145,55 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .win-card h1{font-size:2.1rem;letter-spacing:-.055em;margin:0}.win-stars{font-size:2rem;color:var(--accent-3);letter-spacing:5px;margin:10px 0}.win-reward{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.reward-pill{background:var(--surface-2);border-radius:16px;padding:10px 14px;font-weight:800}.win-actions{display:grid;gap:10px}.confetti{position:absolute;width:8px;height:16px;border-radius:4px;top:-20px;animation:confetti 1.5s ease-out forwards}@keyframes confetti{to{transform:translate(var(--x),680px) rotate(640deg);opacity:.1}}
 
 /* shop, settings, info */
-.section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:.96rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:.78rem}.buy{height:42px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:.8rem}.ad-card{padding:19px;background:linear-gradient(135deg,var(--ink),#2d3c57);color:#fff}.ad-card p{color:#c3cbd8}.ad-label{font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;color:#aeb7c7;font-weight:800}
+.section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:.96rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:.78rem}.buy{height:42px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:.8rem}
 .setting-list{display:grid;gap:10px;padding:10px 0}.setting-row{display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:13px;padding:15px}.setting-row i{width:46px;height:46px;border-radius:15px;background:var(--surface-2);display:grid;place-items:center;font-size:1.2rem}.setting-row h3{margin:0;font-size:.92rem}.setting-row p{margin:2px 0 0;color:var(--muted);font-size:.75rem}.switch{width:50px;height:30px;border-radius:999px;background:#d5d2ca;padding:4px;transition:.2s}.switch:before{content:"";display:block;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.12);transition:.2s}.switch.on{background:var(--accent-2)}.switch.on:before{transform:translateX(20px)}
 .info-card{padding:20px;margin-top:12px}.info-card h2{letter-spacing:-.04em}.info-card p{color:var(--muted);line-height:1.6;font-size:.9rem}.field{display:grid;gap:7px;margin-top:12px}.field label{font-size:.78rem;font-weight:800}.field input,.field textarea{width:100%;border:1px solid rgba(23,32,51,.12);background:var(--surface);border-radius:16px;padding:14px;min-height:50px}.field textarea{min-height:120px;resize:none}
 
 /* dark mode */
-body.dark{--bg:#0d1119;--surface:#151b27;--surface-2:#202736;--ink:#f3f4f7;--muted:#9ba4b5;--line:#303746;--shadow:0 18px 50px rgba(0,0,0,.28)}
-body.dark .app{background:radial-gradient(circle at 18% 4%,rgba(255,109,90,.08),transparent 27%),radial-gradient(circle at 90% 92%,rgba(78,167,161,.07),transparent 28%),var(--bg)}
-body.dark .icon-btn,body.dark .chip,body.dark .nav-mini{background:rgba(255,255,255,.04)}
-body.dark .hero-art,body.dark .board-viewport{background:rgba(255,255,255,.025)}
-body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
+body.dark{
+  --bg:#0a0c10;
+  --surface:#12161d;
+  --surface-2:#1b222c;
+  --ink:#f7f8fa;
+  --muted:#b3bdcb;
+  --line:#586677;
+  --accent:#ff8778;
+  --accent-2:#75d0c8;
+  --accent-3:#f5c568;
+  --danger:#ff788b;
+  --good:#72d6a5;
+  --focus:#9bbcff;
+  --hint:#9bbcff;
+  --failed:#ff7c8f;
+  --arrow-0:#2fd4ff;
+  --arrow-1:#ff7de3;
+  --arrow-2:#49ea5f;
+  --arrow-3:#8c86ff;
+  --arrow-4:#ffe34f;
+  --shadow:0 18px 50px rgba(0,0,0,.42);
+  background:#050609;
+}
+body.dark .app{background:radial-gradient(circle at 18% 4%,rgba(127,167,255,.055),transparent 27%),radial-gradient(circle at 90% 92%,rgba(100,213,197,.05),transparent 28%),var(--bg);box-shadow:0 0 42px rgba(0,0,0,.55)}
+body.dark .card{background:var(--surface);border-color:var(--line);box-shadow:0 12px 36px rgba(0,0,0,.28)}
+body.dark .icon-btn,body.dark .chip{background:var(--surface);border-color:var(--line)}
+body.dark .ghost,body.dark .nav-mini{background:transparent;border-color:var(--line)}
+body.dark .primary,body.dark .buy,body.dark .level-cell.current,body.dark .brand-mark,body.dark .win-icon{background:#f7f8fa;color:#0a0c10}
+body.dark .secondary{background:#ff8778;color:#1a0907;box-shadow:0 8px 0 rgba(0,0,0,.24)}
+body.dark .home-emblem,body.dark .hero-art,body.dark .board-viewport{background:var(--surface);border-color:var(--line)}
+body.dark .board-viewport{background:#0e1218}
+body.dark .level-cell{background:var(--surface);border-color:var(--line);box-shadow:0 5px 16px rgba(0,0,0,.22)}
+body.dark .level-cell.locked{opacity:.55}
+body.dark .tool{background:var(--surface);border-color:var(--line);box-shadow:0 9px 26px rgba(0,0,0,.24)}
+body.dark .sheet,body.dark .tutorial-card{background:var(--surface);border:1px solid var(--line)}
+body.dark .modal-layer{background:rgba(0,0,0,.68)}
+body.dark .tutorial{background:rgba(0,0,0,.72)}
+body.dark .toast{background:#f7f8fa;color:#0a0c10}
+body.dark .reward-pill,body.dark .shop-icon,body.dark .setting-row i,body.dark .home-level{background:var(--surface-2)}
+body.dark .switch{background:#4a5565}body.dark .switch.on{background:#75d0c8}body.dark .switch:before{background:#fff}
+body.dark .field input,body.dark .field textarea{background:var(--surface);border-color:var(--line)}
+body.dark .heart.lost{color:#596575}
+body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.34))}
+body.dark #splash{background:#050609}
 
 @media (min-width:520px){
   body{display:grid;place-items:center}
@@ -159,7 +202,7 @@ body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
 @media (max-width:519px){
   .app{max-width:none;box-shadow:none}
 }
-@media (max-height:720px){.hero-art{min-height:210px}.home-nav{padding-top:8px}.nav-mini{min-height:54px}.board-viewport{height:58dvh}.game-tools{padding-top:2px}.tool{height:52px}}
+@media (max-height:720px){.home-emblem{width:76px;height:76px;margin-bottom:16px}.home-emblem svg{width:52px;height:52px}.home-actions{margin-top:20px}.board-viewport{height:58dvh}.game-tools{padding-top:2px}.tool{height:52px}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 </style>
 </head>
@@ -181,27 +224,19 @@ body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
   <section class="screen active" id="home">
     <div class="home-head">
       <div class="brand"><div class="brand-mark">
-        <svg viewBox="0 0 40 40"><path d="M7 28h10V17h13" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m25 12 6 5-6 5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 28h10V17h13" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m25 12 6 5-6 5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>Arrowflow</div>
-      <div class="wallet"><button class="chip" data-nav="shop"><i class="ph ph-coin"></i><span data-coins>0</span></button></div>
+      <div class="wallet"><button class="chip" data-nav="shop" aria-label="Open shop"><i class="ph ph-coin"></i><span data-coins>0</span></button></div>
     </div>
     <div class="home-hero">
-      <div class="hero-art" aria-hidden="true">
-        <svg class="hero-arrow" viewBox="0 0 100 100">
-          <path d="M4 18h32v16h28v-18h28"/>
-          <polyline points="84,8 94,16 84,24"/>
-          <path d="M10 58h20v-18h18v34h20v-18h20"/>
-          <polyline class="accent" points="79,48 90,56 79,64"/>
-          <path d="M8 86h22v-10h20v10h42"/>
-          <polyline points="84,78 94,86 84,94"/>
-        </svg>
-        <div class="hero-copy"><div><strong>Find the<br>open line.</strong><br><span>Tap clear arrows. Unwind the board.</span></div><div class="kicker">No timer</div></div>
-      </div>
-      <div class="home-copy">
-        <div class="kicker">Daily logic puzzle</div>
-        <h1 class="title">Clear a path.<br>Keep the flow.</h1>
-        <p class="subtitle">A calm arrow puzzle where every tap opens new routes through the board.</p>
-        <div class="home-actions" style="margin-top:20px">
+      <div class="home-center">
+        <div class="home-emblem" aria-hidden="true">
+          <svg viewBox="0 0 72 72"><path d="M10 50h17V31h18V17h17"/><polyline points="54,10 64,17 54,24"/><path class="accent" d="M12 60h23V45h24"/><polyline class="accent" points="52,38 61,45 52,52"/></svg>
+        </div>
+        <div class="home-level">Level <span id="homeLevelNumber">1</span></div>
+        <h1 class="title">Unwind the maze.</h1>
+        <p class="subtitle">Find the open arrows and let the board unravel.</p>
+        <div class="home-actions">
           <button class="primary" id="continueBtn"><i class="ph-fill ph-play"></i><span>Continue</span></button>
           <button class="ghost" data-nav="levels"><i class="ph ph-squares-four"></i>Levels</button>
           <button class="ghost" id="dailyBtn"><i class="ph ph-calendar-dots"></i>Daily</button>
@@ -209,8 +244,6 @@ body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
         <div class="home-nav">
           <button class="nav-mini" data-nav="shop"><i class="ph ph-storefront"></i>Shop</button>
           <button class="nav-mini" data-nav="settings"><i class="ph ph-gear-six"></i>Settings</button>
-          <button class="nav-mini" data-nav="about"><i class="ph ph-info"></i>About</button>
-          <button class="nav-mini" id="shareBtn"><i class="ph ph-share-network"></i>Share</button>
         </div>
       </div>
     </div>
@@ -244,15 +277,14 @@ body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
 
   <section class="screen" id="win">
     <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-x"></i></button><h1>Level clear</h1><span></span></div>
-    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-coin"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><div class="win-actions"><button class="secondary" id="doubleBtn"><i class="ph ph-play-circle"></i>Demo ad: double coins</button><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
+    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-coin"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><div class="win-actions"><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
   </section>
 
   <section class="screen" id="shop">
     <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-caret-left"></i></button><h1>Shop</h1><span></span></div>
     <div class="scroll">
-      <div class="shop-balance card"><div><span class="kicker">Balance</span><br><strong><i class="ph ph-coin"></i> <span data-coins>0</span></strong></div><button class="chip" id="freeCoinsBtn"><i class="ph ph-play-circle"></i>Free coins</button></div>
+      <div class="shop-balance card"><div><span class="kicker">Balance</span><br><strong><i class="ph ph-coin"></i> <span data-coins>0</span></strong></div></div>
       <h2 class="section-title">Helpful stuff</h2><div class="shop-list" id="shopList"></div>
-      <h2 class="section-title">Demo monetisation</h2><div class="ad-card card"><div class="ad-label">Ad network placeholder</div><h2>Rewarded ad hook is ready.</h2><p>This demo grants rewards instantly. Replace the single <strong>showRewardedAd()</strong> function with your own ad SDK later.</p><button class="secondary" id="demoAdBtn"><i class="ph ph-play"></i>Test rewarded ad</button></div>
     </div>
   </section>
 
@@ -261,31 +293,1516 @@ body.dark .arrow-piece{filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
     <div class="scroll"><div class="setting-list">
       <div class="setting-row card"><i class="ph ph-speaker-high"></i><div><h3>Sound effects</h3><p>Soft taps, errors and rewards.</p></div><button class="switch" data-setting="sound" aria-label="Toggle sound"></button></div>
       <div class="setting-row card"><i class="ph ph-device-mobile-vibration"></i><div><h3>Haptics</h3><p>Light feedback on supported devices.</p></div><button class="switch" data-setting="haptics" aria-label="Toggle haptics"></button></div>
-      <div class="setting-row card"><i class="ph ph-moon-stars"></i><div><h3>Night ink</h3><p>A darker palette for late play.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
+      <div class="setting-row card"><i class="ph ph-moon-stars"></i><div><h3>Dark mode</h3><p>High-contrast colours for dark environments.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
       <div class="setting-row card"><i class="ph ph-arrows-out-cardinal"></i><div><h3>Board motion</h3><p>Allow pan and zoom on larger boards.</p></div><button class="switch" data-setting="boardMotion" aria-label="Toggle board motion"></button></div>
     </div><h2 class="section-title">Game</h2><div class="shop-list"><button class="setting-row card" id="resetTutorial"><i class="ph ph-graduation-cap"></i><div style="text-align:left"><h3>Replay tutorial</h3><p>Show the first play guide again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button><button class="setting-row card" id="resetProgress"><i class="ph ph-arrow-counter-clockwise"></i><div style="text-align:left"><h3>Reset progress</h3><p>Start from level 1 again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button></div></div>
   </section>
 
-  <section class="screen" id="about">
-    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-caret-left"></i></button><h1>About</h1><span></span></div>
-    <div class="scroll"><div class="info-card card"><div class="brand-mark" style="margin-bottom:18px"><i class="ph ph-arrow-up-right"></i></div><h2>Arrowflow</h2><p>Arrowflow is a compact logic game built around one rule: the maze itself is made from intertwined arrows. Each arrow is one continuous path, and its head can leave only when no other active arrow blocks the lane ahead. Pull the free arrows out to untangle the whole shape.</p><p>This HTML demo includes generated solvable levels, local progress, coins, hints, haptics, sound, pan and zoom, a shop, and a rewarded ad placeholder.</p><button class="ghost" data-nav="contact" style="width:100%;margin-top:8px">Contact</button><button class="ghost" data-nav="feedback" style="width:100%;margin-top:8px">Feedback</button></div></div>
-  </section>
-
-  <section class="screen" id="contact">
-    <div class="topbar"><button class="icon-btn" data-nav="about"><i class="ph ph-caret-left"></i></button><h1>Contact</h1><span></span></div>
-    <div class="scroll"><div class="info-card card"><h2>Say hello</h2><p>This is a demo form. Wire the submit handler to Formspree, Netlify Forms, your API, or an email service when you ship.</p><div class="field"><label>Name</label><input placeholder="Your name"></div><div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div><div class="field"><label>Message</label><textarea placeholder="What can we help with?"></textarea></div><button class="primary fakeSubmit" style="width:100%;margin-top:14px">Send message</button></div></div>
-  </section>
-
-  <section class="screen" id="feedback">
-    <div class="topbar"><button class="icon-btn" data-nav="about"><i class="ph ph-caret-left"></i></button><h1>Feedback</h1><span></span></div>
-    <div class="scroll"><div class="info-card card"><h2>How does it feel?</h2><p>Tell us where a level felt confusing, too easy, or especially satisfying.</p><div class="field"><label>Rating</label><div style="display:flex;gap:8px" id="ratingRow"><button class="icon-btn">1</button><button class="icon-btn">2</button><button class="icon-btn">3</button><button class="icon-btn">4</button><button class="icon-btn">5</button></div></div><div class="field"><label>Comments</label><textarea placeholder="Your feedback"></textarea></div><button class="primary fakeSubmit" style="width:100%;margin-top:14px">Send feedback</button></div></div>
-  </section>
 
   <div class="modal-layer" id="modalLayer"><div class="sheet" id="modalSheet"></div></div>
   <div class="tutorial" id="tutorial"><div class="tutorial-card" id="tutorialCard"></div></div>
   <div class="tutorial-focus" id="tutorialFocus"></div>
   <div class="toast" id="toast"></div>
 </div>
+
+<script>
+/*
+ * Arrow Maze Procedural Level Generator
+ * Pure data generator for HTML/CSS/JS mobile games.
+ *
+ * Core guarantee:
+ * Levels are constructed in reverse solution order. Every arrow is legal at the
+ * moment it is inserted. Later insertions may block earlier arrows, producing a
+ * DAG of dependencies. Reversing insertion order is therefore a valid solution.
+ *
+ * The same canEscape() function is used by generation, validation, solver logic,
+ * debug tooling, and should also be used by gameplay.
+ */
+(function (global) {
+  'use strict';
+
+  const DIRS = Object.freeze({
+    up:    Object.freeze({ x: 0, y: -1, name: 'up' }),
+    right: Object.freeze({ x: 1, y: 0, name: 'right' }),
+    down:  Object.freeze({ x: 0, y: 1, name: 'down' }),
+    left:  Object.freeze({ x: -1, y: 0, name: 'left' })
+  });
+  const DIR_LIST = [DIRS.up, DIRS.right, DIRS.down, DIRS.left];
+
+  const OPPOSITE = Object.freeze({ up: 'down', down: 'up', left: 'right', right: 'left' });
+
+  function key(x, y) { return `${x},${y}`; }
+  function cloneCell(c) { return { x: c.x, y: c.y }; }
+  function inside(x, y, width, height) { return x >= 0 && y >= 0 && x < width && y < height; }
+  function manhattan(a, b) { return Math.abs(a.x - b.x) + Math.abs(a.y - b.y); }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  // ---------- deterministic RNG ----------
+
+  function hashSeed(input) {
+    const str = String(input);
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    h += h << 13; h ^= h >>> 7;
+    h += h << 3;  h ^= h >>> 17;
+    h += h << 5;
+    return h >>> 0;
+  }
+
+  class RNG {
+    constructor(seed) { this.state = hashSeed(seed) || 0x9e3779b9; }
+    next() {
+      let t = this.state += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+    int(min, maxInclusive) {
+      return min + Math.floor(this.next() * (maxInclusive - min + 1));
+    }
+    chance(p) { return this.next() < p; }
+    pick(arr) { return arr.length ? arr[Math.floor(this.next() * arr.length)] : undefined; }
+    shuffle(arr) {
+      const out = arr.slice();
+      for (let i = out.length - 1; i > 0; i--) {
+        const j = Math.floor(this.next() * (i + 1));
+        [out[i], out[j]] = [out[j], out[i]];
+      }
+      return out;
+    }
+    weighted(items, weightFn) {
+      if (!items.length) return undefined;
+      let total = 0;
+      const weights = items.map(item => {
+        const w = Math.max(0, Number(weightFn(item)) || 0);
+        total += w;
+        return w;
+      });
+      if (total <= 0) return this.pick(items);
+      let r = this.next() * total;
+      for (let i = 0; i < items.length; i++) {
+        r -= weights[i];
+        if (r <= 0) return items[i];
+      }
+      return items[items.length - 1];
+    }
+  }
+
+  // ---------- mask helpers ----------
+
+  function makeMask(width, height, predicate) {
+    const cells = new Set();
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (predicate(x, y)) cells.add(key(x, y));
+      }
+    }
+    return { width, height, cells };
+  }
+
+  function normalizedXY(x, y, width, height) {
+    return {
+      x: width <= 1 ? 0 : (x / (width - 1)) * 2 - 1,
+      y: height <= 1 ? 0 : (y / (height - 1)) * 2 - 1
+    };
+  }
+
+  function pointInPolygon(px, py, pts) {
+    let insidePoly = false;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const xi = pts[i][0], yi = pts[i][1];
+      const xj = pts[j][0], yj = pts[j][1];
+      const intersect = ((yi > py) !== (yj > py)) &&
+        (px < (xj - xi) * (py - yi) / ((yj - yi) || 1e-9) + xi);
+      if (intersect) insidePoly = !insidePoly;
+    }
+    return insidePoly;
+  }
+
+  function largestConnectedComponent(mask) {
+    const unvisited = new Set(mask.cells);
+    let best = new Set();
+    while (unvisited.size) {
+      const start = unvisited.values().next().value;
+      const queue = [start];
+      unvisited.delete(start);
+      const comp = new Set([start]);
+      while (queue.length) {
+        const cur = queue.pop();
+        const [x, y] = cur.split(',').map(Number);
+        for (const d of DIR_LIST) {
+          const nk = key(x + d.x, y + d.y);
+          if (unvisited.has(nk)) {
+            unvisited.delete(nk);
+            comp.add(nk);
+            queue.push(nk);
+          }
+        }
+      }
+      if (comp.size > best.size) best = comp;
+    }
+    return { width: mask.width, height: mask.height, cells: best };
+  }
+
+  function removeTinySpurs(mask, passes = 1) {
+    let cells = new Set(mask.cells);
+    for (let p = 0; p < passes; p++) {
+      const remove = [];
+      for (const k of cells) {
+        const [x, y] = k.split(',').map(Number);
+        let n = 0;
+        for (const d of DIR_LIST) if (cells.has(key(x + d.x, y + d.y))) n++;
+        if (n === 0) remove.push(k);
+      }
+      for (const k of remove) cells.delete(k);
+    }
+    return largestConnectedComponent({ width: mask.width, height: mask.height, cells });
+  }
+
+  function bitmapMask(bitmap, width, height) {
+    const srcH = bitmap.length;
+    const srcW = bitmap[0].length;
+    return makeMask(width, height, (x, y) => {
+      const sx = clamp(Math.floor((x / width) * srcW), 0, srcW - 1);
+      const sy = clamp(Math.floor((y / height) * srcH), 0, srcH - 1);
+      return bitmap[sy][sx] === '1';
+    });
+  }
+
+  function createPatternMask(pattern, width, height, rng = new RNG(1)) {
+    const name = String(pattern || 'rectangle').toLowerCase();
+    let mask;
+
+    if (name === 'square' || name === 'rectangle') {
+      mask = makeMask(width, height, () => true);
+    } else if (name === 'diamond') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return Math.abs(p.x) + Math.abs(p.y) <= 1.04;
+      });
+    } else if (name === 'circle' || name === 'oval') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return p.x * p.x + p.y * p.y <= 1.02;
+      });
+    } else if (name === 'heart') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const xx = p.x * 1.05;
+        const yy = -p.y * 1.08 + 0.08;
+        const a = xx * xx + yy * yy - 0.72;
+        return a * a * a - xx * xx * yy * yy * yy <= 0;
+      });
+    } else if (name === 'triangle') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const half = (p.y + 1) * 0.52;
+        return p.y >= -0.95 && Math.abs(p.x) <= half;
+      });
+    } else if (name === 'hourglass') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const half = 0.18 + Math.abs(p.y) * 0.82;
+        return Math.abs(p.x) <= half;
+      });
+    } else if (name === 'shield') {
+      const pts = [[-0.82,-0.82],[0.82,-0.82],[0.76,0.20],[0,0.95],[-0.76,0.20]];
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return pointInPolygon(p.x, p.y, pts);
+      });
+    } else if (name === 'bottle') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const neck = p.y < -0.45 && Math.abs(p.x) < 0.28;
+        const shoulder = p.y >= -0.45 && p.y < -0.15 && Math.abs(p.x) < (0.28 + (p.y + 0.45) * 1.55);
+        const body = p.y >= -0.15 && p.y < 0.88 && Math.abs(p.x) < 0.72;
+        return neck || shoulder || body;
+      });
+    } else if (name === 'bell') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const dome = p.y < 0.45 && (p.x*p.x/0.68 + (p.y+0.05)*(p.y+0.05)/1.25 <= 1);
+        const rim = p.y >= 0.30 && p.y <= 0.60 && Math.abs(p.x) <= 0.86;
+        const clapper = p.y > 0.55 && p.y < 0.9 && Math.abs(p.x) < 0.22;
+        return dome || rim || clapper;
+      });
+    } else if (name === 'star') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const r = Math.hypot(p.x, p.y);
+        let a = Math.atan2(p.y, p.x) + Math.PI / 2;
+        const spikes = 5;
+        const wave = 0.64 + 0.29 * Math.cos(spikes * a);
+        return r <= wave;
+      });
+    } else if (name === 'crescent') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const outer = p.x*p.x + p.y*p.y <= 0.94;
+        const inner = (p.x - 0.34)*(p.x - 0.34) + (p.y + 0.02)*(p.y + 0.02) <= 0.78;
+        return outer && !inner;
+      });
+    } else if (name === 'cross') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return Math.abs(p.x) < 0.34 || Math.abs(p.y) < 0.34;
+      });
+    } else if (name === 'wave') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const center = 0.33 * Math.sin((p.x + 1) * Math.PI * 1.5);
+        return Math.abs(p.y - center) < 0.48;
+      });
+    } else if (name === 'lightning') {
+      const pts = [[-0.20,-0.98],[0.60,-0.98],[0.16,-0.15],[0.68,-0.15],[-0.45,0.98],[-0.10,0.18],[-0.62,0.18]];
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return pointInPolygon(p.x, p.y, pts);
+      });
+    } else if (name === 'cloud') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const e = p.x*p.x/0.96 + (p.y-0.26)*(p.y-0.26)/0.28 <= 1;
+        const c1 = (p.x+0.48)**2 + (p.y+0.08)**2 <= 0.32;
+        const c2 = (p.x)**2 + (p.y+0.30)**2 <= 0.38;
+        const c3 = (p.x-0.48)**2 + (p.y+0.02)**2 <= 0.30;
+        return e || c1 || c2 || c3;
+      });
+    } else if (name === 'flower') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const r = Math.hypot(p.x, p.y);
+        const a = Math.atan2(p.y, p.x);
+        return r <= 0.55 + 0.22 * Math.cos(6 * a);
+      });
+    } else if (name === 'butterfly') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const body = Math.abs(p.x) < 0.14 && Math.abs(p.y) < 0.82;
+        const leftTop = ((p.x+0.44)/0.50)**2 + ((p.y+0.33)/0.50)**2 <= 1;
+        const rightTop = ((p.x-0.44)/0.50)**2 + ((p.y+0.33)/0.50)**2 <= 1;
+        const leftBot = ((p.x+0.42)/0.42)**2 + ((p.y-0.40)/0.40)**2 <= 1;
+        const rightBot = ((p.x-0.42)/0.42)**2 + ((p.y-0.40)/0.40)**2 <= 1;
+        return body || leftTop || rightTop || leftBot || rightBot;
+      });
+    } else if (name === 'fish') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const body = ((p.x+0.18)/0.78)**2 + (p.y/0.62)**2 <= 1;
+        const tail = pointInPolygon(p.x, p.y, [[0.46,0],[0.98,-0.60],[0.98,0.60]]);
+        return body || tail;
+      });
+    } else if (name === 'cat') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const head = p.x*p.x/0.72 + (p.y-0.08)*(p.y-0.08)/0.74 <= 1;
+        const e1 = pointInPolygon(p.x,p.y,[[-0.72,-0.30],[-0.58,-0.96],[-0.12,-0.58]]);
+        const e2 = pointInPolygon(p.x,p.y,[[0.72,-0.30],[0.58,-0.96],[0.12,-0.58]]);
+        return head || e1 || e2;
+      });
+    } else if (name === 'house') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const body = Math.abs(p.x) <= 0.72 && p.y >= -0.05 && p.y <= 0.88;
+        const roof = pointInPolygon(p.x,p.y,[[-0.92,-0.04],[0,-0.92],[0.92,-0.04]]);
+        return body || roof;
+      });
+    } else if (name === 'tree') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const crown = pointInPolygon(p.x,p.y,[[0,-0.98],[-0.78,0.34],[0.78,0.34]]);
+        const trunk = Math.abs(p.x) < 0.22 && p.y >= 0.20 && p.y <= 0.92;
+        return crown || trunk;
+      });
+    } else if (name === 'crown') {
+      const pts = [[-0.92,0.66],[-0.82,-0.60],[-0.34,-0.08],[0,-0.76],[0.34,-0.08],[0.82,-0.60],[0.92,0.66]];
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        return pointInPolygon(p.x,p.y,pts);
+      });
+    } else if (name === 'key') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const ringOuter = (p.x+0.50)**2 + p.y*p.y <= 0.34;
+        const ringInner = (p.x+0.50)**2 + p.y*p.y < 0.12;
+        const shaft = p.x > -0.20 && p.x < 0.82 && Math.abs(p.y) < 0.18;
+        const tooth1 = p.x > 0.34 && p.x < 0.56 && p.y > 0.05 && p.y < 0.48;
+        const tooth2 = p.x > 0.62 && p.x < 0.84 && p.y > 0.05 && p.y < 0.35;
+        return (ringOuter && !ringInner) || shaft || tooth1 || tooth2;
+      });
+    } else if (name === 'question') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const ring = p.x*p.x/0.52 + (p.y+0.42)*(p.y+0.42)/0.38 <= 1;
+        const cut = ((p.x+0.12)/0.52)**2 + ((p.y+0.36)/0.42)**2 < 0.58;
+        const hook = p.x > 0.0 && p.x < 0.38 && p.y > -0.35 && p.y < 0.22;
+        const stem = Math.abs(p.x) < 0.20 && p.y > 0.02 && p.y < 0.48;
+        const dot = p.x*p.x + (p.y-0.78)*(p.y-0.78) <= 0.05;
+        return (ring && !cut) || hook || stem || dot;
+      });
+    } else if (name === 'letter_a') {
+      mask = bitmapMask([
+        '0011100','0110110','1100011','1100011','1111111','1100011','1100011'
+      ], width, height);
+    } else if (name === 'number_8') {
+      mask = bitmapMask([
+        '0111110','1100011','1100011','0111110','1100011','1100011','0111110'
+      ], width, height);
+    } else if (name === 'blob') {
+      const lobes = rng.int(3, 6);
+      const phase = rng.next() * Math.PI * 2;
+      const skew = (rng.next() - 0.5) * 0.25;
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const xx = p.x * (1 + skew * p.y);
+        const r = Math.hypot(xx, p.y);
+        const a = Math.atan2(p.y, xx);
+        const radius = 0.76 + 0.10 * Math.cos(lobes*a + phase) + 0.07 * Math.cos((lobes+2)*a - phase*0.7);
+        return r <= radius;
+      });
+    } else {
+      mask = createPatternMask('rectangle', width, height, rng);
+    }
+
+    return removeTinySpurs(mask, 1);
+  }
+
+  function transformPattern(mask, transform = {}) {
+    let { width, height } = mask;
+    let cells = [...mask.cells].map(k => {
+      const [x, y] = k.split(',').map(Number);
+      return { x, y };
+    });
+
+    const rotations = (((transform.rotate || 0) % 360) + 360) % 360;
+    if (transform.mirrorX) cells = cells.map(c => ({ x: width - 1 - c.x, y: c.y }));
+    if (transform.mirrorY) cells = cells.map(c => ({ x: c.x, y: height - 1 - c.y }));
+
+    if (rotations === 90) {
+      cells = cells.map(c => ({ x: height - 1 - c.y, y: c.x }));
+      [width, height] = [height, width];
+    } else if (rotations === 180) {
+      cells = cells.map(c => ({ x: width - 1 - c.x, y: height - 1 - c.y }));
+    } else if (rotations === 270) {
+      cells = cells.map(c => ({ x: c.y, y: width - 1 - c.x }));
+      [width, height] = [height, width];
+    }
+
+    return { width, height, cells: new Set(cells.map(c => key(c.x, c.y))) };
+  }
+
+  // ---------- progression ----------
+
+  function getDifficultyConfig(levelNumber) {
+    const level = Math.max(1, Math.floor(levelNumber || 1));
+    if (level <= 10) {
+      return {
+        tier: 'easy', width: 9 + Math.floor((level - 1) / 4), height: 9 + Math.floor((level - 1) / 5),
+        arrowsMin: 6, arrowsMax: 12, density: lerp(0.62, 0.72, (level - 1) / 9),
+        minLen: 2, maxLen: 8, targetBends: [1, 3], initialLegal: [1, 3], candidateCount: 4
+      };
+    }
+    if (level <= 25) {
+      return {
+        tier: 'medium', width: 12 + Math.floor((level - 11) / 6), height: 12 + Math.floor((level - 11) / 7),
+        arrowsMin: 12, arrowsMax: 22, density: 0.76, minLen: 2, maxLen: 11,
+        targetBends: [1, 5], initialLegal: [1, 4], candidateCount: 4
+      };
+    }
+    if (level <= 50) {
+      return {
+        tier: 'medium', width: 14 + Math.floor((level - 26) / 9), height: 15 + Math.floor((level - 26) / 10),
+        arrowsMin: 15, arrowsMax: 30, density: 0.80, minLen: 2, maxLen: 14,
+        targetBends: [2, 6], initialLegal: [1, 4], candidateCount: 5
+      };
+    }
+    if (level <= 100) {
+      return {
+        tier: 'hard', width: 17 + Math.floor((level - 51) / 17), height: 18 + Math.floor((level - 51) / 20),
+        arrowsMin: 25, arrowsMax: 45, density: 0.84, minLen: 2, maxLen: 18,
+        targetBends: [2, 8], initialLegal: [1, 3], candidateCount: 5
+      };
+    }
+    return {
+      tier: 'hard', width: clamp(19 + Math.floor(Math.log2(level / 100 + 1) * 2), 19, 24),
+      height: clamp(20 + Math.floor(Math.log2(level / 100 + 1) * 2), 20, 26),
+      arrowsMin: 30, arrowsMax: 70, density: 0.87, minLen: 2, maxLen: 22,
+      targetBends: [3, 8], initialLegal: [1, 3], candidateCount: 6
+    };
+  }
+
+  function patternPool(level) {
+    if (level <= 10) return ['rectangle','square'];
+    if (level <= 25) return ['rectangle','diamond','oval'];
+    if (level <= 50) return ['heart','triangle','circle','hourglass','diamond','oval'];
+    if (level <= 100) return ['shield','bottle','wave','star','bell','cross','cloud','flower','house'];
+    return [
+      'rectangle','diamond','oval','heart','triangle','circle','hourglass','shield','bottle','bell','star',
+      'crescent','cross','wave','lightning','cloud','flower','butterfly','fish','cat','house','tree','crown',
+      'key','question','letter_a','number_8','blob'
+    ];
+  }
+
+  function choosePattern(level, rng, recentPatterns = []) {
+    const pool = patternPool(level);
+    const filtered = pool.filter(p => !recentPatterns.slice(-3).includes(p));
+    return rng.pick(filtered.length ? filtered : pool);
+  }
+
+  function buildDependencyPlan(targetCount, config, rng) {
+    const [legalMin, legalMax] = config.initialLegal;
+    const targetInitialLegal = rng.int(legalMin, legalMax);
+    const desiredBlocksByStep = [];
+    const freeSourceSteps = Math.max(0, targetInitialLegal - 1);
+    const firstFreeSourceStep = Math.max(1, targetCount - freeSourceSteps);
+
+    for (let i = 0; i < targetCount; i++) {
+      let desired = 0;
+      if (i > 0 && i < firstFreeSourceStep) {
+        // Every non-source insertion must consume at least one currently legal
+        // arrow. This prevents legal choices from accumulating across the build.
+        if (config.tier === 'easy') desired = 1;
+        else if (config.tier === 'medium') desired = rng.chance(0.24) ? 2 : 1;
+        else desired = rng.weighted([1,2,3], x => [0.48,0.40,0.12][x-1]);
+      }
+      desiredBlocksByStep.push(desired);
+    }
+    return {
+      targetInitialLegal,
+      desiredBlocksByStep,
+      branchingTarget: config.tier === 'easy' ? 0.15 : config.tier === 'medium' ? 0.35 : 0.52
+    };
+  }
+
+  // ---------- arrow geometry ----------
+
+  function directionFromCells(cells) {
+    if (!cells || cells.length < 2) return null;
+    const a = cells[cells.length - 2];
+    const b = cells[cells.length - 1];
+    const dx = b.x - a.x, dy = b.y - a.y;
+    return DIR_LIST.find(d => d.x === dx && d.y === dy)?.name || null;
+  }
+
+  function bendCount(cells) {
+    if (!cells || cells.length < 3) return 0;
+    let bends = 0;
+    let pdx = cells[1].x - cells[0].x;
+    let pdy = cells[1].y - cells[0].y;
+    for (let i = 2; i < cells.length; i++) {
+      const dx = cells[i].x - cells[i-1].x;
+      const dy = cells[i].y - cells[i-1].y;
+      if (dx !== pdx || dy !== pdy) bends++;
+      pdx = dx; pdy = dy;
+    }
+    return bends;
+  }
+
+  function escapeRayCells(arrow, board) {
+    const dir = DIRS[arrow.direction];
+    if (!dir) return [];
+    const head = arrow.cells[arrow.cells.length - 1];
+    const out = [];
+    let x = head.x + dir.x;
+    let y = head.y + dir.y;
+    while (inside(x, y, board.width, board.height)) {
+      out.push({ x, y });
+      x += dir.x; y += dir.y;
+    }
+    return out;
+  }
+
+  function buildOccupancy(arrows, excludeId = null) {
+    const occ = new Map();
+    for (const arrow of arrows) {
+      if (arrow.id === excludeId) continue;
+      for (const c of arrow.cells) occ.set(key(c.x, c.y), arrow.id);
+    }
+    return occ;
+  }
+
+  /**
+   * Canonical escape test. Use this exact function in gameplay.
+   * Grid model contract: each arrow is rendered inside its occupied cells;
+   * arrowhead geometry must stay inside the head cell so a blocker in the
+   * next cell cannot visually overlap the head.
+   */
+  function canEscape(arrow, arrows, board) {
+    if (!arrow || !Array.isArray(arrow.cells) || arrow.cells.length < 2) return false;
+    const dir = DIRS[arrow.direction];
+    if (!dir) return false;
+    if (directionFromCells(arrow.cells) !== arrow.direction) return false;
+
+    const own = new Set(arrow.cells.slice(0, -1).map(c => key(c.x, c.y)));
+    const others = buildOccupancy(arrows, arrow.id);
+    for (const c of escapeRayCells(arrow, board)) {
+      const k = key(c.x, c.y);
+      if (own.has(k)) return false;
+      if (others.has(k)) return false;
+    }
+    return true;
+  }
+
+  function legalArrows(arrows, board) {
+    return arrows.filter(a => canEscape(a, arrows, board));
+  }
+
+  function dependencyGraph(arrows, board) {
+    const occupancy = buildOccupancy(arrows);
+    const blockersOf = new Map(arrows.map(a => [a.id, new Set()]));
+    const blocks = new Map(arrows.map(a => [a.id, new Set()]));
+
+    for (const arrow of arrows) {
+      for (const c of escapeRayCells(arrow, board)) {
+        const blocker = occupancy.get(key(c.x, c.y));
+        if (blocker != null && blocker !== arrow.id) {
+          blockersOf.get(arrow.id).add(blocker);
+          blocks.get(blocker).add(arrow.id);
+        }
+      }
+    }
+    return {
+      blockersOf: Object.fromEntries([...blockersOf].map(([id,s]) => [id,[...s]])),
+      blocks: Object.fromEntries([...blocks].map(([id,s]) => [id,[...s]]))
+    };
+  }
+
+  // ---------- reverse construction ----------
+
+  function occupiedSet(arrows) {
+    const s = new Set();
+    for (const a of arrows) for (const c of a.cells) s.add(key(c.x, c.y));
+    return s;
+  }
+
+  function headOptions(board, arrows) {
+    const occupied = occupiedSet(arrows);
+    const options = [];
+    for (const k of board.mask.cells) {
+      if (occupied.has(k)) continue;
+      const [x, y] = k.split(',').map(Number);
+      for (const dir of DIR_LIST) {
+        const px = x - dir.x, py = y - dir.y;
+        if (!board.mask.cells.has(key(px, py)) || occupied.has(key(px, py))) continue;
+        let clear = true;
+        let futureMaskRayCount = 0;
+        let rx = x + dir.x, ry = y + dir.y;
+        while (inside(rx, ry, board.width, board.height)) {
+          const rk = key(rx, ry);
+          if (occupied.has(rk)) { clear = false; break; }
+          if (board.mask.cells.has(rk)) futureMaskRayCount++;
+          rx += dir.x; ry += dir.y;
+        }
+        if (clear) options.push({ head: {x,y}, dir, futureMaskRayCount });
+      }
+    }
+    return options;
+  }
+
+  function rayKeySet(arrow, board) {
+    return new Set(escapeRayCells(arrow, board).map(c => key(c.x, c.y)));
+  }
+
+  function countOccupiedNeighbours(cell, occupied) {
+    let n = 0;
+    for (const d of DIR_LIST) if (occupied.has(key(cell.x + d.x, cell.y + d.y))) n++;
+    return n;
+  }
+
+  function shortestRoute(start, targetKeys, board, occupied, forbidden, blockedSelf, rng, maxSteps) {
+    if (!targetKeys || targetKeys.size === 0) return null;
+    const startKey = key(start.x,start.y);
+    if (targetKeys.has(startKey)) return [cloneCell(start)];
+
+    const queue = [cloneCell(start)];
+    const parent = new Map([[startKey, null]]);
+    let found = null;
+    let qi = 0;
+    while (qi < queue.length) {
+      const cur = queue[qi++];
+      const curKey = key(cur.x,cur.y);
+      const depth = (() => {
+        let d=0,k=curKey;
+        while (parent.get(k) != null && d <= maxSteps) { k=parent.get(k); d++; }
+        return d;
+      })();
+      if (depth >= maxSteps) continue;
+      for (const d of rng.shuffle(DIR_LIST)) {
+        const n={x:cur.x+d.x,y:cur.y+d.y};
+        const nk=key(n.x,n.y);
+        if (parent.has(nk) || occupied.has(nk) || forbidden.has(nk) || blockedSelf.has(nk)) continue;
+        if (!board.mask.cells.has(nk)) continue;
+        parent.set(nk,curKey);
+        if (targetKeys.has(nk)) { found=nk; qi=queue.length; break; }
+        queue.push(n);
+      }
+    }
+    if (!found) return null;
+    const keys=[];
+    for (let k=found; k!=null; k=parent.get(k)) keys.push(k);
+    keys.reverse();
+    return keys.map(k=>{const [x,y]=k.split(',').map(Number);return {x,y};});
+  }
+
+  function remainingComponentPenalty(board, occupied, candidateSet) {
+    // Cheap local pocket detector. We do not require all mask cells to be filled,
+    // but strongly penalise creation of isolated single cells.
+    let penalty = 0;
+    for (const ck of candidateSet) {
+      const [x,y] = ck.split(',').map(Number);
+      for (const d of DIR_LIST) {
+        const nx=x+d.x, ny=y+d.y, nk=key(nx,ny);
+        if (!board.mask.cells.has(nk) || occupied.has(nk) || candidateSet.has(nk)) continue;
+        let freeN = 0;
+        for (const d2 of DIR_LIST) {
+          const qk = key(nx+d2.x, ny+d2.y);
+          if (board.mask.cells.has(qk) && !occupied.has(qk) && !candidateSet.has(qk)) freeN++;
+        }
+        if (freeN === 0) penalty += 4;
+        else if (freeN === 1) penalty += 0.5;
+      }
+    }
+    return penalty;
+  }
+
+  function generatePathCandidate(board, arrows, option, config, rng, targetLength, desiredBlocks) {
+    const occupied = occupiedSet(arrows);
+    const legalBefore = new Set(legalArrows(arrows, board).map(a => a.id));
+    const legalRayOwnersByCell = new Map();
+    const anyRayOwnersByCell = new Map();
+
+    for (const a of arrows) {
+      for (const c of escapeRayCells(a, board)) {
+        const k = key(c.x,c.y);
+        if (!anyRayOwnersByCell.has(k)) anyRayOwnersByCell.set(k, new Set());
+        anyRayOwnersByCell.get(k).add(a.id);
+        if (legalBefore.has(a.id)) {
+          if (!legalRayOwnersByCell.has(k)) legalRayOwnersByCell.set(k, new Set());
+          legalRayOwnersByCell.get(k).add(a.id);
+        }
+      }
+    }
+
+    const { head, dir } = option;
+    const forbiddenForward = new Set();
+    let fx = head.x + dir.x, fy = head.y + dir.y;
+    while (inside(fx,fy,board.width,board.height)) {
+      forbiddenForward.add(key(fx,fy));
+      fx += dir.x; fy += dir.y;
+    }
+
+    const rev = [cloneCell(head), { x: head.x - dir.x, y: head.y - dir.y }];
+    const self = new Set(rev.map(c => key(c.x,c.y)));
+    if (occupied.has(key(rev[1].x, rev[1].y))) return null;
+
+    // If this construction step is meant to create dependencies, deliberately
+    // route the new body through escape rays of arrows that are legal now.
+    // Hitting multiple rays is especially valuable because the new arrow itself
+    // becomes legal, so blocking 2 old legal arrows reduces the legal count by 1.
+    if (desiredBlocks > 0 && legalBefore.size) {
+      const targetPool = arrows.filter(a => legalBefore.has(a.id));
+      const blockedByRoute = new Set();
+      for (const c of rev) {
+        const owners = legalRayOwnersByCell.get(key(c.x,c.y));
+        if (owners) for (const id of owners) blockedByRoute.add(id);
+      }
+      let guard = 0;
+      while (blockedByRoute.size < desiredBlocks && guard++ < desiredBlocks * 3 && rev.length < config.maxLen) {
+        let bestRoute = null;
+        let bestTarget = null;
+        for (const target of rng.shuffle(targetPool.filter(a => !blockedByRoute.has(a.id)))) {
+          const targetCells = new Set(escapeRayCells(target,board)
+            .map(c=>key(c.x,c.y))
+            .filter(k=>board.mask.cells.has(k) && !occupied.has(k) && !forbiddenForward.has(k) && !self.has(k)));
+          if (!targetCells.size) continue;
+          const remainingBudget = Math.max(2, config.maxLen - rev.length + 1);
+          const route = shortestRoute(rev[rev.length-1],targetCells,board,occupied,forbiddenForward,self,rng,remainingBudget);
+          if (!route || route.length < 2) continue;
+          if (!bestRoute || route.length < bestRoute.length) { bestRoute = route; bestTarget = target; }
+        }
+        if (!bestRoute) break;
+        for (let i=1;i<bestRoute.length && rev.length < config.maxLen;i++) {
+          const c=bestRoute[i], ck=key(c.x,c.y);
+          if (self.has(ck)) break;
+          rev.push(c); self.add(ck);
+        }
+        // One routed cell can cross several rays. Recompute all legal arrows hit.
+        for (const c of rev) {
+          const owners = legalRayOwnersByCell.get(key(c.x,c.y));
+          if (owners) for (const id of owners) blockedByRoute.add(id);
+        }
+        if (bestTarget) blockedByRoute.add(bestTarget.id);
+      }
+    }
+
+    const maxBends = config.targetBends[1];
+    let bends = bendCount(rev.slice().reverse());
+    let lastMove = { x: rev[rev.length-1].x - rev[rev.length-2].x, y: rev[rev.length-1].y - rev[rev.length-2].y };
+
+    while (rev.length < targetLength) {
+      const cur = rev[rev.length - 1];
+      const moves = [];
+      for (const d of DIR_LIST) {
+        const n = { x: cur.x + d.x, y: cur.y + d.y };
+        const nk = key(n.x,n.y);
+        if (!board.mask.cells.has(nk) || occupied.has(nk) || self.has(nk) || forbiddenForward.has(nk)) continue;
+        if (rev.length >= 2 && n.x === rev[rev.length-2].x && n.y === rev[rev.length-2].y) continue;
+
+        const isTurn = d.x !== lastMove.x || d.y !== lastMove.y;
+        if (isTurn && bends >= maxBends) continue;
+
+        let score = 1;
+        const legalOwners = legalRayOwnersByCell.get(nk);
+        const anyOwners = anyRayOwnersByCell.get(nk);
+        if (legalOwners) score += 7 + legalOwners.size * 3;
+        else if (anyOwners) score += 2 + anyOwners.size;
+
+        const adjacency = countOccupiedNeighbours(n, occupied);
+        score += adjacency * 1.15;
+        if (isTurn) {
+          const bendTargetMid = (config.targetBends[0] + config.targetBends[1]) / 2;
+          score += bends < bendTargetMid ? 1.25 : -0.2;
+        } else {
+          score += 0.35;
+        }
+
+        // Prefer cells with onward choices so paths do not immediately dead-end,
+        // except near target length where absorbing pockets is useful.
+        let onward = 0;
+        for (const nd of DIR_LIST) {
+          const ok = key(n.x+nd.x,n.y+nd.y);
+          if (board.mask.cells.has(ok) && !occupied.has(ok) && !self.has(ok) && !forbiddenForward.has(ok)) onward++;
+        }
+        if (rev.length < targetLength - 2) score += onward * 0.55;
+        else score += (4 - onward) * 0.18;
+
+        moves.push({ n, d, isTurn, score: Math.max(0.05, score) });
+      }
+      if (!moves.length) break;
+      const chosen = rng.weighted(moves, m => m.score * m.score);
+      rev.push(chosen.n);
+      self.add(key(chosen.n.x,chosen.n.y));
+      if (chosen.isTurn) bends++;
+      lastMove = { x: chosen.d.x, y: chosen.d.y };
+    }
+
+    if (rev.length < config.minLen) return null;
+    const cells = rev.slice().reverse();
+    const arrow = { id: -1, cells, direction: dir.name };
+    if (directionFromCells(cells) !== dir.name) return null;
+    if (!canEscape(arrow, [...arrows, arrow], board)) return null;
+
+    const candidateSet = new Set(cells.map(c => key(c.x,c.y)));
+    const blocksLegal = new Set();
+    const blocksAny = new Set();
+    for (const c of cells) {
+      const k = key(c.x,c.y);
+      const l = legalRayOwnersByCell.get(k);
+      if (l) for (const id of l) blocksLegal.add(id);
+      const a = anyRayOwnersByCell.get(k);
+      if (a) for (const id of a) blocksAny.add(id);
+    }
+
+    const actualBends = bendCount(cells);
+    const targetBends = clamp(Math.round((cells.length - 2) / 3), config.targetBends[0], config.targetBends[1]);
+    const lengthFit = 1 - Math.abs(cells.length - targetLength) / Math.max(1,targetLength);
+    const blockFit = 1 - Math.min(1, Math.abs(blocksLegal.size - desiredBlocks) / Math.max(1, desiredBlocks + 1));
+    const bendFit = 1 - Math.min(1, Math.abs(actualBends - targetBends) / Math.max(1,targetBends + 1));
+    const pocketPenalty = remainingComponentPenalty(board, occupied, candidateSet);
+
+    let adjacency = 0;
+    for (const c of cells) adjacency += countOccupiedNeighbours(c, occupied);
+
+    const score =
+      lengthFit * 5 +
+      blockFit * 7 +
+      bendFit * 2.5 +
+      blocksLegal.size * 5 +
+      Math.min(4, blocksAny.size) * 1.2 +
+      adjacency * 0.16 -
+      pocketPenalty;
+
+    return { arrow, score, blocksLegal: [...blocksLegal], blocksAny: [...blocksAny] };
+  }
+
+  function optionSignature(o) {
+    return `${o.head.x},${o.head.y}:${o.dir.name}`;
+  }
+
+  function getSuccessorGateOptions(candidateArrow, board, arrows) {
+    const temp = { id: -999999, cells: candidateArrow.cells.map(cloneCell), direction: candidateArrow.direction };
+    const state = [...arrows, temp];
+    const ray = new Set(escapeRayCells(temp, board).map(c=>key(c.x,c.y)));
+    if (!ray.size) return [];
+    return headOptions(board, state).filter(o => {
+      const hk = key(o.head.x,o.head.y);
+      const pk = key(o.head.x-o.dir.x,o.head.y-o.dir.y);
+      return ray.has(hk) || ray.has(pk);
+    });
+  }
+
+  function placeArrow(board, arrows, config, rng, desiredBlocks, targetLength, attempts = 40, constraints = {}) {
+    let options = headOptions(board, arrows);
+    if (constraints.forcedOptions && constraints.forcedOptions.length) {
+      const allowed = new Set(constraints.forcedOptions.map(optionSignature));
+      const forced = options.filter(o => allowed.has(optionSignature(o)));
+      if (forced.length) options = forced;
+      else if (constraints.forceRequired) return null;
+    }
+    if (constraints.requireBlockableHead) {
+      const blockable = options.filter(o => (o.futureMaskRayCount || 0) > 0);
+      if (blockable.length) options = blockable;
+    }
+    if (!options.length) return null;
+
+    // Prefer head placements whose first two cells immediately cross escape rays
+    // of arrows that are legal now. This creates dependencies before any random
+    // tail growth happens and greatly stabilises the initial move count.
+    const legalNow = legalArrows(arrows, board);
+    const rayOwners = new Map();
+    for (const a of legalNow) {
+      for (const c of escapeRayCells(a, board)) {
+        const ck = key(c.x,c.y);
+        if (!rayOwners.has(ck)) rayOwners.set(ck,new Set());
+        rayOwners.get(ck).add(a.id);
+      }
+    }
+    options = options.map(o => {
+      const ids = new Set();
+      const hk = key(o.head.x,o.head.y);
+      const pk = key(o.head.x-o.dir.x,o.head.y-o.dir.y);
+      for (const id of rayOwners.get(hk) || []) ids.add(id);
+      for (const id of rayOwners.get(pk) || []) ids.add(id);
+      return { ...o, seedBlocks: ids.size };
+    });
+    if (desiredBlocks > 0) {
+      const threshold = Math.min(desiredBlocks, 2);
+      const direct = options.filter(o => o.seedBlocks >= threshold);
+      const anyDirect = options.filter(o => o.seedBlocks >= 1);
+      if (direct.length) options = direct;
+      else if (anyDirect.length) options = anyDirect;
+    }
+
+    // Bias toward heads nearer the silhouette edge but do not force them there.
+    const ranked = options.map(o => {
+      const edgeDist = Math.min(o.head.x, o.head.y, board.width-1-o.head.x, board.height-1-o.head.y);
+      return { ...o, edgeDist, blockability: o.futureMaskRayCount || 0 };
+    });
+
+    let best = null;
+    let bestStrict = null;
+    let bestChain = null;
+    let bestStrictChain = null;
+    for (let i = 0; i < attempts; i++) {
+      const option = rng.weighted(ranked, o => {
+        const future = o.blockability;
+        const blockableBias = desiredBlocks > 0 ? (1 + future * 1.4) : (1 + future * 0.45);
+        const directDependencyBias = 1 + (o.seedBlocks || 0) * 8;
+        return blockableBias * directDependencyBias / (1 + o.edgeDist * 0.12);
+      });
+      const lenJitter = rng.int(-2, 3);
+      const len = clamp(targetLength + lenJitter, config.minLen, config.maxLen);
+      const c = generatePathCandidate(board, arrows, option, config, rng, len, desiredBlocks);
+      if (!c) continue;
+      if (!best || c.score > best.score) best = c;
+      const strictEnough = desiredBlocks > 0 && c.blocksLegal.length >= Math.min(desiredBlocks, 2);
+      if (strictEnough && (!bestStrict || c.score > bestStrict.score)) bestStrict = c;
+      if (constraints.requireSuccessor) {
+        const successorOptions = getSuccessorGateOptions(c.arrow, board, arrows);
+        if (successorOptions.length) {
+          c.successorOptions = successorOptions;
+          if (!bestChain || c.score > bestChain.score) bestChain = c;
+          if (strictEnough && (!bestStrictChain || c.score > bestStrictChain.score)) bestStrictChain = c;
+        }
+      }
+    }
+    let chosen = null;
+    if (constraints.requireDependency && desiredBlocks > 0) {
+      chosen = constraints.requireSuccessor ? (bestStrictChain || bestStrict) : bestStrict;
+    } else if (constraints.requireSuccessor) chosen = bestChain || best;
+    else chosen = best;
+    if (chosen && !chosen.successorOptions) chosen.successorOptions = getSuccessorGateOptions(chosen.arrow, board, arrows);
+    return chosen;
+  }
+
+  function densifyTails(board, arrows, config, rng, targetOccupiedCells) {
+    let occupied = occupiedSet(arrows);
+    let occupiedCount = occupied.size;
+    if (occupiedCount >= targetOccupiedCells) return occupiedCount;
+
+    // Escape rays are stable because tail growth never changes heads/directions.
+    const raysById = new Map(arrows.map(a => [a.id, new Set(escapeRayCells(a,board).map(c=>key(c.x,c.y)))]));
+    const growthCaps = new Map();
+    for (const a of arrows) {
+      let cap;
+      if (config.tier === 'easy') cap = rng.int(Math.min(6,config.maxLen), config.maxLen);
+      else if (config.tier === 'medium') cap = rng.int(Math.min(8,config.maxLen), config.maxLen);
+      else cap = rng.chance(0.22) ? config.maxLen : rng.int(Math.min(10,config.maxLen), config.maxLen);
+      growthCaps.set(a.id, Math.max(a.cells.length, cap));
+    }
+
+    let progress = true;
+    let passes = 0;
+    while (progress && occupiedCount < targetOccupiedCells && passes++ < config.maxLen * 3) {
+      progress = false;
+      for (const arrow of rng.shuffle(arrows)) {
+        if (occupiedCount >= targetOccupiedCells) break;
+        if (arrow.cells.length >= growthCaps.get(arrow.id)) continue;
+        if (bendCount(arrow.cells) >= config.targetBends[1]) continue;
+
+        const forbidden = new Set(raysById.get(arrow.id));
+        for (const other of arrows) {
+          if (other.id > arrow.id) {
+            for (const k of raysById.get(other.id)) forbidden.add(k);
+          }
+        }
+
+        const tail = arrow.cells[0];
+        const second = arrow.cells[1];
+        const oldDir = {x: tail.x-second.x, y: tail.y-second.y};
+        const choices = [];
+        for (const d of DIR_LIST) {
+          const n={x:tail.x+d.x,y:tail.y+d.y}, nk=key(n.x,n.y);
+          if (!board.mask.cells.has(nk) || occupied.has(nk) || forbidden.has(nk)) continue;
+          const isTurn = d.x !== oldDir.x || d.y !== oldDir.y;
+          if (isTurn && bendCount(arrow.cells) >= config.targetBends[1]) continue;
+
+          let score = 1;
+          score += countOccupiedNeighbours(n,occupied) * 1.4;
+          // Blocking arrows with lower ids is safe and adds useful dependencies.
+          let safeBlocks=0;
+          for (const other of arrows) if (other.id < arrow.id && raysById.get(other.id).has(nk)) safeBlocks++;
+          score += safeBlocks * 2.2;
+          if (isTurn) score += bendCount(arrow.cells) < config.targetBends[0] ? 1.2 : 0.15;
+          else score += 0.45;
+
+          // Avoid sealing isolated one-cell holes where possible.
+          let freeN=0;
+          for (const nd of DIR_LIST) {
+            const qk=key(n.x+nd.x,n.y+nd.y);
+            if (board.mask.cells.has(qk) && !occupied.has(qk)) freeN++;
+          }
+          if (freeN===0) score -= 2;
+          choices.push({n,score:Math.max(0.05,score)});
+        }
+        if (!choices.length) continue;
+        const chosen=rng.weighted(choices,c=>c.score*c.score);
+        arrow.cells.unshift(chosen.n);
+        occupied.add(key(chosen.n.x,chosen.n.y));
+        occupiedCount++;
+        progress=true;
+      }
+    }
+    return occupiedCount;
+  }
+
+  function buildCandidate(levelNumber, seed, options = {}) {
+    const rng = new RNG(seed);
+    const config = { ...getDifficultyConfig(levelNumber), ...(options.configOverrides || {}) };
+    const pattern = options.pattern || choosePattern(levelNumber, rng, options.recentPatterns || []);
+
+    let mask = createPatternMask(pattern, config.width, config.height, rng);
+    const rotations = [0,90,180,270];
+    const transform = options.transform || {
+      rotate: rng.pick(rotations),
+      mirrorX: rng.chance(0.5),
+      mirrorY: rng.chance(0.25)
+    };
+    mask = transformPattern(mask, transform);
+
+    const board = { width: mask.width, height: mask.height, mask };
+    const maskCellCount = mask.cells.size;
+    const densityTargetCells = Math.floor(maskCellCount * config.density);
+
+    const minByCells = Math.max(config.arrowsMin, Math.floor(densityTargetCells / Math.max(7, config.maxLen * 0.65)));
+    const maxByCells = Math.min(config.arrowsMax, Math.floor(densityTargetCells / config.minLen));
+    const progressWithinTier = levelNumber <= 10 ? (levelNumber-1)/9 : levelNumber <= 50 ? (levelNumber-11)/39 : Math.min(1,(levelNumber-51)/100);
+    const targetCount = clamp(
+      Math.round(lerp(config.arrowsMin, config.arrowsMax, clamp(progressWithinTier,0,1))),
+      Math.min(config.arrowsMin, maxByCells),
+      Math.max(minByCells, maxByCells)
+    );
+
+    const plan = buildDependencyPlan(targetCount, config, rng);
+    const arrows = [];
+    let occupiedCells = 0;
+    let stalled = 0;
+    let cycles = 0;
+    let forcedSuccessorOptions = null;
+    let chainsStarted = 0;
+
+    while (arrows.length < targetCount && occupiedCells < densityTargetCells && cycles < targetCount * 4) {
+      cycles++;
+      const step = arrows.length;
+      const remainingArrowSlots = Math.max(1, targetCount - arrows.length);
+      const remainingCells = Math.max(2, densityTargetCells - occupiedCells);
+      const avg = Math.round(remainingCells / remainingArrowSlots);
+      const desiredLongBias = config.tier === 'hard' && rng.chance(0.10) ? rng.int(2,5) : 0;
+      const targetLength = clamp(avg + desiredLongBias, config.minLen, config.maxLen);
+      const futureSteps = targetCount - arrows.length - 1;
+      const startingNewChain = arrows.length === 0 || (!forcedSuccessorOptions && chainsStarted < plan.targetInitialLegal);
+      const desiredBlocks = startingNewChain ? 0 : Math.max(1, plan.desiredBlocksByStep[step] || 1);
+      const requireBlockableHead = futureSteps > 0;
+      const needsSuccessor = futureSteps > 0;
+      const scaffoldMax = config.tier === 'easy' ? 5 : config.tier === 'medium' ? 4 : 3;
+      const scaffoldLength = needsSuccessor ? clamp(rng.int(2,scaffoldMax), config.minLen, config.maxLen) : clamp(Math.min(targetLength,4),config.minLen,config.maxLen);
+
+      let placed = placeArrow(
+        board, arrows, config, rng, desiredBlocks, scaffoldLength,
+        options.placementAttempts || (config.tier === 'hard' ? 56 : 42),
+        {
+          requireBlockableHead,
+          requireDependency: desiredBlocks > 0,
+          requireSuccessor: needsSuccessor,
+          forcedOptions: desiredBlocks > 0 ? forcedSuccessorOptions : null,
+          forceRequired: desiredBlocks > 0 && !!(forcedSuccessorOptions && forcedSuccessorOptions.length)
+        }
+      );
+
+      // If a dependency-rich path was too ambitious, retry a shorter path that
+      // still MUST block at least one currently legal arrow. Never trade the
+      // dependency invariant for density on non-source steps.
+      if (!placed && desiredBlocks > 0) {
+        placed = placeArrow(
+          board, arrows, config, rng, 1, Math.max(config.minLen, scaffoldLength),
+          Math.max(32, (options.placementAttempts || 24) * 2),
+          {
+            requireBlockableHead,
+            requireDependency:true,
+            requireSuccessor: needsSuccessor,
+            forcedOptions: forcedSuccessorOptions,
+            forceRequired: !!(forcedSuccessorOptions && forcedSuccessorOptions.length)
+          }
+        );
+      }
+
+      // Free-source steps are intentional. Only those may be placed without
+      // blocking an existing legal arrow.
+      if (!placed && desiredBlocks === 0) {
+        placed = placeArrow(board, arrows, config, rng, 0, Math.max(config.minLen, targetLength-2), 28, { requireBlockableHead:false });
+      }
+
+      if (!placed) {
+        stalled++;
+        if (stalled >= 4) break;
+        continue;
+      }
+      stalled = 0;
+      placed.arrow.id = arrows.length + 1;
+      placed.arrow.constructionIndex = step;
+      arrows.push(placed.arrow);
+      occupiedCells += placed.arrow.cells.length;
+      if (startingNewChain) chainsStarted++;
+      forcedSuccessorOptions = placed.successorOptions && placed.successorOptions.length ? placed.successorOptions : null;
+    }
+
+    // The logical scaffold intentionally uses short arrows so successor gates stay
+    // available. Now grow only tails to reach maze-like density. The growth rule
+    // forbids cells on the escape rays of any arrow that must leave earlier.
+    occupiedCells = densifyTails(board, arrows, config, rng, densityTargetCells);
+
+    // Dependency closure pass. Density is a visual target, not a hard stop. If the
+    // board still exposes too many arrows, add a few reverse-constructed cap arrows
+    // that attempt to cross 2-3 currently legal rays. This preserves solvability.
+    let closureGuard = 0;
+    const hardCoverageCeiling = Math.min(0.95, config.density + 0.09);
+    while (arrows.length < config.arrowsMax && closureGuard++ < 10) {
+      const nowLegal = legalArrows(arrows,board).length;
+      if (nowLegal <= plan.targetInitialLegal) break;
+      if (occupiedCells / Math.max(1,maskCellCount) >= hardCoverageCeiling) break;
+      const needReduction = nowLegal - plan.targetInitialLegal;
+      const desiredBlocks = needReduction >= 2 ? 3 : 2;
+      const capLength = clamp(Math.round(config.maxLen * 0.72), 4, config.maxLen);
+      const cap = placeArrow(board,arrows,config,rng,desiredBlocks,capLength,
+        options.placementAttempts || (config.tier === 'hard' ? 72 : 52),
+        {requireBlockableHead:false,requireDependency:true});
+      if (!cap || cap.blocksLegal.length < 2) break;
+      cap.arrow.id = arrows.length + 1;
+      cap.arrow.constructionIndex = arrows.length;
+      arrows.push(cap.arrow);
+      occupiedCells += cap.arrow.cells.length;
+    }
+
+    // Re-orient reversible paths to increase final-state dependencies while
+    // preserving legality at each construction turn.
+    orientArrowsForDependencies(board, arrows);
+
+    // Guaranteed solution is reverse insertion order.
+    const solution = arrows.slice().reverse().map(a => a.id);
+    const level = {
+      seed: String(seed),
+      levelNumber,
+      pattern,
+      transform,
+      width: board.width,
+      height: board.height,
+      mask: [...board.mask.cells].map(k => {
+        const [x,y] = k.split(',').map(Number); return {x,y};
+      }),
+      arrows: arrows.map(a => ({ id:a.id, cells:a.cells.map(cloneCell), direction:a.direction })),
+      solution,
+      difficulty: config.tier,
+      difficultyScore: 0,
+      generationScore: 0,
+      debug: {}
+    };
+
+    enrichLevel(level, config, plan);
+    return level;
+  }
+
+
+  function orientArrowsForDependencies(board, arrows) {
+    // Occupancy never changes when a path is reversed. For each arrow, choose
+    // the endpoint that is legal in its construction state (ids <= this id)
+    // and that is blocked by the most later arrows in the final board.
+    const allOccupancy = buildOccupancy(arrows);
+    for (let i = 0; i < arrows.length; i++) {
+      const arrow = arrows[i];
+      const original = { id: arrow.id, cells: arrow.cells.map(cloneCell), direction: arrow.direction };
+      const reversedCells = arrow.cells.slice().reverse().map(cloneCell);
+      const reversed = { id: arrow.id, cells: reversedCells, direction: directionFromCells(reversedCells) };
+      const constructionOthers = arrows.slice(0, i + 1);
+
+      const options = [original, reversed].filter(candidate => {
+        const state = constructionOthers.map(a => a.id === arrow.id ? candidate : a);
+        return canEscape(candidate, state, board);
+      });
+      if (!options.length) continue; // Original should always be valid by construction.
+
+      let best = original;
+      let bestScore = -Infinity;
+      for (const candidate of options) {
+        const blockers = new Set();
+        const selfBody = new Set(candidate.cells.slice(0,-1).map(c=>key(c.x,c.y)));
+        let selfBlocked = false;
+        for (const c of escapeRayCells(candidate, board)) {
+          const k = key(c.x,c.y);
+          if (selfBody.has(k)) { selfBlocked = true; break; }
+          const id = allOccupancy.get(k);
+          if (id != null && id > arrow.id) blockers.add(id);
+        }
+        if (selfBlocked) continue;
+        const score = blockers.size * 10 + (candidate === original ? 0.001 : 0);
+        if (score > bestScore) { bestScore = score; best = candidate; }
+      }
+      arrow.cells = best.cells.map(cloneCell);
+      arrow.direction = best.direction;
+    }
+  }
+
+  // ---------- validation, solver, scoring ----------
+
+  function boardFromLevel(level) {
+    return {
+      width: level.width,
+      height: level.height,
+      mask: { width: level.width, height: level.height, cells: new Set(level.mask.map(c => key(c.x,c.y))) }
+    };
+  }
+
+  function solveLevel(level, strategy = 'first') {
+    const board = boardFromLevel(level);
+    const remaining = level.arrows.map(a => ({ id:a.id, cells:a.cells.map(cloneCell), direction:a.direction }));
+    const order = [];
+    const states = [];
+    while (remaining.length) {
+      const legal = legalArrows(remaining, board);
+      states.push({ remaining: remaining.map(a=>a.id), legal: legal.map(a=>a.id) });
+      if (!legal.length) return { solved:false, order, states, remaining:remaining.map(a=>a.id) };
+      let chosen;
+      if (strategy === 'last') chosen = legal[legal.length-1];
+      else if (strategy === 'fewestBlocks') {
+        const graph = dependencyGraph(remaining, board);
+        chosen = legal.slice().sort((a,b) => (graph.blocks[a.id]?.length||0) - (graph.blocks[b.id]?.length||0))[0];
+      } else chosen = legal[0];
+      order.push(chosen.id);
+      remaining.splice(remaining.findIndex(a => a.id === chosen.id), 1);
+    }
+    return { solved:true, order, states, remaining:[] };
+  }
+
+  function validateArrow(arrow, board, seenGlobal) {
+    const errors = [];
+    if (!arrow.cells || arrow.cells.length < 2) errors.push(`arrow ${arrow.id}: fewer than 2 cells`);
+    const own = new Set();
+    for (let i=0; i<arrow.cells.length; i++) {
+      const c = arrow.cells[i];
+      const k = key(c.x,c.y);
+      if (!inside(c.x,c.y,board.width,board.height)) errors.push(`arrow ${arrow.id}: out of bounds ${k}`);
+      if (!board.mask.cells.has(k)) errors.push(`arrow ${arrow.id}: outside mask ${k}`);
+      if (own.has(k)) errors.push(`arrow ${arrow.id}: self intersection ${k}`);
+      own.add(k);
+      if (seenGlobal.has(k)) errors.push(`arrow ${arrow.id}: overlaps arrow ${seenGlobal.get(k)} at ${k}`);
+      else seenGlobal.set(k, arrow.id);
+      if (i>0 && manhattan(arrow.cells[i-1], c) !== 1) errors.push(`arrow ${arrow.id}: disconnected step at ${k}`);
+    }
+    if (!DIRS[arrow.direction]) errors.push(`arrow ${arrow.id}: invalid direction`);
+    if (directionFromCells(arrow.cells) !== arrow.direction) errors.push(`arrow ${arrow.id}: head direction disagrees with final segment`);
+    return errors;
+  }
+
+  function validateLevel(level, opts = {}) {
+    const errors = [];
+    const board = boardFromLevel(level);
+    const globalOcc = new Map();
+    for (const a of level.arrows) errors.push(...validateArrow(a, board, globalOcc));
+
+    const initial = legalArrows(level.arrows, board).map(a=>a.id);
+    if (level.arrows.length && !initial.length) errors.push('no initial legal move');
+
+    // Validate guaranteed construction solution with the canonical canEscape function.
+    const byId = new Map(level.arrows.map(a=>[a.id,a]));
+    const rem = level.arrows.slice();
+    for (const id of level.solution || []) {
+      const a = byId.get(id);
+      const idx = rem.findIndex(x=>x.id===id);
+      if (!a || idx < 0) { errors.push(`solution references missing/repeated arrow ${id}`); break; }
+      if (!canEscape(a, rem, board)) { errors.push(`guaranteed solution invalid at arrow ${id}`); break; }
+      rem.splice(idx,1);
+    }
+    if (rem.length) errors.push(`guaranteed solution incomplete, ${rem.length} remain`);
+
+    const solverFirst = solveLevel(level,'first');
+    if (!solverFirst.solved) errors.push(`solver soft lock with ${solverFirst.remaining.length} arrows remaining`);
+
+    if (opts.checkAlternateStrategies !== false) {
+      const solverLast = solveLevel(level,'last');
+      if (!solverLast.solved) errors.push('alternate legal-move strategy soft locked');
+    }
+
+    return { valid: errors.length===0, errors, initialLegal: initial, solver: solverFirst };
+  }
+
+  function maskCoverage(level) {
+    const occ = new Set();
+    for (const a of level.arrows) for (const c of a.cells) occ.add(key(c.x,c.y));
+    return level.mask.length ? occ.size / level.mask.length : 0;
+  }
+
+  function calculateGenerationScore(level, config, plan) {
+    const board = boardFromLevel(level);
+    const validation = validateLevel(level, {checkAlternateStrategies:false});
+    if (!validation.valid) return -1e9;
+
+    const lengths = level.arrows.map(a=>a.cells.length);
+    const bends = level.arrows.map(a=>bendCount(a.cells));
+    const coverage = maskCoverage(level);
+    const legalCount = validation.initialLegal.length;
+    const graph = dependencyGraph(level.arrows, board);
+    const edgeCount = Object.values(graph.blocks).reduce((s,a)=>s+a.length,0);
+
+    const mean = lengths.reduce((s,v)=>s+v,0) / Math.max(1,lengths.length);
+    const variance = lengths.reduce((s,v)=>s+(v-mean)*(v-mean),0) / Math.max(1,lengths.length);
+    const lengthVariety = clamp(Math.sqrt(variance) / Math.max(1,mean),0,1);
+    const bendMean = bends.reduce((s,v)=>s+v,0) / Math.max(1,bends.length);
+    const dependencyPerArrow = edgeCount / Math.max(1,level.arrows.length);
+
+    const [legalMin,legalMax] = config.initialLegal;
+    const legalPenalty = legalCount < legalMin ? (legalMin-legalCount)*5 : legalCount > legalMax ? (legalCount-legalMax)*3.5 : 0;
+    const targetCoverage = config.density;
+    const coverageScore = 18 * (1 - Math.min(1,Math.abs(coverage-targetCoverage)/Math.max(0.1,targetCoverage)));
+    const arrowCountScore = 12 * clamp(level.arrows.length / Math.max(1,config.arrowsMin),0,1);
+    const dependencyScore = clamp(dependencyPerArrow / (config.tier==='easy'?0.8:config.tier==='medium'?1.2:1.6),0,1) * 14;
+    const varietyScore = lengthVariety*8 + clamp(bendMean/config.targetBends[1],0,1)*7;
+
+    return coverageScore + arrowCountScore + dependencyScore + varietyScore - legalPenalty;
+  }
+
+  function enrichLevel(level, config, plan) {
+    const board = boardFromLevel(level);
+    const graph = dependencyGraph(level.arrows, board);
+    const validation = validateLevel(level, {checkAlternateStrategies:false});
+    const coverage = maskCoverage(level);
+    const bends = level.arrows.map(a=>bendCount(a.cells));
+    const lengths = level.arrows.map(a=>a.cells.length);
+    const score = calculateGenerationScore(level, config, plan);
+    level.generationScore = Number(score.toFixed(3));
+    level.difficultyScore = Number(clamp(
+      0.24*(level.arrows.length/Math.max(1,config.arrowsMax)) +
+      0.23*coverage +
+      0.20*clamp((bends.reduce((s,v)=>s+v,0)/Math.max(1,bends.length))/8,0,1) +
+      0.18*clamp(Object.values(graph.blocks).reduce((s,a)=>s+a.length,0)/Math.max(1,level.arrows.length*1.5),0,1) +
+      0.15*(1 - clamp(validation.initialLegal.length/5,0,1)), 0, 1
+    ).toFixed(3));
+    level.debug = {
+      valid: validation.valid,
+      errors: validation.errors,
+      initialLegal: validation.initialLegal,
+      dependencies: graph,
+      coverage: Number(coverage.toFixed(3)),
+      arrowCount: level.arrows.length,
+      averageLength: Number((lengths.reduce((s,v)=>s+v,0)/Math.max(1,lengths.length)).toFixed(2)),
+      averageBends: Number((bends.reduce((s,v)=>s+v,0)/Math.max(1,bends.length)).toFixed(2)),
+      targetInitialLegal: plan.targetInitialLegal
+    };
+  }
+
+  function generateLevel(levelNumber, seed, options = {}) {
+    const baseSeed = `${seed ?? 'arrow-maze'}:${levelNumber}`;
+    const cfg = getDifficultyConfig(levelNumber);
+    const candidateCount = options.candidateCount ?? cfg.candidateCount;
+    let best = null;
+    const candidates = [];
+
+    for (let i=0; i<candidateCount; i++) {
+      const candidateSeed = `${baseSeed}:candidate:${i}`;
+      const c = buildCandidate(levelNumber, candidateSeed, options);
+      const validation = validateLevel(c, {checkAlternateStrategies:false});
+      if (validation.valid) {
+        candidates.push(c);
+        if (!best || c.generationScore > best.generationScore) best = c;
+      }
+    }
+
+    if (!best) {
+      // Structural fallback. This is still reverse-constructed, not random + hope.
+      // Increase placement attempts and use rectangle because it has maximal routing room.
+      for (let i=0; i<8 && !best; i++) {
+        const c = buildCandidate(levelNumber, `${baseSeed}:fallback:${i}`, {
+          ...options, pattern:'rectangle', placementAttempts:70
+        });
+        const validation = validateLevel(c, {checkAlternateStrategies:false});
+        if (validation.valid) best = c;
+      }
+    }
+
+    if (!best) throw new Error(`Failed to construct a valid level for seed ${baseSeed}`);
+    best.requestedSeed = String(seed ?? 'arrow-maze');
+    best.candidateScores = candidates.map(c=>c.generationScore);
+    return best;
+  }
+
+  // ---------- debug support ----------
+
+  function getDebugFrame(level, activeArrowIds = null) {
+    const board = boardFromLevel(level);
+    const activeSet = activeArrowIds ? new Set(activeArrowIds) : null;
+    const arrows = activeSet ? level.arrows.filter(a=>activeSet.has(a.id)) : level.arrows;
+    const legal = new Set(legalArrows(arrows,board).map(a=>a.id));
+    const rays = {};
+    for (const a of arrows) rays[a.id] = escapeRayCells(a,board);
+    return {
+      width: level.width,
+      height: level.height,
+      mask: level.mask,
+      arrows,
+      legal: [...legal],
+      escapeRays: rays,
+      dependencies: dependencyGraph(arrows,board),
+      solution: level.solution,
+      pattern: level.pattern,
+      seed: level.seed,
+      generationScore: level.generationScore
+    };
+  }
+
+  async function autoPlaySolution(level, callbacks = {}) {
+    const board = boardFromLevel(level);
+    const remaining = level.arrows.map(a=>({id:a.id,cells:a.cells.map(cloneCell),direction:a.direction}));
+    const delayMs = callbacks.delayMs ?? 180;
+    for (const id of level.solution) {
+      const index = remaining.findIndex(a=>a.id===id);
+      if (index < 0) continue;
+      const arrow = remaining[index];
+      if (!canEscape(arrow,remaining,board)) throw new Error(`Auto-play solution invalid at arrow ${id}`);
+      if (callbacks.beforeRemove) await callbacks.beforeRemove(arrow,remaining.slice());
+      remaining.splice(index,1);
+      if (callbacks.afterRemove) await callbacks.afterRemove(arrow,remaining.slice());
+      if (delayMs > 0) await new Promise(r=>setTimeout(r,delayMs));
+    }
+    return remaining.length===0;
+  }
+
+  // ---------- automated tests ----------
+
+  function stableLevelFingerprint(level) {
+    return JSON.stringify({
+      pattern:level.pattern,width:level.width,height:level.height,mask:level.mask,
+      arrows:level.arrows,solution:level.solution,generationScore:level.generationScore
+    });
+  }
+
+  function stressTest(options = {}) {
+    const count = options.count ?? 10000;
+    const baseSeed = options.seed ?? 'stress';
+    const maxLevel = options.maxLevel ?? 250;
+    const candidateCount = options.candidateCount ?? 1;
+    const failures = [];
+    const started = Date.now();
+    let totalArrows = 0;
+
+    for (let i=0; i<count; i++) {
+      const levelNumber = (i % maxLevel) + 1;
+      const seed = `${baseSeed}:${i}`;
+      try {
+        const level = generateLevel(levelNumber, seed, { candidateCount });
+        const result = validateLevel(level);
+        if (!result.valid) {
+          failures.push({i,levelNumber,seed,errors:result.errors});
+          if (options.stopOnFailure) break;
+        }
+        totalArrows += level.arrows.length;
+
+        if (options.reproCheck !== false) {
+          const again = generateLevel(levelNumber, seed, { candidateCount });
+          if (stableLevelFingerprint(level) !== stableLevelFingerprint(again)) {
+            failures.push({i,levelNumber,seed,errors:['determinism mismatch']});
+            if (options.stopOnFailure) break;
+          }
+        }
+      } catch (err) {
+        failures.push({i,levelNumber,seed,errors:[String(err && err.message || err)]});
+        if (options.stopOnFailure) break;
+      }
+    }
+
+    return {
+      count,
+      failures,
+      passed: count - failures.length,
+      totalArrows,
+      averageArrows: totalArrows / Math.max(1,count),
+      elapsedMs: Date.now()-started
+    };
+  }
+
+  const API = {
+    DIRS,
+    RNG,
+    createPatternMask,
+    transformPattern,
+    buildDependencyPlan,
+    generateArrowPaths: buildCandidate,
+    placeArrow,
+    canEscape,
+    escapeRayCells,
+    legalArrows,
+    boardFromLevel,
+    directionFromCells,
+    bendCount,
+    dependencyGraph,
+    scoreCandidate: calculateGenerationScore,
+    solveLevel,
+    validateLevel,
+    generateLevel,
+    getDebugFrame,
+    autoPlaySolution,
+    stressTest,
+    getDifficultyConfig,
+    choosePattern
+  };
+
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  global.ArrowMazeGenerator = API;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
 
 <script>
 'use strict';
@@ -299,7 +1816,6 @@ const CONSTANTS = Object.freeze({
   HINT_COST: 25,
   SKIP_COST: 65,
   EXTRA_LIFE_COST: 45,
-  COINS_PER_AD: 60,
   BASE_LEVEL_REWARD: 18,
   STAR_BONUS: [0, 6, 14, 26],
   HINT_PACK_COST: 85,
@@ -327,21 +1843,21 @@ const defaultState = {
   dark: false,
   boardMotion: true,
   lifeCredits: 0,
-  skipTokens: 0,
-  reviewAsked: false
+  skipTokens: 0
 };
 let state = loadState();
 let previousScreen = 'home';
 let game = null;
 let audioCtx = null;
 let tutorialStage = 0;
+let levelStarting = false;
 
 function loadState(){
   try { return {...defaultState, ...JSON.parse(localStorage.getItem('arrowflowState')||'{}')}; }
   catch { return {...defaultState}; }
 }
 function saveState(){ localStorage.setItem('arrowflowState',JSON.stringify(state)); updateWallets(); }
-function updateWallets(){ $$('[data-coins]').forEach(el=>el.textContent=state.coins); }
+function updateWallets(){ $$('[data-coins]').forEach(el=>el.textContent=state.coins);const n=$('#homeLevelNumber');if(n)n.textContent=state.currentLevel; }
 function haptic(ms=18){ if(state.haptics && navigator.vibrate) navigator.vibrate(ms); }
 function sound(kind='tap'){
   if(!state.sound) return;
@@ -367,268 +1883,84 @@ function showScreen(id){
   haptic(7);
 }
 
-function rng(seed){ let s=seed>>>0; return ()=>{s=(s*1664525+1013904223)>>>0; return s/4294967296}; }
+const GAME_SEED = 'arrowflow-campaign-v2';
+const generatedLevelCache = new Map();
 
-function levelShape(level){
-  if(level<24)return 'square';
-  const shapes=['diamond','oval','hourglass','shield','wave','bottle','square'];
-  return shapes[Math.floor((level-24)/10)%shapes.length];
-}
-function shapeLabel(shape){
-  return ({square:'Square',diamond:'Diamond',oval:'Oval',hourglass:'Hourglass',shield:'Shield',wave:'Wave',bottle:'Bottle'})[shape]||'Maze';
-}
-function levelConfig(level){
-  const size=clamp(8+Math.floor((level-1)/28),8,18);
-  const label=level<10?'Warm up':level<40?'Flow':level<100?'Tricky':level<250?'Tangled':level<500?'Expert':'Master';
-  const shape=levelShape(level);
-  const minChunk=level<12?5:4;
-  const maxChunk=clamp(8+Math.floor(level/180),8,11);
-  return {size,label,shape,shapeLabel:shapeLabel(shape),seed:level*92821+317,minChunk,maxChunk};
-}
 function dirVec(d){ return ({R:[0,1],D:[1,0],L:[0,-1],U:[-1,0]})[d]; }
 function cellKey(r,c){ return r+','+c; }
-function inBounds(size,r,c){ return r>=0&&c>=0&&r<size&&c<size; }
-function vecToDir(dr,dc){ return dr===-1?'U':dr===1?'D':dc===-1?'L':'R'; }
+function inGameBounds(cfg,r,c){ return r>=0&&c>=0&&r<cfg.height&&c<cfg.width; }
 
-function desiredShapeInterval(shape,r,size){
-  const mid=(size-1)/2;
-  const y=mid?((r-mid)/mid):0;
-  let half=size*.49,center=mid;
-  if(shape==='diamond')half=Math.max(1.5,size*.48*(1-.72*Math.abs(y)));
-  else if(shape==='oval')half=Math.max(1.7,size*.47*Math.sqrt(Math.max(.15,1-y*y)));
-  else if(shape==='hourglass')half=size*(.18+.30*Math.abs(y));
-  else if(shape==='shield')half=r<size*.43?size*.47:Math.max(1.6,size*.47*(1-(r-size*.43)/(size*.68)));
-  else if(shape==='bottle'){
-    half=r<size*.25?size*.22:r<size*.42?size*.32:size*.45;
-    if(r>size*.82)half*=.82;
-  }else if(shape==='wave'){
-    half=size*.36;
-    center=mid+Math.sin((r/(size-1||1))*Math.PI*2)*size*.10;
-  }
-  let l=Math.max(0,Math.round(center-half));
-  let rr=Math.min(size-1,Math.round(center+half));
-  if(rr-l<2){l=Math.max(0,Math.floor(center)-1);rr=Math.min(size-1,l+2);l=Math.max(0,rr-2);}
-  return [l,rr];
-}
-function makeShapePath(size,shape='square'){
-  if(shape==='square'){
-    const path=[];
-    for(let r=0;r<size;r++){
-      if(r%2===0){for(let c=0;c<size;c++)path.push({r,c});}
-      else{for(let c=size-1;c>=0;c--)path.push({r,c});}
-    }
-    return path;
-  }
-  const rows=Array.from({length:size},(_,r)=>desiredShapeInterval(shape,r,size));
-  // Pairwise boundary locks guarantee the serpentine path can step down one cell
-  // between every row while still letting the silhouette widen and narrow.
-  for(let r=0;r<size-1;r++){
-    if(r%2===0){
-      const edge=clamp(Math.round((rows[r][1]+rows[r+1][1])/2),2,size-1);
-      rows[r][1]=edge;rows[r+1][1]=edge;
-    }else{
-      const edge=clamp(Math.round((rows[r][0]+rows[r+1][0])/2),0,size-3);
-      rows[r][0]=edge;rows[r+1][0]=edge;
-    }
-  }
-  for(const row of rows){
-    if(row[1]-row[0]<2){
-      const center=Math.round((row[0]+row[1])/2);
-      row[0]=clamp(center-1,0,size-3);row[1]=row[0]+2;
-    }
-  }
-  const path=[];
-  for(let r=0;r<size;r++){
-    const [l,rr]=rows[r];
-    if(r%2===0){for(let c=l;c<=rr;c++)path.push({r,c});}
-    else{for(let c=rr;c>=l;c--)path.push({r,c});}
-  }
-  return path;
-}
-function transformShapePath(path,size,variant){
-  return path.map(({r,c})=>{
-    let rr=r,cc=c;
-    if(variant&1){const t=rr;rr=cc;cc=t;}
-    if(variant&2)cc=size-1-cc;
-    if(variant&4)rr=size-1-rr;
-    return {r:rr,c:cc};
-  });
-}
-function makeSnakePath(size){ return makeShapePath(size,'square'); }
+const SHORT_TO_LONG_DIR = Object.freeze({U:'up',R:'right',D:'down',L:'left'});
+const LONG_TO_SHORT_DIR = Object.freeze({up:'U',right:'R',down:'D',left:'L'});
 
-function randomizeHamiltonian(path,size,random,steps){
-  let out=path.map(p=>({...p}));
-  for(let s=0;s<steps;s++){
-    const index=new Map(out.map((p,i)=>[cellKey(p.r,p.c),i]));
-    const first=random()<.5;
-    const endpoint=first?out[0]:out[out.length-1];
-    const neighbors=[[endpoint.r-1,endpoint.c],[endpoint.r+1,endpoint.c],[endpoint.r,endpoint.c-1],[endpoint.r,endpoint.c+1]]
-      .filter(([r,c])=>inBounds(size,r,c)).map(([r,c])=>index.get(cellKey(r,c))).filter(i=>i!==undefined);
-    if(first){
-      const choices=neighbors.filter(i=>i>1); if(!choices.length)continue;
-      const j=choices[Math.floor(random()*choices.length)];
-      out=[...out.slice(0,j).reverse(),...out.slice(j)];
-    }else{
-      const choices=neighbors.filter(i=>i<out.length-2); if(!choices.length)continue;
-      const j=choices[Math.floor(random()*choices.length)];
-      out=[...out.slice(0,j+1),...out.slice(j+1).reverse()];
-    }
-  }
-  return out;
+function shapeLabel(pattern){
+  const special={
+    cat:'Cat head',letter_a:'Letter A',number_8:'Number 8',question:'Question mark',
+    blob:'Organic blob',lightning:'Lightning bolt'
+  };
+  if(special[pattern])return special[pattern];
+  return String(pattern||'maze').replaceAll('_',' ').replace(/\b\w/g,m=>m.toUpperCase());
 }
-
-function partitionHamiltonian(path,random,minLen,maxLen){
-  const chunks=[];let i=0;
-  while(path.length-i>=minLen){
-    const remaining=path.length-i;
-    let len=remaining<=maxLen?remaining:minLen+Math.floor(random()*(maxLen-minLen+1));
-    const left=remaining-len;
-    if(left>0&&left<minLen)len=Math.max(minLen,len-(minLen-left));
-    if(len<2)break;
-    chunks.push(path.slice(i,i+len).map(p=>({...p})));i+=len;
-  }
-  if(i<path.length){
-    if(chunks.length)chunks[chunks.length-1].push(...path.slice(i).map(p=>({...p})));
-    else chunks.push(path.map(p=>({...p})));
-  }
-  return chunks;
+function difficultyLabel(level,tier){
+  if(level<10)return 'Warm up';
+  if(level<40)return 'Flow';
+  if(level<100)return 'Tricky';
+  if(level<250)return 'Tangled';
+  if(level<500)return 'Expert';
+  return tier==='hard'?'Master':'Flow';
 }
-
-function orientSequentialChunks(chunks){
-  const arrows=chunks.map((cells,id)=>{
-    const copy=cells.map(p=>({...p}));
-    const head=copy[copy.length-1],pre=copy[copy.length-2];
-    return {id,cells:copy,dir:vecToDir(head.r-pre.r,head.c-pre.c),active:true};
-  });
-  return {oriented:arrows,solution:arrows.map(a=>a.id).reverse()};
+function candidateCountForLevel(level){
+  if(level<=10)return 3;
+  if(level<=50)return 2;
+  return 1;
 }
-
-function orientationOptions(cells){
-  if(cells.length<2)return [];
-  const forward=cells.map(p=>({...p}));
-  const fHead=forward[forward.length-1],fPre=forward[forward.length-2];
-  const reverse=[...cells].reverse().map(p=>({...p}));
-  const rHead=reverse[reverse.length-1],rPre=reverse[reverse.length-2];
-  return [
-    {cells:forward,dir:vecToDir(fHead.r-fPre.r,fHead.c-fPre.c)},
-    {cells:reverse,dir:vecToDir(rHead.r-rPre.r,rHead.c-rPre.c)}
-  ];
+function adaptGeneratedLevel(raw,level){
+  const arrows=raw.arrows.map(a=>({
+    id:a.id,
+    cells:a.cells.map(p=>({r:p.y,c:p.x})),
+    dir:LONG_TO_SHORT_DIR[a.direction],
+    active:true
+  }));
+  return {
+    cfg:{
+      width:raw.width,
+      height:raw.height,
+      size:Math.max(raw.width,raw.height),
+      label:difficultyLabel(level,raw.difficulty),
+      shape:raw.pattern,
+      shapeLabel:shapeLabel(raw.pattern),
+      seed:raw.seed
+    },
+    arrows,
+    solution:raw.solution.slice(),
+    fill:raw.debug?.coverage||0,
+    generationScore:raw.generationScore,
+    difficultyScore:raw.difficultyScore,
+    generatorLevel:raw,
+    generatorBoard:ArrowMazeGenerator.boardFromLevel(raw)
+  };
 }
-
-function blockerCount(candidate,remaining,selfIndex,size){
-  const occupied=new Map();
-  // A moving arrow behaves like a snake: its head cannot pass through any occupied cell,
-  // including a later part of its own body. The rest of the body then follows the
-  // exact path it already occupies, so only the head's exit lane needs testing.
-  remaining.forEach((cells,i)=>{if(!cells)return;for(const p of cells)occupied.set(cellKey(p.r,p.c),i);});
-  const [dr,dc]=dirVec(candidate.dir),head=candidate.cells[candidate.cells.length-1];
-  const hit=new Set();
-  for(let r=head.r+dr,c=head.c+dc;inBounds(size,r,c);r+=dr,c+=dc){
-    const owner=occupied.get(cellKey(r,c));if(owner!==undefined)hit.add(owner);
-  }
-  return hit.size;
-}
-
-function orientFixedOrder(chunks,size,random){
-  const oriented=new Array(chunks.length),placed=[];
-  for(let i=chunks.length-1;i>=0;i--){
-    const options=orientationOptions(chunks[i]);
-    const legal=options.filter(opt=>blockerCount(opt,[opt.cells,...placed],0,size)===0);
-    if(!legal.length)return null;
-    const pick=legal[Math.floor(random()*legal.length)];
-    oriented[i]={id:i,cells:pick.cells,dir:pick.dir,active:true};
-    placed.push(pick.cells);
-  }
-  return {oriented,solution:oriented.map(a=>a.id)};
-}
-
-function orientForSolvability(chunks,size,random){
-  const remaining=chunks.map(ch=>ch.map(p=>({...p})));
-  const full=chunks.map(ch=>ch.map(p=>({...p})));
-  const oriented=new Array(chunks.length),solution=[];
-  for(let step=0;step<chunks.length;step++){
-    const candidates=[];
-    for(let i=0;i<remaining.length;i++){
-      if(!remaining[i])continue;
-      for(const opt of orientationOptions(remaining[i])){
-        if(blockerCount(opt,remaining,i,size)===0){
-          const initialBlocks=blockerCount(opt,full,i,size);
-          candidates.push({i,opt,initialBlocks});
-        }
-      }
-    }
-    if(!candidates.length)return null;
-    const best=Math.max(...candidates.map(c=>c.initialBlocks));
-    const pool=candidates.filter(c=>c.initialBlocks>=best-1);
-    const pick=pool[Math.floor(random()*pool.length)];
-    oriented[pick.i]={id:pick.i,cells:pick.opt.cells,dir:pick.opt.dir,active:true};
-    solution.push(pick.i);remaining[pick.i]=null;
-  }
-  return {oriented,solution};
-}
-
-function legalInSet(arrows,cfg,a){
-  const [dr,dc]=dirVec(a.dir),head=a.cells[a.cells.length-1];
-  for(let r=head.r+dr,c=head.c+dc;inBounds(cfg.size,r,c);r+=dr,c+=dc){
-    for(const other of arrows){
-      if(!other.active)continue;
-      if(other.cells.some(p=>p.r===r&&p.c===c))return false;
-    }
-  }
-  return true;
-}
-
-function verifySolvable(data){
-  if(!data?.arrows?.length)return false;
-  const arrows=data.arrows.map(a=>({...a,cells:a.cells.map(p=>({...p})),active:true}));
-  // One verified solution is enough to prove the board cannot soft lock after a
-  // legal move: clearing an arrow only removes occupied cells, so future lanes
-  // can stay the same or become more open, never more blocked.
-  for(const id of data.solution||[]){
-    const a=arrows.find(x=>x.id===id&&x.active);
-    if(!a||!legalInSet(arrows,data.cfg,a))return false;
-    a.active=false;
-  }
-  return arrows.every(a=>!a.active);
-}
+function levelCacheKey(level){ return `${GAME_SEED}:${level}`; }
 function generateLevel(level){
-  const cfg=levelConfig(level);let best=null,bestScore=-Infinity;
-  for(let attempt=0;attempt<4;attempt++){
-    const random=rng(cfg.seed+attempt*7919);
-    let master=makeShapePath(cfg.size,cfg.shape);
-    const variant=(Math.floor(level/10)+attempt)%8;
-    master=transformShapePath(master,cfg.size,variant);
-    master=randomizeHamiltonian(master,cfg.size,random,Math.min(master.length*2,cfg.size*cfg.size*2));
-    const chunks=partitionHamiltonian(master,random,cfg.minChunk,cfg.maxChunk);
-    const solved=orientFixedOrder(chunks,cfg.size,random);if(!solved)continue;
-    const candidate={cfg,arrows:solved.oriented,solution:solved.solution,fill:master.length/(cfg.size*cfg.size)};
-    if(!verifySolvable(candidate))continue;
-    const legal=candidate.arrows.filter(a=>legalInSet(candidate.arrows,cfg,a)).length;
-    const desired=level<12?2:level<80?2:3;
-    const score=-Math.abs(legal-desired)*8+candidate.arrows.length*.06;
-    if(score>bestScore){bestScore=score;best=candidate;}
-    if(legal>=1&&legal<=desired){best=candidate;break;}
+  const cacheKey=levelCacheKey(level);
+  let raw=generatedLevelCache.get(cacheKey);
+  if(!raw){
+    raw=ArrowMazeGenerator.generateLevel(level,GAME_SEED,{candidateCount:candidateCountForLevel(level)});
+    const validation=ArrowMazeGenerator.validateLevel(raw);
+    if(!validation.valid)throw new Error(`Generated level ${level} failed validation: ${validation.errors.join('; ')}`);
+    generatedLevelCache.set(cacheKey,raw);
   }
-  if(best)return best;
-
-  // Deterministic fallback made directly from the silhouette's top to bottom
-  // serpentine route. Its reverse chunk order is guaranteed to clear because
-  // every removed chunk only opens more of the exit lanes ahead.
-  const random=rng(cfg.seed);
-  const master=makeShapePath(cfg.size,cfg.shape);
-  const chunks=partitionHamiltonian(master,random,cfg.minChunk,cfg.maxChunk);
-  const solved=orientSequentialChunks(chunks);
-  const fallback={cfg,arrows:solved.oriented,solution:solved.solution,fill:master.length/(cfg.size*cfg.size)};
-  if(!verifySolvable(fallback)){
-    const squareMaster=makeShapePath(cfg.size,'square');
-    const squareChunks=partitionHamiltonian(squareMaster,random,cfg.minChunk,cfg.maxChunk);
-    const squareSolved=orientSequentialChunks(squareChunks);
-    const squareCfg={...cfg,shape:'square',shapeLabel:'Square'};
-    const square={cfg:squareCfg,arrows:squareSolved.oriented,solution:squareSolved.solution,fill:1};
-    if(!verifySolvable(square))throw new Error('Level generator failed its solvability guarantee.');
-    return square;
-  }
-  return fallback;
+  return adaptGeneratedLevel(raw,level);
+}
+function toGeneratorArrow(a){
+  return {
+    id:a.id,
+    cells:a.cells.map(p=>({x:p.c,y:p.r})),
+    direction:SHORT_TO_LONG_DIR[a.dir]
+  };
+}
+function activeGeneratorArrows(){
+  return game.arrows.filter(a=>a.active).map(toGeneratorArrow);
 }
 
 function renderLevels(){
@@ -762,39 +2094,135 @@ function animateArrowOut(el,a){
     requestAnimationFrame(frame);
   });
 }
-function startLevel(level,{daily=false}={}){
-  const data=generateLevel(level); state.currentLevel=level;saveState();
-  game={...data,level,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,panMode:false,doubleClaimed:false,reward:0,tutorialActionDone:false};
+async function startLevel(level,{daily=false}={}){
+  if(levelStarting)return;
+  levelStarting=true;
+  const cached=generatedLevelCache.has(levelCacheKey(level));
+  if(!cached){
+    toast('Building maze...');
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  }
+  let data;
+  try{
+    data=generateLevel(level);
+  }catch(err){
+    console.error(err);
+    levelStarting=false;
+    openModal(`<h2>Level generation failed</h2><p>This seed could not produce a valid board. The error has been logged for debugging.</p><div class="sheet-actions"><button class="primary" id="generationBack">Back to levels</button></div>`);
+    setTimeout(()=>{const b=$('#generationBack');if(b)b.onclick=()=>{closeModal();showScreen('levels')}},0);
+    return;
+  }
+  levelStarting=false;
+  state.currentLevel=level;saveState();
+  game={...data,level,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,panMode:false,reward:0,tutorialActionDone:false};
   $('#gameLevel').textContent=daily?'Daily board':`Level ${level}`; $('#difficultyLabel').textContent=`${data.cfg.label} · ${data.cfg.shapeLabel}`;
   renderBoard(); renderHearts(); updateRemaining(); resetView(); showScreen('game');
   $('#zoomCluster').classList.toggle('show',data.cfg.size>=7 && state.boardMotion);
   $('#viewBtn').style.display=data.cfg.size>=7&&state.boardMotion?'flex':'none';
   if(!state.tutorialSeen && level===1) setTimeout(()=>beginTutorial(),350);
 }
-function renderBoard(){
-  const grid=$('#boardGrid'),n=game.cfg.size;
-  const step=n<=5?27:n===6?24.5:22,pad=n<=6?18:16,units=pad*2+n*step;
-  const appWidth=$('.app')?.clientWidth||window.innerWidth;
-  const availableHeight=$('#boardViewport')?.clientHeight||window.innerHeight*.62;
-  const physical=clamp(Math.min(appWidth-22,availableHeight-4,520),260,520);
-  game.step=step;game.pad=pad;game.boardUnits=units;game.boardPhysical=physical;
-  grid.style.width=physical+'px';grid.style.height=physical+'px';grid.innerHTML='';
+const ARROW_PALETTES={
+  light:[
+    ['#0f95e8','#c447d8','#1fae41','#6b63ea','#d6aa00'],
+    ['#1092d3','#9a5cff','#11a86f','#dbb100','#d64fc6'],
+    ['#007fc4','#c03fd1','#0ea34a','#5659dc','#c28f00'],
+    ['#1197c6','#8f58e4','#28a845','#c1a200','#c63fc1'],
+    ['#158ac8','#b042d8','#0f9f6f','#6575dc','#cc9800']
+  ],
+  dark:[
+    ['#2fd4ff','#ff7de3','#49ea5f','#8c86ff','#ffe34f'],
+    ['#49d3ff','#c89bff','#6cf26f','#ffd84f','#ff94ea'],
+    ['#3bc1ff','#ff8fe8','#67ef53','#7f93ff','#ffe864'],
+    ['#56d8ff','#a88dff','#57ea8d','#ffd85e','#ff9de2'],
+    ['#44cdff','#f78bff','#79f04d','#91a2ff','#ffd74a']
+  ]
+};
 
+function arrowColourComposition(level,arrows,cfg){
+  const count=level<6?1:level<20?2:level<55?3:level<140?(level%3===0?2:3):2+(level%3);
+  const modes=['vertical','horizontal','diagonal','radial','mirror'];
+  const mode=count===1?'mono':modes[Math.floor((level-1)/4)%modes.length];
+  const familyIndex=Math.floor((level-1)/5)%ARROW_PALETTES.light.length;
+  const width=Math.max(1,cfg.width),height=Math.max(1,cfg.height);
+  const centreOf=a=>{
+    let x=0,y=0;
+    for(const p of a.cells){x+=p.c+.5;y+=p.r+.5}
+    return {x:x/a.cells.length/width,y:y/a.cells.length/height};
+  };
+  const groupFor=({x,y})=>{
+    if(count===1)return 0;
+    let t=0;
+    if(mode==='vertical')t=x;
+    else if(mode==='horizontal')t=y;
+    else if(mode==='diagonal')t=(x+y)/2;
+    else if(mode==='radial'){const dx=x-.5,dy=y-.5;t=Math.min(.999,Math.hypot(dx,dy)/.71)}
+    else if(mode==='mirror')t=Math.min(.999,Math.abs(x-.5)*2);
+    return clamp(Math.floor(t*count),0,count-1);
+  };
+  const assignments=new Map();
+  for(const a of arrows){
+    const group=groupFor(centreOf(a));
+    assignments.set(a.id,group);
+  }
+  return {count,mode,familyIndex,assignments};
+}
+
+function arrowPaletteForState(comp){
+  const theme=document.body.classList.contains('dark')?'dark':'light';
+  const families=ARROW_PALETTES[theme];
+  return families[comp.familyIndex%families.length];
+}
+
+function applyBoardArrowColours(){
+  if(!game?.colourComposition)return;
+  const palette=arrowPaletteForState(game.colourComposition);
+  $$('.arrow-piece').forEach(el=>{
+    const id=Number(el.dataset.id);
+    const colourIndex=game.colourComposition.assignments.get(id)??0;
+    const arrowColour=palette[colourIndex%palette.length]||palette[0];
+    el.style.setProperty('--arrow-color',arrowColour);
+  });
+}
+
+function renderBoard(){
+  const grid=$('#boardGrid');
+  const rows=game.cfg.height,cols=game.cfg.width,n=Math.max(rows,cols);
+  const step=n<=10?23:n<=16?22:20,pad=n<=12?18:16;
+  const unitsW=pad*2+cols*step,unitsH=pad*2+rows*step;
+  const appWidth=$('.app')?.clientWidth||window.innerWidth;
+  const availableWidth=Math.min(appWidth-22,520);
+  const availableHeight=Math.max(180,($('#boardViewport')?.clientHeight||window.innerHeight*.62)-4);
+  const pxPerUnit=Math.min(availableWidth/unitsW,availableHeight/unitsH);
+  const physicalW=Math.max(1,unitsW*pxPerUnit),physicalH=Math.max(1,unitsH*pxPerUnit);
+  game.step=step;game.pad=pad;game.boardUnits=Math.max(unitsW,unitsH);game.boardUnitsW=unitsW;game.boardUnitsH=unitsH;game.unitPxScale=pxPerUnit;
+  game.boardPhysical=Math.max(physicalW,physicalH);
+  grid.style.width=physicalW+'px';grid.style.height=physicalH+'px';grid.innerHTML='';
+
+  game.colourComposition=arrowColourComposition(game.level,game.arrows,game.cfg);
+  const palette=arrowPaletteForState(game.colourComposition);
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.classList.add('board-svg');svg.setAttribute('viewBox',`0 0 ${units} ${units}`);svg.setAttribute('width',physical);svg.setAttribute('height',physical);svg.setAttribute('aria-label','Intertwined arrow maze');
+  svg.classList.add('board-svg');svg.setAttribute('viewBox',`0 0 ${unitsW} ${unitsH}`);svg.setAttribute('width',physicalW);svg.setAttribute('height',physicalH);svg.setAttribute('aria-label','Intertwined arrow maze');
   game.arrows.forEach(a=>{
     const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('arrow-piece');g.dataset.id=a.id;
+    const colourIndex=game.colourComposition.assignments.get(a.id)??0;
+    const arrowColour=palette[colourIndex%palette.length]||palette[0];
+    g.dataset.colourGroup=colourIndex;g.style.setProperty('--arrow-color',arrowColour);
     const d=pathDataFromArrow(a,step,pad);
     const body=document.createElementNS('http://www.w3.org/2000/svg','path');body.classList.add('arrow-body');body.setAttribute('d',d);body.dataset.baseD=d;
     const head=document.createElementNS('http://www.w3.org/2000/svg','path');head.classList.add('arrow-head');head.setAttribute('d',headData(a,step,pad));
-    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('arrow-hit');hit.setAttribute('d',d);hit.setAttribute('tabindex','0');hit.setAttribute('role','button');hit.setAttribute('aria-label',`Arrow pointing ${a.dir}`);
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');hit.classList.add('arrow-hit');hit.setAttribute('d',d);hit.setAttribute('tabindex','0');hit.setAttribute('role','button');hit.setAttribute('aria-label',`Arrow pointing ${SHORT_TO_LONG_DIR[a.dir]}`);
     const trigger=e=>{e.stopPropagation();if(!game.panMode)attemptArrow(a.id,g)};
     hit.addEventListener('click',trigger);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger(e)}});
     g.append(body,head,hit);svg.appendChild(g);
   });
   grid.appendChild(svg);
 }
-function isLegal(a){ return legalInSet(game.arrows,game.cfg,a); }
+function isLegal(a){
+  if(!a?.active)return false;
+  const active=activeGeneratorArrows();
+  const target=active.find(x=>x.id===a.id);
+  return !!target&&ArrowMazeGenerator.canEscape(target,active,game.generatorBoard);
+}
 function raySegmentDistance(origin,dir,a,b){
   const vx=dir.x,vy=dir.y,wx=b.x-a.x,wy=b.y-a.y;
   const rx=a.x-origin.x,ry=a.y-origin.y;
@@ -838,13 +2266,13 @@ function blockedTravelDistance(a){
   // Convert a small screen-space breathing room into SVG units. The arrow tip
   // now stops a few pixels before the obstacle, so it reads as a bump, not an
   // overlap. Keep a conservative fallback for unusual generated geometry.
-  const scale=(game.boardPhysical||420)/(game.boardUnits||420);
+  const scale=game.unitPxScale||((game.boardPhysical||420)/(game.boardUnits||420));
   const visualGap=5.5/Math.max(.1,scale);
   if(Number.isFinite(nearest))return clamp(nearest-visualGap,game.step*.08,game.step*1.35);
 
   const head=a.cells[a.cells.length-1];
   let steps=1;
-  outer:for(let r=head.r+dr,c=head.c+dc;inBounds(game.cfg.size,r,c);r+=dr,c+=dc,steps++){
+  outer:for(let r=head.r+dr,c=head.c+dc;inGameBounds(game.cfg,r,c);r+=dr,c+=dc,steps++){
     for(const other of game.arrows){
       if(!other.active)continue;
       if(other.cells.some(p=>p.r===r&&p.c===c))break outer;
@@ -923,11 +2351,10 @@ function useHint(){
 function updateHintUI(){ $('#hintInventory').textContent=state.hints;$('#hintCost').textContent=state.hints?`x${state.hints}`:`${CONSTANTS.HINT_COST}`; }
 function showOutOfLives(){
   const creditButton = state.lifeCredits ? `<button class="ghost" id="creditLife">Use extra life credit · ${state.lifeCredits} left</button>` : '';
-  openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry free, add one life, or use the demo rewarded ad.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · ${CONSTANTS.EXTRA_LIFE_COST} coins</button><button class="ghost" id="adLife"><i class="ph ph-play-circle"></i>Demo ad · +1 life</button></div>`);
+  openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry the level or spend coins on one extra life.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · ${CONSTANTS.EXTRA_LIFE_COST} coins</button></div>`);
   $('#retryNow').onclick=()=>{closeModal();startLevel(game.level,{daily:game.daily})};
   if($('#creditLife')) $('#creditLife').onclick=()=>{state.lifeCredits--;game.lives=1;saveState();renderHearts();closeModal();toast('Extra life used')};
-  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('Not enough coins');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();closeModal();};
-  $('#adLife').onclick=()=>showRewardedAd(()=>{game.lives=1;renderHearts();closeModal();toast('Extra life added')});
+  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('Not enough coins');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();closeModal();toast('Extra life added')};
 }
 function finishLevel(){
   clearHint();sound('win');haptic([20,40,20]);
@@ -937,10 +2364,7 @@ function finishLevel(){
   state.coins+=reward;state.stars[game.level]=Math.max(state.stars[game.level]||0,stars);
   if(!game.daily){state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);}
   saveState();
-  if(!game.daily && game.level===3 && !state.reviewAsked){
-    state.reviewAsked=true;saveState();setTimeout(()=>openModal(`<h2>Enjoying Arrowflow?</h2><p>This is the web stand-in for a native app review prompt. In a Capacitor build, this can call the App Store or Play Store review API.</p><div class="sheet-actions"><button class="primary" id="reviewSure">Sure</button><button class="ghost" id="reviewLater">Not now</button></div>`),900);
-  }
-  $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';$('#doubleBtn').disabled=false;$('#doubleBtn').style.opacity=1;
+  $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';
   burstConfetti();setTimeout(()=>showScreen('win'),260);
 }
 function formatTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
@@ -961,13 +2385,9 @@ function renderShop(){
   const list=$('#shopList');list.innerHTML='';
   items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy">${it.price} <i class="ph ph-coin"></i></button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('Not enough coins');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateHintUI();};list.appendChild(d)});
 }
-function showRewardedAd(onReward){
-  openModal(`<div class="ad-label">Demo rewarded ad</div><h2>Imagine a 15 second ad here.</h2><p>The demo resolves instantly so you can test the reward flow without an ad SDK.</p><button class="primary" id="finishAd" style="width:100%"><i class="ph ph-play"></i>Grant reward</button>`);
-  $('#finishAd').onclick=()=>{closeModal();sound('coin');haptic(20);onReward?.();};
-}
 
 function syncSettings(){
-  $$('[data-setting]').forEach(b=>b.classList.toggle('on',!!state[b.dataset.setting]));document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#0d1119':'#f4f1ea';
+  $$('[data-setting]').forEach(b=>{const on=!!state[b.dataset.setting];b.classList.toggle('on',on);b.setAttribute('role','switch');b.setAttribute('aria-checked',String(on));});document.body.classList.toggle('dark',state.dark);document.querySelector('meta[name="theme-color"]').content=state.dark?'#0a0c10':'#f4f1ea';
 }
 
 function resetView(){game.scale=1;game.x=0;game.y=0;game.panMode=false;applyStageTransform();$('#viewBtn').classList.remove('active');}
@@ -1013,17 +2433,39 @@ $('#skipBtn').onclick=()=>{
   $('#confirmSkip').onclick=()=>{if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('Not enough coins');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
 };
 $('#nextBtn').onclick=()=>{if(game.daily)return showScreen('home');startLevel(state.currentLevel)};
-$('#doubleBtn').onclick=()=>{if(game.doubleClaimed)return;showRewardedAd(()=>{game.doubleClaimed=true;state.coins+=game.reward;saveState();$('#doubleBtn').disabled=true;$('#doubleBtn').style.opacity=.5;toast(`+${game.reward} bonus coins`)})};
-$('#freeCoinsBtn').onclick=$('#demoAdBtn').onclick=()=>showRewardedAd(()=>{state.coins+=CONSTANTS.COINS_PER_AD;saveState();toast(`+${CONSTANTS.COINS_PER_AD} coins`)});
-$('#shareBtn').onclick=async()=>{const data={title:'Arrowflow',text:'Try this calm arrow logic game.'};try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(location.href);toast('Link copied')}}catch{}};
-$$('[data-setting]').forEach(b=>b.onclick=()=>{const k=b.dataset.setting;state[k]=!state[k];saveState();syncSettings();if(k==='dark')toast(state.dark?'Night ink on':'Night ink off')});
+$$('[data-setting]').forEach(b=>b.onclick=()=>{const k=b.dataset.setting;state[k]=!state[k];saveState();syncSettings();if(k==='dark'){if(game&&$('#game').classList.contains('active'))applyBoardArrowColours();toast(state.dark?'Dark mode on':'Dark mode off')}});
 $('#resetTutorial').onclick=()=>{state.tutorialSeen=false;saveState();toast('Tutorial will play on level 1')};
 $('#resetProgress').onclick=()=>openModal(`<h2>Reset all progress?</h2><p>Levels, stars, coins and inventory will return to their starting values.</p><div class="sheet-actions"><button class="secondary" id="doReset">Reset everything</button><button class="ghost" id="cancelReset">Cancel</button></div>`);
-document.addEventListener('click',e=>{if(e.target?.id==='doReset'){state={...defaultState};saveState();syncSettings();closeModal();showScreen('home');toast('Progress reset')}if(e.target?.id==='cancelReset')closeModal();if(e.target?.id==='reviewSure'){closeModal();toast('Native review hook placeholder')}if(e.target?.id==='reviewLater')closeModal();});
-$$('.fakeSubmit').forEach(b=>b.onclick=()=>toast('Demo form only'));
-$$('#ratingRow button').forEach(b=>b.onclick=()=>{$$('#ratingRow button').forEach(x=>x.style.background='');b.style.background='var(--accent)';b.style.color='white';haptic(10)});
+document.addEventListener('click',e=>{if(e.target?.id==='doReset'){state={...defaultState};saveState();syncSettings();closeModal();showScreen('home');toast('Progress reset')}if(e.target?.id==='cancelReset')closeModal();});
 
 window.addEventListener('resize',()=>{if(game&&$('#game').classList.contains('active')){renderBoard();applyStageTransform();}});
+
+window.ArrowflowDebug={
+  current(){
+    if(!game)return null;
+    const activeIds=game.arrows.filter(a=>a.active).map(a=>a.id);
+    return ArrowMazeGenerator.getDebugFrame(game.generatorLevel,activeIds);
+  },
+  validate(){
+    if(!game)return {valid:false,errors:['No level is active']};
+    return ArrowMazeGenerator.validateLevel(game.generatorLevel);
+  },
+  solution(){ return game?.solution?.slice()||[]; },
+  async autoSolve(delay=90){
+    if(!game)return false;
+    for(const id of game.solution){
+      const a=game.arrows.find(x=>x.id===id&&x.active);
+      if(!a)continue;
+      if(!isLegal(a))throw new Error(`Auto solve reached blocked arrow ${id}`);
+      const el=$(`.arrow-piece[data-id="${id}"]`);
+      if(!el)throw new Error(`Arrow element ${id} is missing`);
+      await attemptArrow(id,el);
+      if(delay)await sleep(delay);
+    }
+    return true;
+  },
+  stress(count=100){ return ArrowMazeGenerator.stressTest({count,seed:'arrowflow-browser-check',candidateCount:1,reproCheck:true}); }
+};
 
 updateWallets();updateHintUI();syncSettings();renderLevels();renderShop();
 setTimeout(()=>$('#splash').classList.add('hide'),720);
