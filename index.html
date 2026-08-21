@@ -860,8 +860,8 @@ button{border-radius:var(--flat-radius)!important}
   --arrow-3: #7b51dc;
   --arrow-4: #b8860b;
   --arrow-5: #00897b;
-  --arrow-6: #d9531e;
-  --arrow-7: #c2185b;
+  --arrow-6: #4a6fa5;
+  --arrow-7: #3a6b6b;
   --arrow-8: #3949ab;
   --arrow-9: #558b2f;
   --flat-bg: var(--bg);
@@ -900,7 +900,7 @@ body.dark {
   --arrow-4: #ffdf6d;
   --arrow-5: #26dfd0;
   --arrow-6: #ff8c42;
-  --arrow-7: #ff5c8a;
+  --arrow-7: #5eeaa8;
   --arrow-8: #9fa8da;
   --arrow-9: #aeea00;
   --flat-bg: var(--bg);
@@ -3024,7 +3024,7 @@ function showScreen(id){
     drag=null;
     pinch=null;
     const stage=$('#boardStage');
-    if(stage) stage.style.pointerEvents='none';
+    if(stage){stage.style.pointerEvents='none';stage.style.transition='';}
   }
   $$('.screen').forEach(s=>{
     const active=s.id===id;
@@ -3508,9 +3508,12 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   if(!daily)warmNextLevels(level,2);
   if(tutorialPending)setTimeout(()=>beginTutorial(),300);
 }
+// Neither palette uses anything in the red/crimson/rose family - that hue is
+// reserved for the "can't move" (failed) state, so an arrow using it would
+// look like a blocked arrow even when it's perfectly playable.
 const ARROW_PALETTES={
-  light:['#0d85d0','#b03bc2','#199e3a','#7b51dc','#b8860b','#00897b','#d9531e','#c2185b','#3949ab','#558b2f'],
-  dark:['#3fc2ff','#f06ff5','#3ee065','#b19eff','#ffdf6d','#26dfd0','#ff8c42','#ff5c8a','#9fa8da','#aeea00']
+  light:['#0d85d0','#b03bc2','#199e3a','#7b51dc','#b8860b','#00897b','#4a6fa5','#3a6b6b','#3949ab','#558b2f'],
+  dark:['#3fc2ff','#f06ff5','#3ee065','#b19eff','#ffdf6d','#26dfd0','#ff8c42','#5eeaa8','#9fa8da','#aeea00']
 };
 
 function arrowColourComposition(level,arrows,cfg){
@@ -3815,6 +3818,13 @@ function syncSettings(){
 function resetView(){game.scale=1;game.x=0;game.y=0;applyStageTransform();}
 function applyStageTransform(){if(!game)return;$('#boardStage').style.transform=`translate(calc(-50% + ${game.x}px),calc(-50% + ${game.y}px)) scale(${game.scale})`;}
 function zoomBy(delta){if(!game)return;game.scale=clamp(game.scale+delta,CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();}
+// .board-stage has a CSS transition on `transform` so things like resetView()
+// ease smoothly. That transition also applies to every frame of a live drag
+// or pinch, though, which means each move was chasing a moving target through
+// a 180ms ease curve instead of tracking the finger directly - the actual
+// cause of the reported jitter. Switch it off for the duration of any live
+// gesture and hand control back to CSS once the gesture ends.
+function setStageLive(live){const stage=$('#boardStage');if(stage)stage.style.transition=live?'none':'';}
 
 // Pan/zoom is always on, like a normal photo/map view: pinch with two
 // fingers to zoom, press and drag with one finger to pan, tap an arrow to
@@ -3826,7 +3836,7 @@ function zoomBy(delta){if(!game)return;game.scale=clamp(game.scale+delta,CONSTAN
 // whatever the finger lifts off over, so a drag never accidentally plays
 // an arrow it passed across.
 const DRAG_THRESHOLD_PX=6;
-let drag=null,pinch=null,suppressClickUntil=0;
+let drag=null,pinch=null,suppressClickUntil=0,wheelIdleTimer=null;
 const viewport=$('#boardViewport');
 viewport.addEventListener('pointerdown',e=>{
   if(!isGameScreenActive()||!game||e.pointerType==='mouse'&&e.button!==0)return;
@@ -3838,6 +3848,7 @@ viewport.addEventListener('pointermove',e=>{
   if(!drag.moved){
     if(Math.hypot(dx,dy)<DRAG_THRESHOLD_PX)return;
     drag.moved=true;
+    setStageLive(true);
     try{viewport.setPointerCapture(e.pointerId);}catch{}
   }
   e.preventDefault();
@@ -3847,19 +3858,33 @@ viewport.addEventListener('pointerup',e=>{
   if(!drag||e.pointerId!==drag.id)return;
   if(drag.moved){
     suppressClickUntil=Date.now()+300;
+    setStageLive(false);
     try{viewport.releasePointerCapture(e.pointerId);}catch{}
   }
   drag=null;
 });
-viewport.addEventListener('pointercancel',e=>{if(drag&&e.pointerId===drag.id)drag=null});
-viewport.addEventListener('wheel',e=>{if(!isGameScreenActive()||!game)return;e.preventDefault();zoomBy(e.deltaY>0?-.1:.1)},{passive:false});
+viewport.addEventListener('pointercancel',e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  if(drag.moved)setStageLive(false);
+  drag=null;
+});
+viewport.addEventListener('wheel',e=>{
+  if(!isGameScreenActive()||!game)return;
+  e.preventDefault();
+  setStageLive(true);
+  zoomBy(e.deltaY>0?-.1:.1);
+  clearTimeout(wheelIdleTimer);
+  wheelIdleTimer=setTimeout(()=>setStageLive(false),150);
+},{passive:false});
 viewport.addEventListener('touchstart',e=>{
   if(!isGameScreenActive()||!game||e.touches.length!==2)return;
   drag=null; // two fingers down means pinch, not pan - don't fight the drag handler
+  setStageLive(true);
   const [a,b]=e.touches;pinch={dist:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),scale:game.scale};
 },{passive:true});
 viewport.addEventListener('touchmove',e=>{if(!isGameScreenActive()||!pinch||e.touches.length!==2)return;const [a,b]=e.touches;const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);game.scale=clamp(pinch.scale*(d/pinch.dist),CONSTANTS.ZOOM_MIN,CONSTANTS.ZOOM_MAX);applyStageTransform();},{passive:true});
-viewport.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null},{passive:true});
+viewport.addEventListener('touchend',e=>{if(e.touches.length<2){pinch=null;setStageLive(false);}},{passive:true});
+
 
 function clearTutorialPulse(){
   $$('.arrow-piece.tutorialPulse').forEach(el=>el.classList.remove('tutorialPulse'));
