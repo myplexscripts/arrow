@@ -99,6 +99,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .level-cell{aspect-ratio:1;border-radius:18px;background:var(--surface);border:1px solid rgba(23,32,51,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;font-weight:800;box-shadow:0 5px 14px rgba(36,31,24,.05)}
 .level-cell.current{background:var(--ink);color:#fff;transform:scale(1.03)}
 .level-cell.locked{opacity:.42}.level-cell .stars{font-size:1rem;letter-spacing:1px;color:var(--accent-3)}
+.level-cell .best-time{display:flex;align-items:center;gap:3px;font-size:1rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.level-cell .best-time i{font-size:1rem}
 .level-cell.current .stars{color:#ffd46e}.level-cell i{font-size:1.1rem}
 
 /* game */
@@ -141,7 +143,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 /* win */
 .win-wrap{flex:1;display:flex;align-items:center;justify-content:center}.win-card{width:min(100%,520px);padding:26px;text-align:center;position:relative;overflow:hidden}.win-card:before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,109,90,.12) 8% 10%,transparent 10% 18%,rgba(78,167,161,.11) 18% 20%,transparent 20% 28%);animation:spin 20s linear infinite}.win-card>*{position:relative}.win-icon{width:94px;height:94px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:2.5rem;margin:0 auto 18px;transform:rotate(-4deg)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.win-card h1{font-size:2.1rem;letter-spacing:-.055em;margin:0}.win-stars{font-size:2rem;color:var(--accent-3);letter-spacing:5px;margin:10px 0}.win-reward{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.reward-pill{background:var(--surface-2);border-radius:16px;padding:10px 14px;font-weight:800}.win-actions{display:grid;gap:10px}.confetti{position:absolute;width:8px;height:16px;border-radius:4px;top:-20px;animation:confetti 1.5s ease-out forwards}@keyframes confetti{to{transform:translate(var(--x),680px) rotate(640deg);opacity:.1}}
+.win-card h1{font-size:2.1rem;letter-spacing:-.055em;margin:0}.win-stars{font-size:2rem;color:var(--accent-3);letter-spacing:5px;margin:10px 0}.win-reward{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.reward-pill{background:var(--surface-2);border-radius:16px;padding:10px 14px;font-weight:800}
+.best-time-note{display:none;align-items:center;justify-content:center;gap:7px;margin:-10px 0 20px;font-weight:800;font-size:1.05rem;color:var(--accent-3)}
+.best-time-note.show{display:flex}
+.win-actions{display:grid;gap:10px}.confetti{position:absolute;width:8px;height:16px;border-radius:4px;top:-20px;animation:confetti 1.5s ease-out forwards}@keyframes confetti{to{transform:translate(var(--x),680px) rotate(640deg);opacity:.1}}
 
 /* shop, settings, info */
 .section-title{font-size:1.05rem;margin:20px 2px 10px;letter-spacing:-.03em}.shop-balance{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:10px}.shop-balance strong{font-size:1.55rem}.shop-list{display:grid;gap:10px;padding-bottom:20px}.shop-item{padding:16px;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:13px}.shop-icon{width:54px;height:54px;border-radius:17px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45rem}.shop-item h3{margin:0;font-size:1rem}.shop-item p{margin:3px 0 0;color:var(--muted);font-size:1rem}.buy{height:44px;padding:0 13px;border-radius:14px;background:var(--ink);color:white;font-weight:800;font-size:1rem}
@@ -1000,7 +1005,7 @@ body.dark {
 
   <section class="screen" id="win">
     <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-x"></i></button><h1>Level clear</h1><span></span></div>
-    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon-wrap" aria-hidden="true"><div class="win-burst"></div><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-sketch-logo"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><div class="win-actions"><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
+    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon-wrap" aria-hidden="true"><div class="win-burst"></div><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-sketch-logo"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><p class="best-time-note" id="bestTimeNote"><i class="ph-fill ph-trophy"></i> New best time!</p><div class="win-actions"><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
   </section>
 
   <section class="screen" id="shop">
@@ -2951,6 +2956,7 @@ const defaultState = {
   maxUnlocked: 1,
   currentLevel: 1,
   stars: {},
+  bestTimes: {},
   tutorialSeen: false,
   sound: true,
   haptics: true,
@@ -3274,7 +3280,9 @@ function renderLevels(){
     const btn=document.createElement('button');btn.className='level-cell';
     const locked=i>state.maxUnlocked; if(locked)btn.classList.add('locked'); if(i===state.currentLevel&&!locked)btn.classList.add('current');
     const stars=state.stars[i]||0;
-    btn.innerHTML=locked?`<i class="ph ph-lock-simple"></i><span>${i}</span>`:`<span>${i}</span><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>`;
+    const bestTime=state.bestTimes[i];
+    const timeTag=bestTime!==undefined?`<div class="best-time"><i class="ph ph-clock"></i>${formatTime(bestTime)}</div>`:'';
+    btn.innerHTML=locked?`<i class="ph ph-lock-simple"></i><span>${i}</span>`:`<span>${i}</span><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>${timeTag}`;
     btn.disabled=locked;btn.addEventListener('click',()=>startLevel(i));grid.appendChild(btn);
   }
 }
@@ -3848,16 +3856,26 @@ function finishLevel(){
   const elapsed=Math.max(1,Math.floor((Date.now()-game.startedAt)/1000));
   const reward=CONSTANTS.BASE_LEVEL_REWARD+game.cfg.size+CONSTANTS.STAR_BONUS[stars];game.reward=reward;
   state.coins+=reward;
+  // Track a best-clear-time per level so a replay can show whether this run
+  // beat the old one. Only a genuine improvement over an *existing* best
+  // triggers the "new best" callout - the very first clear sets the initial
+  // time with nothing to compare against yet, so it just gets saved quietly
+  // and starts showing up on the level tile from then on.
+  let newBestTime=false;
   if(game.daily){
     const key=game.dailyKey||new Date().toISOString().slice(0,10);
     state.dailyHistory[key]={completed:true,stars:Math.max(state.dailyHistory[key]?.stars||0,stars),reward,completedAt:Date.now()};
   }else{
     state.stars[game.level]=Math.max(state.stars[game.level]||0,stars);
+    const prevBest=state.bestTimes[game.level];
+    if(prevBest!==undefined&&elapsed<prevBest)newBestTime=true;
+    state.bestTimes[game.level]=prevBest===undefined?elapsed:Math.min(prevBest,elapsed);
     state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));
     state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);
   }
   saveState();
   $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';
+  $('#bestTimeNote').classList.toggle('show',newBestTime);
   burstConfetti();setTimeout(()=>showScreen('win'),260);
 }
 function formatTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
