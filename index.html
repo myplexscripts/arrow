@@ -106,7 +106,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 /* game */
 #game{padding-left:10px;padding-right:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
 .game-top{display:grid;grid-template-columns:52px 1fr;align-items:center;gap:8px;flex:0 0 auto}
-.level-title{text-align:right}.level-title strong{font-size:1.18rem}.level-title small{display:none}
+.level-title{text-align:right}.level-title strong{font-size:1.18rem}.level-title small{display:block;font-size:.74rem;line-height:1.1;margin-top:2px}
 .game-stats{display:grid;grid-template-columns:1fr 1fr;align-items:center;margin:10px 8px 4px}
 .game-stats .left{justify-self:start}.game-stats .right{justify-self:end}.hearts{display:flex;gap:5px;color:var(--danger);font-size:1.6rem}.heart.lost{color:#d8d6d0;transform:scale(.86)}
 .board-shell{flex:1;min-height:0;position:relative;margin:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden}
@@ -1610,7 +1610,24 @@ body.dark {
   }
 
   function dailyShowcaseSpecForLevel(level, rng) {
-    return showcaseSpecForLevel(level, rng) || rng.pick(showcaseOptionsForLevel(level));
+    if (level === 15) return { pattern:'rectangle', artPlanStyle:'mirrored_columns', showcase:'first_mirror' };
+    if (level === 25) return rng.pick([
+      { pattern:'bunny', artPlanStyle:'animal_contour', showcase:'first_bunny' },
+      { pattern:'fish', artPlanStyle:'animal_contour', showcase:'first_fish' }
+    ]);
+    if (level === 40) return { pattern:'dolphin', artPlanStyle:'animal_contour', showcase:'first_dolphin' };
+    if (level < 40) return rng.pick([
+      { pattern:'bunny', artPlanStyle:'animal_contour', showcase:'bunny_intro' },
+      { pattern:'fish', artPlanStyle:'animal_contour', showcase:'fish_intro' },
+      { pattern:'heart', artPlanStyle:'comb_ladder', showcase:'heart_ladder' }
+    ]);
+    return rng.pick([
+      { pattern:'dolphin', artPlanStyle:'animal_contour', showcase:'dolphin_showcase' },
+      { pattern:'bunny', artPlanStyle:'animal_contour', showcase:'bunny_intro' },
+      { pattern:'fish', artPlanStyle:'animal_contour', showcase:'fish_intro' },
+      { pattern:'butterfly', artPlanStyle:'mirrored_columns', showcase:'butterfly_mirror' },
+      { pattern:'heart', artPlanStyle:'comb_ladder', showcase:'heart_ladder' }
+    ]);
   }
 
   function choosePattern(level, rng, recentPatterns = []) {
@@ -3145,7 +3162,8 @@ body.dark {
   }
 
   function generateDailyLevel(levelNumber, seed, options = {}) {
-    const candidateCount = options.candidateCount ?? (levelNumber <= 60 ? 4 : 3);
+    const candidateCount = options.candidateCount ?? 1;
+    const maxAlternateShowcases = options.maxAlternateShowcases ?? 0;
     const baseOptions = { ...options, candidateCount };
     const primarySpec = withDailyShowcaseFlag(
       options.showcaseSpec || dailyShowcaseSpecForLevel(levelNumber, new RNG(`${seed ?? 'arrow-maze-daily'}:${levelNumber}:showcase`))
@@ -3159,6 +3177,7 @@ body.dark {
     };
 
     const primary = tryDailyBuild(primarySpec);
+    if (maxAlternateShowcases <= 0) return primary;
     if (dailyArtIsStrong(primary)) return primary;
 
     const tried = new Set([primarySpec?.showcase].filter(Boolean));
@@ -3166,6 +3185,7 @@ body.dark {
       .shuffle(showcaseOptionsForLevel(levelNumber));
     let altIndex = 0;
     for (const spec of alternates) {
+      if (altIndex >= maxAlternateShowcases) break;
       if (tried.has(spec.showcase)) continue;
       tried.add(spec.showcase);
       let candidate = null;
@@ -3628,12 +3648,43 @@ function difficultyLabel(level,tier){
   if(level<500)return 'Expert';
   return tier==='hard'?'Master':'Flow';
 }
+function designLabel(cfg){
+  const byShowcase={
+    first_mirror:'Mirror board',
+    mirror_intro:'Mirror board',
+    mirror_diamond:'Diamond mirror',
+    frame_intro:'Framed maze',
+    starter_frame:'Framed maze',
+    starter_ribbon:'Ribbon maze',
+    first_bunny:'Bunny',
+    bunny_intro:'Bunny',
+    mirror_bunny:'Bunny mirror',
+    first_fish:'Fish',
+    fish_intro:'Fish',
+    heart_ladder:'Heart',
+    first_dolphin:'Dolphin',
+    dolphin_intro:'Dolphin',
+    dolphin_showcase:'Dolphin',
+    butterfly_mirror:'Butterfly',
+    portrait_intro:'Portrait',
+    first_portrait:'Portrait',
+    circuit_intro:'Circuit maze',
+    first_circuit:'Circuit maze',
+    temple_frame:'Temple maze',
+    temple_showcase:'Temple maze',
+    side_chambers:'Side chambers'
+  };
+  const showcaseName=cfg?.showcase?.showcase;
+  if(showcaseName&&byShowcase[showcaseName])return byShowcase[showcaseName];
+  if(cfg?.shapeLabel)return cfg.shapeLabel;
+  return cfg?.label||'Maze';
+}
 function isArtShowcaseLevel(level){
   level=Math.floor(Number(level)||0);
   return level===15||level===25||level===40||level===60||level%10===0;
 }
 function candidateCountForLevel(level,{daily=false}={}){
-  if(daily)return level<=60?4:3;
+  if(daily)return 1;
   if(isArtShowcaseLevel(level))return level<=60?4:3;
   if(level<=10)return 3;
   if(level<=100)return 2;
@@ -3667,8 +3718,8 @@ function adaptGeneratedLevel(raw,level){
     generatorBoard:ArrowMazeGenerator.boardFromLevel(raw)
   };
 }
-function levelCacheKey(level){ return `showcase2:${GAME_SEED}:${level}`; }
-function dailyLevelCacheKey(level,dailyKey){ return `showcase2:${DAILY_SEED}:${dailyKey}:${level}`; }
+function levelCacheKey(level){ return `showcase3:${GAME_SEED}:${level}`; }
+function dailyLevelCacheKey(level,dailyKey){ return `showcase3:${DAILY_SEED}:${dailyKey}:${level}`; }
 function dailyKeyForDate(date=new Date()){
   return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 }
@@ -3676,7 +3727,7 @@ function dailyChallengeForDate(date=new Date()){
   const dailyKey=dailyKeyForDate(date);
   const localMidnight=new Date(date.getFullYear(),date.getMonth(),date.getDate());
   const dayIndex=Math.floor(localMidnight.getTime()/86400000);
-  return {dailyKey,level:(dayIndex%CONSTANTS.TOTAL_LEVELS)+1};
+  return {dailyKey,level:25+(dayIndex%50)};
 }
 function generationRequestForLevel(level,{daily=false,dailyKey=null}={}){
   if(arguments[1]?.cacheKey&&arguments[1]?.seed&&arguments[1]?.options)return arguments[1];
@@ -3704,7 +3755,7 @@ function generationRequestForLevel(level,{daily=false,dailyKey=null}={}){
     seed,
     cacheKey:dailyLevelCacheKey(level,key),
     candidateCount,
-    options:{candidateCount,showcaseSpec:{...showcase,daily:true}},
+    options:{candidateCount,maxAlternateShowcases:0,showcaseSpec:{...showcase,daily:true}},
     daily:true,
     dailyKey:key
   };
@@ -3975,7 +4026,8 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   levelStarting=false;
   if(!daily){state.currentLevel=level;saveState();}
   game={...data,level,dailyKey,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,reward:0,tutorialActionDone:false,motionLocked:false,exitAnimations:new Set()};
-  $('#gameLevel').textContent=daily?'Daily':`Level ${level}`; $('#difficultyLabel').textContent='';
+  $('#gameLevel').textContent=daily?'Daily':`Level ${level}`;
+  $('#difficultyLabel').textContent=daily?`Today: ${designLabel(data.cfg)}`:(data.cfg.showcase?designLabel(data.cfg):data.cfg.label);
   renderBoard(); renderHearts(); updateToolQuantities(); resetView(); showScreen('game');
   $('#skipBtn').style.display=daily?'none':'flex';
   if(!daily)warmNextLevels(level,2);
