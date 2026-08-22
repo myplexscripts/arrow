@@ -1347,6 +1347,36 @@ body.dark {
         const tail = pointInPolygon(p.x, p.y, [[0.46,0],[0.98,-0.60],[0.98,0.60]]);
         return body || tail;
       });
+    } else if (name === 'dolphin') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const body = ((p.x+0.12)/0.74)**2 + ((p.y+0.03)/0.36)**2 <= 1;
+        const nose = p.x < -0.58 && p.x > -0.98 && Math.abs(p.y+0.02) < 0.15 + (p.x + 0.98) * 0.20;
+        const tail = pointInPolygon(p.x, p.y, [[0.48,-0.02],[0.96,-0.50],[0.82,-0.05],[0.98,0.42]]);
+        const fin = pointInPolygon(p.x, p.y, [[-0.04,-0.18],[0.24,-0.78],[0.30,-0.16]]);
+        const belly = pointInPolygon(p.x, p.y, [[-0.22,0.20],[0.18,0.64],[0.34,0.18]]);
+        return body || nose || tail || fin || belly;
+      });
+    } else if (name === 'bunny') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const head = (p.x/0.56)**2 + ((p.y+0.02)/0.48)**2 <= 1;
+        const body = (p.x/0.70)**2 + ((p.y-0.42)/0.46)**2 <= 1;
+        const leftEar = ((p.x+0.30)/0.19)**2 + ((p.y+0.63)/0.44)**2 <= 1;
+        const rightEar = ((p.x-0.30)/0.19)**2 + ((p.y+0.63)/0.44)**2 <= 1;
+        const cheek = ((p.x+0.58)/0.18)**2 + ((p.y-0.18)/0.18)**2 <= 1 ||
+          ((p.x-0.58)/0.18)**2 + ((p.y-0.18)/0.18)**2 <= 1;
+        return head || body || leftEar || rightEar || cheek;
+      });
+    } else if (name === 'portrait_bust') {
+      mask = makeMask(width, height, (x, y) => {
+        const p = normalizedXY(x, y, width, height);
+        const hair = (p.x/0.58)**2 + ((p.y+0.25)/0.74)**2 <= 1;
+        const face = (p.x/0.36)**2 + ((p.y+0.18)/0.48)**2 <= 1;
+        const neck = Math.abs(p.x) < 0.24 && p.y > 0.18 && p.y < 0.58;
+        const shoulders = pointInPolygon(p.x,p.y,[[-0.88,0.92],[-0.64,0.54],[-0.22,0.36],[0.22,0.36],[0.64,0.54],[0.88,0.92]]);
+        return hair || face || neck || shoulders;
+      });
     } else if (name === 'cat') {
       mask = makeMask(width, height, (x, y) => {
         const p = normalizedXY(x, y, width, height);
@@ -1508,19 +1538,19 @@ body.dark {
   function patternBandFillFloor(pattern) {
     if (pattern === 'cross') return 0.94;
     if (pattern === 'rectangle' || pattern === 'square') return 0.97;
-    if (['diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.90;
+    if (['diamond','oval','circle','triangle','hourglass','heart','shield','bottle','bell','star','cloud','flower','butterfly','fish','dolphin','bunny','portrait_bust','cat','house','tree','crown','letter_a','number_8','blob'].includes(pattern)) return 0.90;
     return 0.84;
   }
 
   function patternPool(level) {
     if (level <= 10) return ['rectangle','square'];
     if (level <= 25) return ['rectangle','diamond','oval'];
-    if (level <= 50) return ['heart','triangle','circle','hourglass','diamond','oval'];
-    if (level <= 100) return ['shield','bottle','wave','star','bell','cross','cloud','flower','house'];
+    if (level <= 50) return ['heart','triangle','circle','hourglass','diamond','oval','bunny'];
+    if (level <= 100) return ['shield','bottle','wave','star','bell','cross','cloud','flower','house','fish','dolphin'];
     return [
       'rectangle','diamond','oval','heart','triangle','circle','hourglass','shield','bottle','bell','star',
-      'crescent','cross','wave','lightning','cloud','flower','butterfly','fish','cat','house','tree','crown',
-      'key','question','letter_a','number_8','blob'
+      'crescent','cross','wave','lightning','cloud','flower','butterfly','fish','dolphin','bunny','portrait_bust',
+      'cat','house','tree','crown','key','question','letter_a','number_8','blob'
     ];
   }
 
@@ -1528,6 +1558,215 @@ body.dark {
     const pool = patternPool(level);
     const filtered = pool.filter(p => !recentPatterns.slice(-3).includes(p));
     return rng.pick(filtered.length ? filtered : pool);
+  }
+
+  // ---------- artful internal layout guidance ----------
+
+  function artPlanPool(level, pattern) {
+    if (pattern === 'portrait_bust') return ['portrait_guides','nested_frame','mirrored_columns'];
+    if (pattern === 'bunny' || pattern === 'dolphin' || pattern === 'fish' || pattern === 'cat') {
+      return ['animal_contour','mirrored_columns','comb_ladder','nested_frame'];
+    }
+    if (level <= 10) return ['ribbon_stack','nested_frame'];
+    if (level <= 25) return ['ribbon_stack','nested_frame','mirrored_columns'];
+    if (level <= 50) return ['mirrored_columns','nested_frame','comb_ladder','central_spiral','ribbon_stack'];
+    if (level <= 100) return ['mirrored_columns','side_chambers','temple_frame','comb_ladder','central_spiral','nested_frame'];
+    return ['mirrored_columns','side_chambers','temple_frame','comb_ladder','central_spiral','circuit_board','portrait_guides','animal_contour','ribbon_stack'];
+  }
+
+  function chooseArtPlanStyle(level, pattern, rng, forcedStyle = null) {
+    if (forcedStyle) return forcedStyle;
+    const pool = artPlanPool(level, pattern);
+    return rng.pick(pool);
+  }
+
+  function buildMaskEdgeDistances(board) {
+    const cells = board.mask.cells;
+    const dist = new Map();
+    const queue = [];
+    for (const k of cells) {
+      const [x,y] = k.split(',').map(Number);
+      let edge = false;
+      for (const d of DIR_LIST) {
+        if (!cells.has(key(x+d.x,y+d.y))) { edge = true; break; }
+      }
+      if (edge) { dist.set(k,0); queue.push({x,y,k}); }
+    }
+    let qi = 0;
+    while (qi < queue.length) {
+      const cur = queue[qi++];
+      const base = dist.get(cur.k);
+      for (const d of DIR_LIST) {
+        const nk = key(cur.x+d.x,cur.y+d.y);
+        if (!cells.has(nk) || dist.has(nk)) continue;
+        dist.set(nk,base+1);
+        queue.push({x:cur.x+d.x,y:cur.y+d.y,k:nk});
+      }
+    }
+    return dist;
+  }
+
+  function nearBand(value, target, falloff = 1) {
+    return clamp(1 - Math.abs(value - target) / Math.max(0.001, falloff), 0, 1);
+  }
+
+  function chooseStrongerAxis(current, next, currentScore, nextScore) {
+    if (!current || nextScore > currentScore) return next;
+    return current;
+  }
+
+  function createArtPlan(board, pattern, levelNumber, rng, forcedStyle = null) {
+    const style = chooseArtPlanStyle(levelNumber, pattern, rng, forcedStyle);
+    const cellScore = new Map();
+    const axisByCell = new Map();
+    const edgeDistance = buildMaskEdgeDistances(board);
+    const maxEdge = Math.max(1, ...edgeDistance.values());
+    const w = Math.max(1, board.width), h = Math.max(1, board.height);
+    const cx = (w - 1) / 2;
+    const cy = (h - 1) / 2;
+    const thirds = [Math.round(h * 0.28), Math.round(h * 0.50), Math.round(h * 0.72)];
+
+    for (const k of board.mask.cells) {
+      const [x,y] = k.split(',').map(Number);
+      const p = normalizedXY(x, y, w, h);
+      const edge = edgeDistance.get(k) ?? 0;
+      const ring = edge / maxEdge;
+      const mirrorX = Math.min(x, w - 1 - x);
+      const mirrorY = Math.min(y, h - 1 - y);
+      const centreDist = Math.hypot((x - cx) / Math.max(1,cx), (y - cy) / Math.max(1,cy));
+      let score = 0.35 + ring * 0.20;
+      let axis = 'any';
+      let axisScore = 0;
+
+      if (style === 'mirrored_columns') {
+        const columnPhase = mirrorX % 4;
+        const column = columnPhase === 0 ? 1 : columnPhase === 1 ? 0.55 : 0;
+        const centre = nearBand(Math.abs(x - cx),0,1.25);
+        const cross = Math.max(...thirds.map(t => nearBand(y,t,1.2)));
+        score += column * 1.7 + centre * 0.9 + cross * 1.0;
+        axis = cross > column + centre ? 'h' : 'v';
+        axisScore = Math.max(column + centre, cross);
+      } else if (style === 'nested_frame') {
+        const frame = edge <= 1 ? 1 : (edge % 3 === 0 ? 0.95 : edge % 3 === 1 ? 0.45 : 0.15);
+        const horizontalSide = Math.abs(p.y) > Math.abs(p.x);
+        score += frame * 1.8 + (1 - ring) * 0.55;
+        axis = horizontalSide ? 'h' : 'v';
+        axisScore = frame;
+      } else if (style === 'comb_ladder') {
+        const spine = Math.max(nearBand(y,Math.round(h*0.33),1), nearBand(y,Math.round(h*0.66),1));
+        const tooth = mirrorX % 3 === 0 ? 1 : mirrorX % 3 === 1 ? 0.45 : 0;
+        score += spine * 1.45 + tooth * 1.25 + nearBand(Math.abs(x-cx),0,1) * 0.75;
+        axis = spine > tooth ? 'h' : 'v';
+        axisScore = Math.max(spine,tooth);
+      } else if (style === 'central_spiral') {
+        const ringLine = Math.max(0.15, edge % 3 === 0 ? 1 : edge % 3 === 1 ? 0.55 : 0.25);
+        const tangentHorizontal = Math.abs(y - cy) > Math.abs(x - cx);
+        score += ringLine * 1.55 + (1 - Math.min(1,centreDist)) * 0.70;
+        axis = tangentHorizontal ? 'h' : 'v';
+        axisScore = ringLine;
+      } else if (style === 'side_chambers') {
+        const side = nearBand(Math.abs(p.x),0.66,0.22);
+        const centreSpine = nearBand(Math.abs(x-cx),0,1.2);
+        const chamberBars = Math.max(...thirds.map(t => nearBand(y,t,1)));
+        score += side * 1.55 + centreSpine * 0.8 + chamberBars * 0.95;
+        axis = chamberBars > side ? 'h' : 'v';
+        axisScore = Math.max(side,chamberBars,centreSpine);
+      } else if (style === 'temple_frame') {
+        const roof = nearBand(Math.abs(p.x) + Math.max(0,p.y+0.20),0.82,0.16);
+        const pillars = nearBand(Math.abs(p.x),0.46,0.09) + nearBand(Math.abs(p.x),0.72,0.08);
+        const base = nearBand(p.y,0.76,0.10) + nearBand(p.y,0.52,0.08);
+        score += roof * 1.25 + pillars * 1.35 + base * 1.15;
+        axis = base > pillars ? 'h' : 'v';
+        axisScore = Math.max(roof,pillars,base);
+      } else if (style === 'circuit_board') {
+        const bus = y % 4 === 1 ? 1 : y % 4 === 2 ? 0.45 : 0;
+        const via = x % 5 === 2 ? 0.85 : 0;
+        const centreRail = nearBand(Math.abs(y-cy),0,1.2);
+        score += bus * 1.35 + via * 1.05 + centreRail * 0.8;
+        axis = bus + centreRail > via ? 'h' : 'v';
+        axisScore = Math.max(bus,via,centreRail);
+      } else if (style === 'portrait_guides') {
+        const hair = nearBand(Math.abs(p.x),0.52,0.16) * nearBand(p.y,-0.18,0.70);
+        const faceOval = nearBand(Math.hypot(p.x/0.42,(p.y+0.12)/0.54),1,0.13);
+        const eyeLine = nearBand(p.y,-0.16,0.05) * nearBand(Math.abs(p.x),0.24,0.20);
+        const smile = nearBand(p.y,0.12 + Math.abs(p.x) * 0.18,0.06) * nearBand(Math.abs(p.x),0.22,0.18);
+        const shoulders = nearBand(p.y,0.64,0.12);
+        score += hair * 1.35 + faceOval * 1.55 + eyeLine * 1.65 + smile * 1.45 + shoulders * 1.15;
+        axis = eyeLine + smile + shoulders > hair + faceOval ? 'h' : 'v';
+        axisScore = Math.max(hair,faceOval,eyeLine,smile,shoulders);
+      } else if (style === 'animal_contour') {
+        const contour = edge <= 1 ? 1 : edge % 3 === 0 ? 0.75 : 0.2;
+        const spine = nearBand(p.y,0,0.12) + nearBand(p.y,-0.22,0.10);
+        const ribs = mirrorX % 3 === 0 ? 0.85 : 0;
+        score += contour * 1.45 + spine * 1.05 + ribs * 0.75;
+        axis = spine > ribs ? 'h' : (Math.abs(p.x) > Math.abs(p.y) ? 'v' : 'h');
+        axisScore = Math.max(contour,spine,ribs);
+      } else {
+        const band = y % 3 === 1 ? 1 : y % 3 === 2 ? 0.55 : 0.2;
+        const turnPocket = x % 5 === 0 || x % 5 === 4 ? 0.75 : 0;
+        score += band * 1.45 + turnPocket * 0.65;
+        axis = band >= turnPocket ? 'h' : 'v';
+        axisScore = Math.max(band,turnPocket);
+      }
+
+      // Preserve bilateral read when the selected style is symmetrical.
+      if (['mirrored_columns','comb_ladder','side_chambers','temple_frame','portrait_guides','animal_contour'].includes(style)) {
+        const mirrorMate = key(w - 1 - x, y);
+        if (board.mask.cells.has(mirrorMate)) score += 0.35;
+      }
+
+      cellScore.set(k, Number(clamp(score,0,4).toFixed(3)));
+      axisByCell.set(k, chooseStrongerAxis('any', axis, 0, axisScore));
+    }
+
+    return {
+      style,
+      symmetrical: ['mirrored_columns','comb_ladder','side_chambers','temple_frame','portrait_guides','animal_contour'].includes(style),
+      cellScore,
+      axisByCell
+    };
+  }
+
+  function artPlanCellScore(plan, cell) {
+    if (!plan || !cell) return 0;
+    return plan.cellScore.get(key(cell.x,cell.y)) || 0;
+  }
+
+  function artPlanStepScore(plan, from, to, stepDir, lastMove = null) {
+    if (!plan || !to || !stepDir) return 0;
+    const k = key(to.x,to.y);
+    const preferred = plan.axisByCell.get(k) || 'any';
+    const stepAxis = stepDir.x !== 0 ? 'h' : 'v';
+    let score = artPlanCellScore(plan,to) * 0.35;
+    if (preferred === stepAxis) score += 0.70;
+    else if (preferred === 'any') score += 0.12;
+    else score -= 0.06;
+    if (lastMove && (stepDir.x !== lastMove.x || stepDir.y !== lastMove.y)) {
+      if (plan.style === 'central_spiral' || plan.style === 'circuit_board') score += 0.22;
+    }
+    return score;
+  }
+
+  function artPlanOptionScore(plan, option) {
+    if (!plan || !option) return 0;
+    const prev = { x: option.head.x - option.dir.x, y: option.head.y - option.dir.y };
+    return artPlanCellScore(plan, option.head) * 0.8 +
+      artPlanCellScore(plan, prev) * 0.45 +
+      artPlanStepScore(plan, prev, option.head, option.dir) * 0.45;
+  }
+
+  function artPlanPathScore(plan, cells) {
+    if (!plan || !cells || !cells.length) return 0;
+    let score = 0;
+    for (let i=0; i<cells.length; i++) {
+      score += artPlanCellScore(plan,cells[i]);
+      if (i > 0) {
+        const d = {x:cells[i].x-cells[i-1].x,y:cells[i].y-cells[i-1].y};
+        const last = i > 1 ? {x:cells[i-1].x-cells[i-2].x,y:cells[i-1].y-cells[i-2].y} : null;
+        score += artPlanStepScore(plan,cells[i-1],cells[i],d,last) * 0.55;
+      }
+    }
+    return score / Math.max(1,cells.length);
   }
 
   function buildDependencyPlan(targetCount, config, rng) {
@@ -1863,6 +2102,7 @@ body.dark {
 
         const adjacency = countOccupiedNeighbours(n, occupied);
         score += adjacency * 1.15;
+        score += artPlanStepScore(config.artPlan,cur,n,d,lastMove) * 0.72;
         if (isTurn) {
           const bendTargetMid = (config.targetBends[0] + config.targetBends[1]) / 2;
           score += bends < bendTargetMid ? 1.25 : -0.2;
@@ -1913,6 +2153,7 @@ body.dark {
     const blockFit = 1 - Math.min(1, Math.abs(blocksLegal.size - desiredBlocks) / Math.max(1, desiredBlocks + 1));
     const bendFit = 1 - Math.min(1, Math.abs(actualBends - targetBends) / Math.max(1,targetBends + 1));
     const pocketPenalty = remainingComponentPenalty(board, occupied, candidateSet);
+    const artFit = artPlanPathScore(config.artPlan,cells);
 
     let adjacency = 0;
     for (const c of cells) adjacency += countOccupiedNeighbours(c, occupied);
@@ -1924,6 +2165,7 @@ body.dark {
       blocksLegal.size * 5 +
       Math.min(4, blocksAny.size) * 1.2 +
       adjacency * 0.20 -
+      artFit * 2.4 -
       pocketPenalty;
 
     return { arrow, score, blocksLegal: [...blocksLegal], blocksAny: [...blocksAny] };
@@ -1990,7 +2232,7 @@ body.dark {
     // Bias toward heads nearer the silhouette edge but do not force them there.
     const ranked = options.map(o => {
       const edgeDist = Math.min(o.head.x, o.head.y, board.width-1-o.head.x, board.height-1-o.head.y);
-      return { ...o, edgeDist, blockability: o.futureMaskRayCount || 0 };
+      return { ...o, edgeDist, blockability: o.futureMaskRayCount || 0, artScore: artPlanOptionScore(config.artPlan,o) };
     });
 
     let best = null;
@@ -2002,7 +2244,8 @@ body.dark {
         const future = o.blockability;
         const blockableBias = desiredBlocks > 0 ? (1 + future * 1.4) : (1 + future * 0.45);
         const directDependencyBias = 1 + (o.seedBlocks || 0) * 8;
-        return blockableBias * directDependencyBias / (1 + o.edgeDist * 0.12);
+        const artBias = 1 + Math.max(0,o.artScore || 0) * 0.20;
+        return blockableBias * directDependencyBias * artBias / (1 + o.edgeDist * 0.12);
       });
       const lenJitter = rng.int(-2, 3);
       const len = clamp(targetLength + lenJitter, config.minLen, config.maxLen);
@@ -2114,6 +2357,7 @@ body.dark {
 
           let score = 1;
           score += countOccupiedNeighbours(n,occupied) * 2.2;
+          score += artPlanStepScore(config.artPlan,tail,n,d,oldDir) * 0.82;
           // Blocking arrows with lower ids is safe and adds useful dependencies.
           let safeBlocks=0;
           for (const oid of rayOwnersByCell.get(nk) || []) if (oid < arrow.id) safeBlocks++;
@@ -2219,7 +2463,13 @@ body.dark {
       };
       // Most-stranded cells first (Warnsdorff again): a cell with 0-1 free
       // neighbours only gets harder to reach as its neighbours fill in.
-      const ordered = rng.shuffle(gaps).sort((a, b) => freeNeighbourCount(a) - freeNeighbourCount(b));
+      const ordered = rng.shuffle(gaps).sort((a, b) => {
+        const [ax,ay] = a.split(',').map(Number);
+        const [bx,by] = b.split(',').map(Number);
+        const artA = artPlanCellScore(config.artPlan,{x:ax,y:ay});
+        const artB = artPlanCellScore(config.artPlan,{x:bx,y:by});
+        return (freeNeighbourCount(a) - artA * 0.45) - (freeNeighbourCount(b) - artB * 0.45);
+      });
 
       for (const gk of ordered) {
         if (occMap.has(gk)) continue;
@@ -2268,6 +2518,8 @@ body.dark {
     mask = transformPattern(mask, transform);
 
     const board = { width: mask.width, height: mask.height, mask };
+    const artPlan = createArtPlan(board, pattern, levelNumber, rng, options.artPlanStyle || null);
+    config.artPlan = artPlan;
     const maskCellCount = mask.cells.size;
     const fillTarget = patternCoverageTarget(pattern, config);
     const densityTargetCells = Math.floor(maskCellCount * fillTarget);
@@ -2477,6 +2729,7 @@ body.dark {
       seed: String(seed),
       levelNumber,
       pattern,
+      artPlan: { style: artPlan.style, symmetrical: artPlan.symmetrical },
       transform,
       width: board.width,
       height: board.height,
@@ -2676,6 +2929,9 @@ body.dark {
     const blockedFraction = Object.values(graph.blockersOf).filter(ids=>ids.length>0).length / Math.max(1,level.arrows.length);
     const longThreshold=Math.max(5,Math.round(config.maxLen*.45));
     const longFraction=lengths.filter(v=>v>=longThreshold).length / Math.max(1,lengths.length);
+    const artPlanFit = config.artPlan
+      ? level.arrows.reduce((s,a)=>s+artPlanPathScore(config.artPlan,a.cells),0) / Math.max(1,level.arrows.length)
+      : 0;
 
     const [legalMin,legalMax] = config.initialLegal;
     const legalPenalty = legalCount < legalMin ? (legalMin-legalCount)*5 : legalCount > legalMax ? (legalCount-legalMax)*3.5 : 0;
@@ -2695,7 +2951,7 @@ body.dark {
     const snakeScore = windingFraction*6 + blockedFraction*7 + longFraction*3;
     const straightPenalty = Math.max(0,straightFraction-0.28)*10;
 
-    return coverageScore + fullnessScore + arrowCountScore + dependencyScore + varietyScore + snakeScore - straightPenalty - legalPenalty - sparseShapePenalty - weakBandPenalty;
+    return coverageScore + fullnessScore + arrowCountScore + dependencyScore + varietyScore + snakeScore + artPlanFit*4 - straightPenalty - legalPenalty - sparseShapePenalty - weakBandPenalty;
   }
 
   function enrichLevel(level, config, plan) {
@@ -2726,7 +2982,8 @@ body.dark {
       arrowCount: level.arrows.length,
       averageLength: Number((lengths.reduce((s,v)=>s+v,0)/Math.max(1,lengths.length)).toFixed(2)),
       averageBends: Number((bends.reduce((s,v)=>s+v,0)/Math.max(1,bends.length)).toFixed(2)),
-      targetInitialLegal: plan.targetInitialLegal
+      targetInitialLegal: plan.targetInitialLegal,
+      artPlan: level.artPlan || null
     };
   }
 
@@ -2773,9 +3030,10 @@ body.dark {
       // found even if the floor is never cleared in the budget.
       const fallbackDeadline = Date.now() + (options.fallbackBudgetMs ?? 2500);
       let bestFallbackValid = null;
+      const fallbackPattern = options.pattern || 'rectangle';
       for (let i=0; i<8 && Date.now() < fallbackDeadline; i++) {
         const c = buildCandidate(levelNumber, `${baseSeed}:fallback:${i}`, {
-          ...options, pattern:'rectangle', placementAttempts:70
+          ...options, pattern:fallbackPattern, placementAttempts:70
         });
         const validation = validateLevel(c, {checkAlternateStrategies:false});
         if (!validation.valid) continue;
@@ -2815,6 +3073,7 @@ body.dark {
       dependencies: dependencyGraph(arrows,board),
       solution: level.solution,
       pattern: level.pattern,
+      artPlan: level.artPlan,
       seed: level.seed,
       generationScore: level.generationScore
     };
@@ -2842,7 +3101,7 @@ body.dark {
   function stableLevelFingerprint(level) {
     return JSON.stringify({
       pattern:level.pattern,width:level.width,height:level.height,mask:level.mask,
-      arrows:level.arrows,solution:level.solution,generationScore:level.generationScore
+      artPlan:level.artPlan,arrows:level.arrows,solution:level.solution,generationScore:level.generationScore
     });
   }
 
@@ -2895,6 +3154,8 @@ body.dark {
     RNG,
     createPatternMask,
     transformPattern,
+    createArtPlan,
+    chooseArtPlanStyle,
     buildDependencyPlan,
     generateArrowPaths: buildCandidate,
     placeArrow,
@@ -3213,7 +3474,7 @@ const LONG_TO_SHORT_DIR = Object.freeze({up:'U',right:'R',down:'D',left:'L'});
 function shapeLabel(pattern){
   const special={
     cat:'Cat head',letter_a:'Letter A',number_8:'Number 8',question:'Question mark',
-    blob:'Organic blob',lightning:'Lightning bolt'
+    blob:'Organic blob',lightning:'Lightning bolt',portrait_bust:'Portrait bust'
   };
   if(special[pattern])return special[pattern];
   return String(pattern||'maze').replaceAll('_',' ').replace(/\b\w/g,m=>m.toUpperCase());
@@ -3246,6 +3507,7 @@ function adaptGeneratedLevel(raw,level){
       label:difficultyLabel(level,raw.difficulty),
       shape:raw.pattern,
       shapeLabel:shapeLabel(raw.pattern),
+      layoutPattern:raw.artPlan?.style||'freeform',
       seed:raw.seed
     },
     arrows,
@@ -3257,7 +3519,7 @@ function adaptGeneratedLevel(raw,level){
     generatorBoard:ArrowMazeGenerator.boardFromLevel(raw)
   };
 }
-function levelCacheKey(level){ return `dense2:${GAME_SEED}:${level}`; }
+function levelCacheKey(level){ return `artplan1:${GAME_SEED}:${level}`; }
 function generateLevel(level){
   return adaptGeneratedLevel(buildAndCacheRawLevel(level),level);
 }
