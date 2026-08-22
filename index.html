@@ -8,8 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 <style>
 :root{
   --bg:#f4f1ea;
@@ -197,11 +196,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .primary,.secondary{box-shadow:0 5px 0 color-mix(in srgb,currentColor 12%,transparent)}
 .ghost{border:1px solid var(--line);box-shadow:0 3px 0 rgba(23,32,51,.07)}
 .card{border:1px solid var(--line)}
-.currency-inline,.reward-pill .ph-sketch-logo,.chip .ph-sketch-logo,.buy .ph-sketch-logo{vertical-align:-.08em}
+.currency-inline,.reward-pill .gem-icon,.chip .gem-icon,.buy .gem-icon{vertical-align:-.08em}
 
 
 /* Puzzle-game identity: gem currency, power slots and playful accents. */
-.ph-sketch-logo{color:var(--arrow-3)}
+.gem-icon{color:var(--arrow-3)}
 .wallet .chip,.game-stats .right{border-color:color-mix(in srgb,var(--arrow-3) 42%,var(--line));background:color-mix(in srgb,var(--arrow-3) 7%,var(--surface))}
 .primary{box-shadow:0 5px 0 var(--arrow-0)}
 .secondary{background:var(--accent-2);box-shadow:0 5px 0 color-mix(in srgb,var(--accent-2) 35%,transparent)}
@@ -405,7 +404,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px soli
 .brand-mark{border:2px solid var(--game-outline);box-shadow:0 4px 0 var(--game-shadow);background:var(--game-purple)}
 .brand{font-size:1.05rem;letter-spacing:-.02em}
 .wallet .chip{background:var(--game-panel-2);border-color:var(--game-outline);color:var(--game-ink)}
-.ph-sketch-logo{color:var(--game-purple)}
+.gem-icon{color:var(--game-purple)}
 
 /* Home is a game launcher, not a landing page. */
 .home-center{max-width:400px}
@@ -631,7 +630,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .brand-mark{width:44px;height:44px;background:var(--flat-purple)!important;color:#fff!important;border:2px solid var(--flat-line)!important}
 .brand{font-size:1.05rem;font-weight:800}
 .wallet .chip{background:var(--flat-panel-2)!important}
-.ph-sketch-logo{color:var(--flat-purple)!important}
+.gem-icon{color:var(--flat-purple)!important}
 
 /* Home: graphic launcher, no landing-page card stack. */
 #home{padding-left:20px;padding-right:20px}
@@ -734,9 +733,9 @@ body.dark .board-viewport{background-color:#0c1219!important}
 /* Shop and settings: inventory rows, not floating cards. */
 .section-title{font-size:1.1rem!important;margin:18px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--flat-line)}
 .shop-balance{padding:14px 16px!important;background:var(--flat-purple)!important;color:#fff!important;border:2px solid var(--flat-line)!important}
-.shop-balance .kicker,.shop-balance strong,.shop-balance .ph-sketch-logo{color:#fff!important}
-.shop-list,.setting-list{gap:0!important}
-.shop-item,.setting-row{padding:14px!important;border:2px solid var(--flat-line)!important;border-bottom-width:0!important;background:var(--flat-panel)!important}
+.shop-balance .kicker,.shop-balance strong,.shop-balance .gem-icon{color:#fff!important}
+.shop-list,.setting-list{gap:12px!important}
+.shop-item,.setting-row{padding:14px!important;border:2px solid var(--flat-line)!important;border-bottom-width:2px!important;background:var(--flat-panel)!important}
 .shop-item:last-child,.setting-row:last-child{border-bottom-width:2px!important}
 .shop-item:nth-child(3n+1){border-left:6px solid var(--flat-blue)!important}
 .shop-item:nth-child(3n+2){border-left:6px solid var(--flat-purple)!important}
@@ -750,7 +749,7 @@ body.dark .board-viewport{background-color:#0c1219!important}
 .switch{width:58px;height:36px!important;min-height:36px;background:var(--flat-panel-2)!important;border:2px solid var(--flat-line)!important;padding:4px!important}
 .switch:before{width:24px!important;height:24px!important;background:var(--flat-panel)!important;border:2px solid var(--flat-line)!important}
 .switch.on{background:var(--flat-green)!important}
-.switch.on:before{transform:translateX(20px)!important}
+.switch.on:before{transform:translateX(22px)!important}
 
 /* Toasts are brief game banners, not pills. */
 .toast{background:var(--flat-ink)!important;color:var(--flat-panel)!important;border:2px solid var(--flat-line)!important;padding:10px 14px!important;font-weight:800}
@@ -834,14 +833,24 @@ button{border-radius:var(--flat-radius)!important}
   transition:none!important;
 }
 #splash .splash-bar{
-  transition:transform .46s cubic-bezier(.72,0,.24,1);
+  top:auto!important;
+  bottom:auto!important;
+  left:-3%!important;
+  right:-3%!important;
+  width:auto!important;
+  height:34.5%!important;
+  transform:translateX(0);
+  transition:transform .56s cubic-bezier(.72,0,.24,1);
 }
+#splash .splash-bar:nth-child(1){top:-1%!important;background:var(--arrow-0)}
+#splash .splash-bar:nth-child(2){top:32.75%!important;background:var(--arrow-1)}
+#splash .splash-bar:nth-child(3){bottom:-1%!important;background:var(--arrow-2)}
 #splash .splash-bar:nth-child(1){transition-delay:0ms}
 #splash .splash-bar:nth-child(2){transition-delay:85ms}
 #splash .splash-bar:nth-child(3){transition-delay:170ms}
 #splash .splash-wordmark{transition:opacity .15s ease}
 #splash.wipe .splash-wordmark{opacity:0}
-#splash.wipe .splash-bar{transform:translateY(-106%)}
+#splash.wipe .splash-bar{transform:translateX(106%)}
 #splash.done{visibility:hidden!important;pointer-events:none!important}
 @media (prefers-reduced-motion:reduce){
   #splash .splash-bar{transition-duration:.12s!important}
@@ -939,11 +948,23 @@ body.dark {
 #game:not(.active) .board-svg,
 #game:not(.active) .arrow-piece,
 #game:not(.active) .arrow-hit { pointer-events:none!important; }
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 18px}.stat-card{padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.stat-card span{display:block;color:var(--muted);font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.stat-card strong{display:block;margin-top:4px;font-size:1.35rem;letter-spacing:-.04em}.achievement-list{display:grid;gap:10px;padding-bottom:20px}.achievement-row{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.achievement-row.locked{opacity:.72}.achievement-row .badge{width:46px;height:46px;border-radius:8px;display:grid;place-items:center;background:var(--flat-panel-2);font-size:1.3rem}.achievement-row h3{margin:0;font-size:1rem}.achievement-row p{margin:3px 0 8px;color:var(--muted);font-size:.9rem}.achievement-reward{font-weight:900;white-space:nowrap}.progress-track{height:8px;border:1px solid var(--flat-line);border-radius:999px;background:var(--flat-panel-2);overflow:hidden}.progress-fill{height:100%;background:var(--flat-green);width:0%}
+.gem-icon{display:inline-grid;place-items:center;width:1.12em;height:1.12em;min-width:16px;min-height:16px;color:var(--flat-purple);line-height:1;vertical-align:-.12em;flex:0 0 auto}
+.gem-icon svg{display:block;width:100%;height:100%;overflow:visible}
+.currency-inline,.reward-pill .gem-icon,.chip .gem-icon,.buy .gem-icon{vertical-align:-.12em}
+.shop-balance .gem-icon{color:#fff!important}
+i[class^="ph-"],i[class*=" ph-"],.gem-icon{min-width:16px;min-height:16px}
+:where(.app small,.app .stat-card span,.app .achievement-row p,.app .level-title small,.app .tutorial-card .step){font-size:1rem!important}
+.shop-list,.setting-list,.achievement-list{gap:12px!important;padding-bottom:20px}
+.shop-item,.setting-row,.achievement-row{border:2px solid var(--flat-line)!important;border-bottom-width:2px!important;margin:0!important}
+.switch{display:flex!important;align-items:center!important;width:58px!important;height:36px!important;min-width:58px!important;min-height:36px!important;padding:4px!important}
+.switch:before{flex:0 0 24px!important;width:24px!important;height:24px!important}
+.switch.on:before{transform:translateX(22px)!important}
 </style>
 </head>
 <body>
 <div class="app" id="app">
-  <div id="splash" aria-hidden="true">
+  <div id="splash" class="wipe" aria-hidden="true">
     <div class="splash-bar"></div>
     <div class="splash-bar"></div>
     <div class="splash-bar"></div>
@@ -955,7 +976,7 @@ body.dark {
       <div class="brand"><div class="brand-mark">
         <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 28h10V17h13" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m25 12 6 5-6 5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>Arrowflow</div>
-      <div class="wallet"><button class="chip" data-nav="shop" aria-label="Open shop"><i class="ph ph-sketch-logo"></i><span data-coins>0</span></button></div>
+      <div class="wallet"><button class="chip" data-nav="shop" aria-label="Open shop"><span class="gem-icon" data-gem-icon></span><span data-coins>0</span></button></div>
     </div>
     <div class="home-hero">
       <div class="home-center">
@@ -966,29 +987,30 @@ body.dark {
         <h1 class="title">Unwind the maze.</h1>
         <p class="subtitle">Find the open arrows and let the board unravel.</p>
         <div class="home-actions">
-          <button class="primary" id="continueBtn"><i class="ph-fill ph-play"></i><span>Continue</span></button>
-          <button class="ghost" data-nav="levels"><i class="ph ph-squares-four"></i>Levels</button>
-          <button class="ghost" id="dailyBtn"><i class="ph ph-calendar-dots"></i>Daily</button>
+          <button class="primary" id="continueBtn"><i class="ph-duotone ph-play"></i><span>Continue</span></button>
+          <button class="ghost" data-nav="levels"><i class="ph-duotone ph-squares-four"></i>Levels</button>
+          <button class="ghost" id="dailyBtn"><i class="ph-duotone ph-calendar-dots"></i>Daily</button>
         </div>
         <div class="home-nav">
-          <button class="nav-mini" data-nav="shop"><i class="ph ph-storefront"></i>Shop</button>
-          <button class="nav-mini" data-nav="settings"><i class="ph ph-gear-six"></i>Settings</button>
+          <button class="nav-mini" data-nav="shop"><i class="ph-duotone ph-storefront"></i>Shop</button>
+          <button class="nav-mini" data-nav="progress"><i class="ph-duotone ph-chart-line-up"></i>Progress</button>
+          <button class="nav-mini" data-nav="settings"><i class="ph-duotone ph-gear-six"></i>Settings</button>
         </div>
       </div>
     </div>
   </section>
 
   <section class="screen" id="levels">
-    <div class="topbar"><button class="icon-btn" data-nav="home" aria-label="Back"><i class="ph ph-caret-left"></i></button><h1>Levels</h1><button class="icon-btn" data-nav="shop" aria-label="Shop"><i class="ph ph-sketch-logo"></i></button></div>
-    <div class="level-summary card"><div><span>Your progress</span><br><strong id="progressText">1 of 30</strong></div><button class="chip"><i class="ph-fill ph-star" style="color:var(--accent-3)"></i><span id="starsTotal">0</span></button></div>
+    <div class="topbar"><button class="icon-btn" data-nav="home" aria-label="Back"><i class="ph-duotone ph-caret-left"></i></button><h1>Levels</h1><button class="icon-btn" data-nav="shop" aria-label="Shop"><span class="gem-icon" data-gem-icon></span></button></div>
+    <div class="level-summary card"><div><span>Your progress</span><br><strong id="progressText">1 of 30</strong></div><button class="chip"><i class="ph-duotone ph-star" style="color:var(--accent-3)"></i><span id="starsTotal">0</span></button></div>
     <div class="scroll"><div class="level-grid" id="levelGrid"></div></div>
   </section>
 
   <section class="screen" id="game">
-    <div class="game-top"><button class="icon-btn" id="gameBack" aria-label="Back"><i class="ph ph-caret-left"></i></button><div class="level-title"><strong id="gameLevel">Level 1</strong><small id="difficultyLabel">Warm up</small></div></div>
+    <div class="game-top"><button class="icon-btn" id="gameBack" aria-label="Back"><i class="ph-duotone ph-caret-left"></i></button><div class="level-title"><strong id="gameLevel">Level 1</strong><small id="difficultyLabel">Warm up</small></div></div>
     <div class="game-stats">
       <div class="hearts left" id="hearts"></div>
-      <button class="chip right" id="gemCounter" aria-label="Gems"><i class="ph ph-sketch-logo"></i><span data-coins>0</span></button>
+      <button class="chip right" id="gemCounter" aria-label="Gems"><span class="gem-icon" data-gem-icon></span><span data-coins>0</span></button>
     </div>
       <div class="tutorial" id="tutorial"><div class="tutorial-card" id="tutorialCard"></div></div>
     <div class="board-shell">
@@ -997,32 +1019,42 @@ body.dark {
       </div>
     </div>
     <div class="game-tools">
-      <button class="tool" id="hintBtn"><i class="ph ph-lightbulb"></i><span>Hint</span><span class="qty" id="hintQty">x0</span></button>
-      <button class="tool" id="lifeBtn"><i class="ph ph-heart-straight"></i><span>Life</span><span class="qty" id="lifeQty">x0</span></button>
-      <button class="tool" id="skipBtn"><i class="ph ph-skip-forward"></i><span>Skip</span><span class="qty" id="skipQty">x0</span></button>
+      <button class="tool" id="hintBtn"><i class="ph-duotone ph-lightbulb"></i><span>Hint</span><span class="qty" id="hintQty">x0</span></button>
+      <button class="tool" id="lifeBtn"><i class="ph-duotone ph-heart-straight"></i><span>Life</span><span class="qty" id="lifeQty">x0</span></button>
+      <button class="tool" id="skipBtn"><i class="ph-duotone ph-skip-forward"></i><span>Skip</span><span class="qty" id="skipQty">x0</span></button>
     </div>
   </section>
 
   <section class="screen" id="win">
-    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-x"></i></button><h1>Level clear</h1><span></span></div>
-    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon-wrap" aria-hidden="true"><div class="win-burst"></div><div class="win-icon"><i class="ph ph-arrow-up-right"></i></div></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><i class="ph ph-sketch-logo"></i> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph ph-clock"></i> <span id="timeReward">0:00</span></div></div><p class="best-time-note" id="bestTimeNote"><i class="ph-fill ph-trophy"></i> New best time!</p><div class="win-actions"><button class="primary" id="nextBtn">Next level <i class="ph ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
+    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph-duotone ph-x"></i></button><h1>Level clear</h1><span></span></div>
+    <div class="win-wrap"><div class="win-card card" id="winCard"><div class="win-icon-wrap" aria-hidden="true"><div class="win-burst"></div><div class="win-icon"><i class="ph-duotone ph-arrow-up-right"></i></div></div><div class="kicker">Nice route</div><h1 id="winTitle">Board cleared</h1><div class="win-stars" id="winStars">★★★</div><p class="subtitle" id="winSubtitle">You opened every path.</p><div class="win-reward"><div class="reward-pill"><span class="gem-icon" data-gem-icon></span> +<span id="coinReward">0</span></div><div class="reward-pill"><i class="ph-duotone ph-clock"></i> <span id="timeReward">0:00</span></div></div><p class="best-time-note" id="bestTimeNote"><i class="ph-duotone ph-trophy"></i> New best time!</p><div class="win-actions"><button class="primary" id="nextBtn">Next level <i class="ph-duotone ph-arrow-right"></i></button><button class="ghost" data-nav="levels">Choose a level</button></div></div></div>
   </section>
 
   <section class="screen" id="shop">
-    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph ph-caret-left"></i></button><h1>Shop</h1><span></span></div>
+    <div class="topbar"><button class="icon-btn" data-nav="home"><i class="ph-duotone ph-caret-left"></i></button><h1>Shop</h1><span></span></div>
     <div class="scroll">
-      <div class="shop-balance card"><div><span class="kicker">Balance</span><br><strong><i class="ph ph-sketch-logo"></i> <span data-coins>0</span></strong></div></div>
+      <div class="shop-balance card"><div><span class="kicker">Balance</span><br><strong><span class="gem-icon" data-gem-icon></span> <span data-coins>0</span></strong></div></div>
       <h2 class="section-title">Helpful stuff</h2><div class="shop-list" id="shopList"></div>
     </div>
   </section>
 
+  <section class="screen" id="progress">
+    <div class="topbar"><button class="icon-btn" data-nav="home" aria-label="Back"><i class="ph-duotone ph-caret-left"></i></button><h1>Progress</h1><button class="icon-btn" data-nav="shop" aria-label="Shop"><span class="gem-icon" data-gem-icon></span></button></div>
+    <div class="scroll">
+      <h2 class="section-title">Stats</h2>
+      <div class="stats-grid" id="statsGrid"></div>
+      <h2 class="section-title">Achievements</h2>
+      <div class="achievement-list" id="achievementList"></div>
+    </div>
+  </section>
+
   <section class="screen" id="settings">
-    <div class="topbar"><button class="icon-btn" data-back><i class="ph ph-caret-left"></i></button><h1>Settings</h1><span></span></div>
+    <div class="topbar"><button class="icon-btn" data-back><i class="ph-duotone ph-caret-left"></i></button><h1>Settings</h1><span></span></div>
     <div class="scroll"><div class="setting-list">
-      <div class="setting-row card"><i class="ph ph-speaker-high"></i><div><h3>Sound effects</h3><p>Soft taps, errors and rewards.</p></div><button class="switch" data-setting="sound" aria-label="Toggle sound"></button></div>
-      <div class="setting-row card"><i class="ph ph-device-mobile-vibration"></i><div><h3>Haptics</h3><p>Light feedback on supported devices.</p></div><button class="switch" data-setting="haptics" aria-label="Toggle haptics"></button></div>
-      <div class="setting-row card"><i class="ph ph-moon-stars"></i><div><h3>Dark mode</h3><p>High-contrast colours for dark environments.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
-    </div><h2 class="section-title">Game</h2><div class="shop-list"><button class="setting-row card" id="resetTutorial"><i class="ph ph-graduation-cap"></i><div style="text-align:left"><h3>Replay tutorial</h3><p>Show the first play guide again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button><button class="setting-row card" id="resetProgress"><i class="ph ph-arrow-counter-clockwise"></i><div style="text-align:left"><h3>Reset progress</h3><p>Start from level 1 again.</p></div><i class="ph ph-caret-right" style="background:none"></i></button></div></div>
+      <div class="setting-row card"><i class="ph-duotone ph-speaker-high"></i><div><h3>Sound effects</h3><p>Soft taps, errors and rewards.</p></div><button class="switch" data-setting="sound" aria-label="Toggle sound"></button></div>
+      <div class="setting-row card"><i class="ph-duotone ph-device-mobile-vibration"></i><div><h3>Haptics</h3><p>Light feedback on supported devices.</p></div><button class="switch" data-setting="haptics" aria-label="Toggle haptics"></button></div>
+      <div class="setting-row card"><i class="ph-duotone ph-moon-stars"></i><div><h3>Dark mode</h3><p>High-contrast colours for dark environments.</p></div><button class="switch" data-setting="dark" aria-label="Toggle dark mode"></button></div>
+    </div><h2 class="section-title">Game</h2><div class="shop-list"><button class="setting-row card" id="resetTutorial"><i class="ph-duotone ph-graduation-cap"></i><div style="text-align:left"><h3>Replay tutorial</h3><p>Show the first play guide again.</p></div><i class="ph-duotone ph-caret-right" style="background:none"></i></button><button class="setting-row card" id="resetProgress"><i class="ph-duotone ph-arrow-counter-clockwise"></i><div style="text-align:left"><h3>Reset progress</h3><p>Start from level 1 again.</p></div><i class="ph-duotone ph-caret-right" style="background:none"></i></button></div></div>
   </section>
 
 
@@ -3352,6 +3384,9 @@ const CONSTANTS = Object.freeze({
   HINT_PACK_AMOUNT: 5,
   LIFE_PACK_COST: 70,
   LIFE_PACK_AMOUNT: 2,
+  DAILY_VISIT_REWARD: 10,
+  LOGIN_STREAK_BONUSES: Object.freeze({3: 15, 7: 35, 14: 80, 30: 180}),
+  PERFECT_STREAK_BONUSES: Object.freeze({5: 40, 10: 90, 25: 250, 50: 650}),
   ZOOM_MIN: .75,
   ZOOM_MAX: 2.25
 });
@@ -3361,8 +3396,28 @@ const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
+const defaultStats = Object.freeze({
+  totalClears: 0,
+  campaignClears: 0,
+  dailyClears: 0,
+  perfectClears: 0,
+  totalMistakes: 0,
+  totalPlaySeconds: 0,
+  totalGemsEarned: 0
+});
+const defaultLoginBonus = Object.freeze({
+  lastClaimed: '',
+  streak: 0,
+  bestStreak: 0,
+  totalClaims: 0
+});
+const defaultPerfectStreak = Object.freeze({
+  current: 0,
+  best: 0
+});
+
 const defaultState = {
-  saveVersion: 2,
+  saveVersion: 3,
   coins: CONSTANTS.STARTING_COINS,
   hints: CONSTANTS.STARTING_HINTS,
   maxUnlocked: 1,
@@ -3375,8 +3430,26 @@ const defaultState = {
   dark: false,
   lifeCredits: 0,
   skipTokens: 0,
-  dailyHistory: {}
+  dailyHistory: {},
+  stats: {...defaultStats},
+  loginBonus: {...defaultLoginBonus},
+  perfectStreak: {...defaultPerfectStreak},
+  achievements: {}
 };
+
+function freshState(){
+  return {
+    ...defaultState,
+    stars: {},
+    bestTimes: {},
+    dailyHistory: {},
+    stats: {...defaultStats},
+    loginBonus: {...defaultLoginBonus},
+    perfectStreak: {...defaultPerfectStreak},
+    achievements: {}
+  };
+}
+
 let state = loadState();
 let previousScreen = 'home';
 let game = null;
@@ -3385,10 +3458,35 @@ let tutorialStage = 0;
 let tutorialArrowId = null;
 let levelStarting = false;
 
+const ACHIEVEMENTS = Object.freeze([
+  {id:'first_clear',icon:'ph-flag-checkered',title:'First Flow',desc:'Clear your first board.',target:1,reward:20,progress:()=>state.stats.totalClears||0},
+  {id:'ten_clears',icon:'ph-stack',title:'Getting Loose',desc:'Clear 10 boards.',target:10,reward:50,progress:()=>state.stats.totalClears||0},
+  {id:'fifty_clears',icon:'ph-path',title:'Path Finder',desc:'Clear 50 boards.',target:50,reward:150,progress:()=>state.stats.totalClears||0},
+  {id:'first_perfect',icon:'ph-star',title:'Clean Start',desc:'Earn a 3-star clear.',target:1,reward:25,progress:()=>state.stats.perfectClears||0},
+  {id:'perfect_10',icon:'ph-stars',title:'Sharp Hands',desc:'Earn 10 perfect clears.',target:10,reward:90,progress:()=>state.stats.perfectClears||0},
+  {id:'perfect_streak_5',icon:'ph-fire',title:'Perfect Run',desc:'Reach a 5-board perfect streak.',target:5,reward:60,progress:()=>state.perfectStreak.best||0},
+  {id:'perfect_streak_10',icon:'ph-fire-simple',title:'Locked In',desc:'Reach a 10-board perfect streak.',target:10,reward:140,progress:()=>state.perfectStreak.best||0},
+  {id:'daily_first',icon:'ph-calendar-check',title:'Daily Drop',desc:'Complete one Daily board.',target:1,reward:25,progress:()=>uniqueDailyClears()},
+  {id:'daily_week',icon:'ph-calendar-dots',title:'Week of Flow',desc:'Complete 7 Daily boards.',target:7,reward:120,progress:()=>uniqueDailyClears()},
+  {id:'login_week',icon:'ph-sun-horizon',title:'Check-In Champ',desc:'Claim a 7-day visit streak.',target:7,reward:80,progress:()=>state.loginBonus.bestStreak||0},
+  {id:'stars_30',icon:'ph-medal',title:'Star Collector',desc:'Earn 30 campaign stars.',target:30,reward:100,progress:()=>totalCampaignStars()},
+  {id:'stars_100',icon:'ph-trophy',title:'Constellation',desc:'Earn 100 campaign stars.',target:100,reward:250,progress:()=>totalCampaignStars()}
+]);
+
 function loadState(){
   try {
     const raw=JSON.parse(localStorage.getItem('arrowflowState')||'{}');
-    const next={...defaultState,...raw,dailyHistory:{...defaultState.dailyHistory,...(raw.dailyHistory||{})}};
+    const next={
+      ...defaultState,
+      ...raw,
+      stars:{...(raw.stars||{})},
+      bestTimes:{...(raw.bestTimes||{})},
+      dailyHistory:{...(raw.dailyHistory||{})},
+      stats:{...defaultStats,...(raw.stats||{})},
+      loginBonus:{...defaultLoginBonus,...(raw.loginBonus||{})},
+      perfectStreak:{...defaultPerfectStreak,...(raw.perfectStreak||{})},
+      achievements:{...(raw.achievements||{})}
+    };
 
     // v1 accidentally let Daily overwrite campaignLevel. It could also create a
     // huge unlock jump if Continue was pressed afterwards. Repair only clearly
@@ -3421,11 +3519,89 @@ function loadState(){
       next.maxUnlocked=clamp(Math.floor(Number(next.maxUnlocked)||1),1,CONSTANTS.TOTAL_LEVELS);
       next.currentLevel=clamp(Math.floor(Number(next.currentLevel)||1),1,next.maxUnlocked);
     }
+    next.saveVersion=3;
     return next;
-  }catch { return {...defaultState,dailyHistory:{}}; }
+  }catch { return freshState(); }
 }
-function saveState(){ localStorage.setItem('arrowflowState',JSON.stringify(state)); updateWallets(); }
+function saveState(){ localStorage.setItem('arrowflowState',JSON.stringify(state)); updateWallets(); if($('#progress')?.classList.contains('active'))renderProgress(); }
 function updateWallets(){ $$('[data-coins]').forEach(el=>el.textContent=state.coins);const n=$('#homeLevelNumber');if(n)n.textContent=state.currentLevel; }
+function addGems(amount){
+  amount=Math.max(0,Math.floor(Number(amount)||0));
+  if(!amount)return 0;
+  state.coins+=amount;
+  state.stats.totalGemsEarned=(state.stats.totalGemsEarned||0)+amount;
+  return amount;
+}
+function totalCampaignStars(){
+  return Object.values(state.stars||{}).reduce((sum,v)=>sum+Number(v||0),0);
+}
+function uniqueDailyClears(){
+  return Object.values(state.dailyHistory||{}).filter(d=>d?.completed).length;
+}
+function dayIndexFromKey(key){
+  const parts=String(key||'').split('-').map(Number);
+  if(parts.length!==3||parts.some(n=>!Number.isFinite(n)))return null;
+  return Math.floor(new Date(parts[0],parts[1]-1,parts[2]).getTime()/86400000);
+}
+function streakBonusFor(streak,bonuses,every){
+  streak=Math.floor(Number(streak)||0);
+  if(streak<=0)return 0;
+  return bonuses[streak]||(every&&streak%every===0?bonuses[every]||0:0);
+}
+function achievementProgress(a){
+  return clamp(Math.floor(Number(a.progress?.()||0)),0,a.target);
+}
+function checkAchievements(){
+  const unlocked=[];
+  for(const a of ACHIEVEMENTS){
+    if(state.achievements[a.id])continue;
+    if(achievementProgress(a)<a.target)continue;
+    state.achievements[a.id]={earnedAt:Date.now(),reward:a.reward};
+    addGems(a.reward);
+    unlocked.push(a);
+  }
+  return unlocked;
+}
+function claimDailyVisitBonus({show=true}={}){
+  const today=dailyKeyForDate();
+  if(state.loginBonus.lastClaimed===today)return null;
+  const todayIndex=dayIndexFromKey(today);
+  const lastIndex=dayIndexFromKey(state.loginBonus.lastClaimed);
+  const streak=lastIndex===todayIndex-1?(state.loginBonus.streak||0)+1:1;
+  const streakBonus=streakBonusFor(streak,CONSTANTS.LOGIN_STREAK_BONUSES,30);
+  const baseReward=CONSTANTS.DAILY_VISIT_REWARD;
+  const total=addGems(baseReward+streakBonus);
+  state.loginBonus={
+    lastClaimed:today,
+    streak,
+    bestStreak:Math.max(state.loginBonus.bestStreak||0,streak),
+    totalClaims:(state.loginBonus.totalClaims||0)+1
+  };
+  const achievements=checkAchievements();
+  saveState();
+  if(show)setTimeout(()=>showDailyVisitBonus({baseReward,streak,streakBonus,total,achievements}),620);
+  return {baseReward,streak,streakBonus,total,achievements};
+}
+function showDailyVisitBonus(result){
+  if(!result)return;
+  const achievementReward=result.achievements.reduce((sum,a)=>sum+a.reward,0);
+  const achievementLine=result.achievements.length
+    ?`<p>${result.achievements.length} achievement${result.achievements.length===1?'':'s'} unlocked for +${achievementReward} gems.</p>`
+    :'';
+  openModal(`<h2>Daily visit bonus</h2><p>You claimed +${result.baseReward} gems for checking in today.</p><p>Visit streak: <strong>${result.streak} day${result.streak===1?'':'s'}</strong>${result.streakBonus?` · streak bonus +${result.streakBonus}`:''}</p>${achievementLine}<div class="sheet-actions"><button class="primary" id="closeDailyBonus">Nice</button></div>`);
+  $('#closeDailyBonus').onclick=closeModal;
+}
+function updatePerfectStreak(stars){
+  if(stars===3){
+    const current=(state.perfectStreak.current||0)+1;
+    const best=Math.max(state.perfectStreak.best||0,current);
+    const bonus=streakBonusFor(current,CONSTANTS.PERFECT_STREAK_BONUSES,50);
+    state.perfectStreak={current,best};
+    return {current,best,bonus};
+  }
+  state.perfectStreak={...state.perfectStreak,current:0};
+  return {current:0,best:state.perfectStreak.best||0,bonus:0};
+}
 function haptic(ms=18){ if(state.haptics && navigator.vibrate) navigator.vibrate(ms); }
 function sound(kind='tap'){
   if(!state.sound) return;
@@ -3441,7 +3617,43 @@ function sound(kind='tap'){
     o.start(now);o.stop(now+dur+.01);
   }catch{}
 }
-function toast(msg){ const t=$('#toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600); }
+let gemIconIdCounter=0;
+function gemIconSvg(){
+  const maskId=`diamond-facet-mask-${++gemIconIdCounter}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="${maskId}">
+      <polygon points="72 40 184 40 240 104 128 224 16 104" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#${maskId})">
+    <line x1="0" y1="104" x2="256" y2="104" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
+    <path d="M 72 40 L 16 104 L 128 224" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" dur="3.6s" repeatCount="indefinite" calcMode="linear" values="M 72 40 L 16 104 L 128 224; M 184 40 L 240 104 L 128 224" /></path>
+    <path d="M 72 40 L 16 104 L 128 224" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" dur="3.6s" begin="-1.2s" repeatCount="indefinite" calcMode="linear" values="M 72 40 L 16 104 L 128 224; M 184 40 L 240 104 L 128 224" /></path>
+    <path d="M 72 40 L 16 104 L 128 224" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" dur="3.6s" begin="-2.4s" repeatCount="indefinite" calcMode="linear" values="M 72 40 L 16 104 L 128 224; M 184 40 L 240 104 L 128 224" /></path>
+  </g>
+
+  <polygon points="72 40 184 40 240 104 128 224 16 104" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+</svg>`;
+}
+function hydrateGemIcons(root=document){
+  const scope=root instanceof Element||root instanceof Document?root:document;
+  scope.querySelectorAll('[data-gem-icon]').forEach(slot=>{
+    if(!slot.firstElementChild)slot.innerHTML=gemIconSvg();
+  });
+  scope.querySelectorAll('i.ph-sketch-logo').forEach(icon=>{
+    const extras=[...icon.classList].filter(c=>!c.startsWith('ph'));
+    const span=document.createElement('span');
+    span.className=['gem-icon',...extras].join(' ');
+    span.setAttribute('aria-hidden','true');
+    const style=icon.getAttribute('style');
+    if(style)span.setAttribute('style',style);
+    span.innerHTML=gemIconSvg();
+    icon.replaceWith(span);
+  });
+}
+function toast(msg){ const t=$('#toast');t.innerHTML=msg;hydrateGemIcons(t);t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600); }
 function hideToast(){const t=$('#toast');clearTimeout(toast.t);t.classList.remove('show');}
 function isGameScreenActive(){
   return $('#game')?.classList.contains('active')===true;
@@ -3466,6 +3678,7 @@ function showScreen(id){
   }
   if(id==='levels') renderLevels();
   if(id==='shop') renderShop();
+  if(id==='progress') renderProgress();
   if(id==='settings') syncSettings();
   haptic(7);
 }
@@ -3478,6 +3691,14 @@ const warmingLevelPromises = new Map();
 const warmWorkerResolvers = new Map();
 let warmWorker = null;
 let warmWorkerUnavailable = false;
+const SPLASH_TIMING = {
+  enterMs: 820,
+  holdMs: 120,
+  exitMs: 900,
+  reducedEnterMs: 220,
+  reducedHoldMs: 80,
+  reducedExitMs: 280
+};
 
 function buildAndCacheRawLevel(level,generationOptions={}){
   const request=generationRequestForLevel(level,generationOptions);
@@ -3600,6 +3821,13 @@ function beginWarmWindow(anchorLevel){
   warmNextLevels(anchor,2);
 }
 
+function splashTiming(){
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  return reduced
+    ?{enterMs:SPLASH_TIMING.reducedEnterMs,holdMs:SPLASH_TIMING.reducedHoldMs,exitMs:SPLASH_TIMING.reducedExitMs}
+    :{enterMs:SPLASH_TIMING.enterMs,holdMs:SPLASH_TIMING.holdMs,exitMs:SPLASH_TIMING.exitMs};
+}
+
 function showLoadingWipe(){
   const splash=$('#splash');
   if(!splash)return performance.now();
@@ -3613,16 +3841,23 @@ function showLoadingWipe(){
 
 function playSplashWipe(){
   const splash=$('#splash');
-  if(!splash)return;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>splash.classList.add('wipe')));
-  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(()=>splash.classList.add('done'),reduced?260:820);
+  if(!splash)return Promise.resolve();
+  const {exitMs}=splashTiming();
+  return new Promise(resolve=>{
+    splash.classList.remove('done');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      splash.classList.add('wipe');
+      setTimeout(()=>{splash.classList.add('done');resolve();},exitMs);
+    }));
+  });
 }
 
-async function finishLoadingWipe(startedAt,minVisible=260){
+async function finishLoadingWipe(startedAt,minVisible=null){
+  const {enterMs,holdMs}=splashTiming();
+  const requiredVisible=minVisible??(enterMs+holdMs);
   const elapsed=performance.now()-startedAt;
-  if(elapsed<minVisible)await sleep(minVisible-elapsed);
-  playSplashWipe();
+  if(elapsed<requiredVisible)await sleep(requiredVisible-elapsed);
+  await playSplashWipe();
 }
 
 function dirVec(d){ return ({R:[0,1],D:[1,0],L:[0,-1],U:[-1,0]})[d]; }
@@ -3784,8 +4019,8 @@ function renderLevels(){
     const locked=i>state.maxUnlocked; if(locked)btn.classList.add('locked'); if(i===state.currentLevel&&!locked)btn.classList.add('current');
     const stars=state.stars[i]||0;
     const bestTime=state.bestTimes[i];
-    const timeTag=bestTime!==undefined?`<div class="best-time"><i class="ph ph-clock"></i>${formatTime(bestTime)}</div>`:'';
-    btn.innerHTML=locked?`<i class="ph ph-lock-simple"></i><span>${i}</span>`:`<span>${i}</span><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>${timeTag}`;
+    const timeTag=bestTime!==undefined?`<div class="best-time"><i class="ph-duotone ph-clock"></i>${formatTime(bestTime)}</div>`:'';
+    btn.innerHTML=locked?`<i class="ph-duotone ph-lock-simple"></i><span>${i}</span>`:`<span>${i}</span><div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>${timeTag}`;
     btn.disabled=locked;btn.addEventListener('click',()=>startLevel(i));grid.appendChild(btn);
   }
 }
@@ -4003,6 +4238,7 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
 
   if(!cached){
     loadingStarted=showLoadingWipe();
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     // Prefer the already-running background job. If none exists, start one now.
     let warmed=null;
     if(warmingLevelPromises.has(cacheKey))warmed=await warmingLevelPromises.get(cacheKey);
@@ -4017,12 +4253,11 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   }catch(err){
     console.error(err);
     levelStarting=false;
-    if(loadingStarted)playSplashWipe();
+    if(loadingStarted)await playSplashWipe();
     openModal(`<h2>Level generation failed</h2><p>This seed could not produce a valid board. The error has been logged for debugging.</p><div class="sheet-actions"><button class="primary" id="generationBack">Back to levels</button></div>`);
     setTimeout(()=>{const b=$('#generationBack');if(b)b.onclick=()=>{closeModal();showScreen('levels')}},0);
     return;
   }
-  if(loadingStarted)await finishLoadingWipe(loadingStarted);
   levelStarting=false;
   if(!daily){state.currentLevel=level;saveState();}
   game={...data,level,dailyKey,lives:CONSTANTS.STARTING_LIVES,mistakes:0,startedAt:Date.now(),daily,scale:1,x:0,y:0,reward:0,tutorialActionDone:false,motionLocked:false,exitAnimations:new Set()};
@@ -4030,6 +4265,7 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   $('#difficultyLabel').textContent=daily?`Today: ${designLabel(data.cfg)}`:(data.cfg.showcase?designLabel(data.cfg):data.cfg.label);
   renderBoard(); renderHearts(); updateToolQuantities(); resetView(); showScreen('game');
   $('#skipBtn').style.display=daily?'none':'flex';
+  if(loadingStarted)await finishLoadingWipe(loadingStarted);
   if(!daily)warmNextLevels(level,2);
   if(tutorialPending)setTimeout(()=>beginTutorial(),300);
 }
@@ -4299,8 +4535,8 @@ async function attemptArrow(id,el){
 }
 function renderHearts(){
   const h=$('#hearts');h.innerHTML='';
-  for(let i=0;i<CONSTANTS.STARTING_LIVES;i++){const s=document.createElement('span');s.className='heart'+(i>=game.lives?' lost':'');s.innerHTML=i>=game.lives?'<i class="ph ph-heart-straight"></i>':'<i class="ph-fill ph-heart-straight"></i>';h.appendChild(s);}
-  if(game.lives>CONSTANTS.STARTING_LIVES){const extra=document.createElement('span');extra.className='heart';extra.innerHTML=`<i class="ph-fill ph-heart-straight"></i><small style="font-size:1rem">+${game.lives-CONSTANTS.STARTING_LIVES}</small>`;h.appendChild(extra)}
+  for(let i=0;i<CONSTANTS.STARTING_LIVES;i++){const s=document.createElement('span');s.className='heart'+(i>=game.lives?' lost':'');s.innerHTML=i>=game.lives?'<i class="ph-duotone ph-heart-straight"></i>':'<i class="ph-duotone ph-heart-straight"></i>';h.appendChild(s);}
+  if(game.lives>CONSTANTS.STARTING_LIVES){const extra=document.createElement('span');extra.className='heart';extra.innerHTML=`<i class="ph-duotone ph-heart-straight"></i><small style="font-size:1rem">+${game.lives-CONSTANTS.STARTING_LIVES}</small>`;h.appendChild(extra)}
 }
 function clearHint(){ $$('.arrow-piece.legalHint').forEach(x=>x.classList.remove('legalHint')); }
 // Hint, Life and Skip all follow the same shape now: tapping the tool button
@@ -4314,12 +4550,12 @@ function openHintModal(){
   const n=state.hints||0;
   const body=n>0
     ?`<h2>Use a hint?</h2><p>You have ${n} hint${n===1?'':'s'} left.</p><div class="sheet-actions"><button class="primary" id="confirmHint">Use hint</button><button class="ghost" id="cancelHint">Cancel</button></div>`
-    :`<h2>Out of hints</h2><p>Buy one hint for <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.HINT_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmHint">Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.HINT_COST}</button><button class="ghost" id="cancelHint">Cancel</button></div>`;
+    :`<h2>Out of hints</h2><p>Buy one hint for <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.HINT_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmHint">Buy · <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.HINT_COST}</button><button class="ghost" id="cancelHint">Cancel</button></div>`;
   openModal(body);
   $('#confirmHint').onclick=()=>{
     if(n>0)state.hints--;
     else if(state.coins>=CONSTANTS.HINT_COST)state.coins-=CONSTANTS.HINT_COST;
-    else{closeModal();toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');return;}
+    else{closeModal();toast('<span class="gem-icon" data-gem-icon aria-hidden="true"></span> Not enough gems');return;}
     saveState();
     const a=legal[Math.floor(Math.random()*legal.length)];const el=$(`.arrow-piece[data-id="${a.id}"]`);clearHint();el?.classList.add('legalHint');sound('coin');haptic(12);updateToolQuantities();setTimeout(()=>el?.classList.remove('legalHint'),4000);
     closeModal();
@@ -4331,12 +4567,12 @@ function openLifeModal(){
   const n=state.lifeCredits||0;
   const body=n>0
     ?`<h2>Add a life?</h2><p>You have ${n} life credit${n===1?'':'s'}.</p><div class="sheet-actions"><button class="primary" id="confirmLife">Use a life credit</button><button class="ghost" id="cancelLife">Cancel</button></div>`
-    :`<h2>Out of life credits</h2><p>Buy one extra life for <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmLife">Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}</button><button class="ghost" id="cancelLife">Cancel</button></div>`;
+    :`<h2>Out of life credits</h2><p>Buy one extra life for <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.EXTRA_LIFE_COST}?</p><div class="sheet-actions"><button class="primary" id="confirmLife">Buy · <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.EXTRA_LIFE_COST}</button><button class="ghost" id="cancelLife">Cancel</button></div>`;
   openModal(body);
   $('#confirmLife').onclick=()=>{
     if(n>0)state.lifeCredits--;
     else if(state.coins>=CONSTANTS.EXTRA_LIFE_COST)state.coins-=CONSTANTS.EXTRA_LIFE_COST;
-    else{closeModal();toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');return;}
+    else{closeModal();toast('<span class="gem-icon" data-gem-icon aria-hidden="true"></span> Not enough gems');return;}
     game.lives++;saveState();renderHearts();updateToolQuantities();sound('coin');haptic(12);toast('Life added');closeModal();
   };
   $('#cancelLife').onclick=closeModal;
@@ -4352,17 +4588,22 @@ function updateToolQuantities(){
 }
 function showOutOfLives(){
   const creditButton = state.lifeCredits ? `<button class="ghost" id="creditLife">Use extra life credit · ${state.lifeCredits} left</button>` : '';
-  openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry the level or spend <i class="ph ph-sketch-logo" aria-hidden="true"></i> on one extra life.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.EXTRA_LIFE_COST}</button></div>`);
+  openModal(`<h2>Out of lives</h2><p>A blocked arrow used your last life. Retry the level or spend <span class="gem-icon" data-gem-icon aria-hidden="true"></span> on one extra life.</p><div class="sheet-actions"><button class="primary" id="retryNow">Retry level</button>${creditButton}<button class="ghost" id="buyLife">+1 life · <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.EXTRA_LIFE_COST}</button></div>`);
   $('#retryNow').onclick=()=>{closeModal();startLevel(game.level,{daily:game.daily,dailyKey:game.dailyKey})};
   if($('#creditLife')) $('#creditLife').onclick=()=>{state.lifeCredits--;game.lives=1;saveState();renderHearts();updateToolQuantities();closeModal();toast('Extra life used')};
-  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();updateToolQuantities();closeModal();toast('Extra life added')};
+  $('#buyLife').onclick=()=>{if(state.coins<CONSTANTS.EXTRA_LIFE_COST)return toast('<span class="gem-icon" data-gem-icon aria-hidden="true"></span> Not enough gems');state.coins-=CONSTANTS.EXTRA_LIFE_COST;game.lives=1;saveState();renderHearts();updateToolQuantities();closeModal();toast('Extra life added')};
 }
 function finishLevel(){
   clearHint();sound('win');haptic([20,40,20]);
   const stars=game.mistakes===0?3:game.mistakes===1?2:1;
   const elapsed=Math.max(1,Math.floor((Date.now()-game.startedAt)/1000));
-  const reward=CONSTANTS.BASE_LEVEL_REWARD+game.cfg.size+CONSTANTS.STAR_BONUS[stars];game.reward=reward;
-  state.coins+=reward;
+  const perfectStreak=updatePerfectStreak(stars);
+  let reward=CONSTANTS.BASE_LEVEL_REWARD+game.cfg.size+CONSTANTS.STAR_BONUS[stars]+perfectStreak.bonus;
+  addGems(reward);
+  state.stats.totalClears=(state.stats.totalClears||0)+1;
+  state.stats.totalMistakes=(state.stats.totalMistakes||0)+game.mistakes;
+  state.stats.totalPlaySeconds=(state.stats.totalPlaySeconds||0)+elapsed;
+  if(stars===3)state.stats.perfectClears=(state.stats.perfectClears||0)+1;
   // Track a best-clear-time per level so a replay can show whether this run
   // beat the old one. Only a genuine improvement over an *existing* best
   // triggers the "new best" callout - the very first clear sets the initial
@@ -4372,7 +4613,9 @@ function finishLevel(){
   if(game.daily){
     const key=game.dailyKey||new Date().toISOString().slice(0,10);
     state.dailyHistory[key]={completed:true,stars:Math.max(state.dailyHistory[key]?.stars||0,stars),reward,completedAt:Date.now()};
+    state.stats.dailyClears=(state.stats.dailyClears||0)+1;
   }else{
+    state.stats.campaignClears=(state.stats.campaignClears||0)+1;
     state.stars[game.level]=Math.max(state.stars[game.level]||0,stars);
     const prevBest=state.bestTimes[game.level];
     if(prevBest!==undefined&&elapsed<prevBest)newBestTime=true;
@@ -4380,8 +4623,15 @@ function finishLevel(){
     state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));
     state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);
   }
+  const achievements=checkAchievements();
+  const achievementReward=achievements.reduce((sum,a)=>sum+a.reward,0);
+  reward+=achievementReward;
+  game.reward=reward;
   saveState();
-  $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';
+  const bonusText=perfectStreak.bonus?`Perfect streak ${perfectStreak.current}! Bonus +${perfectStreak.bonus} gems.`:'';
+  const achievementText=achievements.length?`${achievements.length} achievement${achievements.length===1?'':'s'} unlocked.`:'';
+  const defaultSubtitle=game.daily?'Daily board complete. Come back tomorrow for another layout.':'Every arrow found its way out.';
+  $('#winTitle').textContent=stars===3?'Perfect flow':stars===2?'Clean clear':'Board cleared';$('#winStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#coinReward').textContent=reward;$('#timeReward').textContent=formatTime(elapsed);$('#winSubtitle').textContent=[bonusText,achievementText,defaultSubtitle].filter(Boolean).join(' ');$('#nextBtn').textContent=game.daily?'Back home':game.level===CONSTANTS.TOTAL_LEVELS?'Play again':'Next level';
   $('#bestTimeNote').classList.toggle('show',newBestTime);
   burstConfetti();setTimeout(()=>showScreen('win'),260);
 }
@@ -4391,7 +4641,7 @@ function burstConfetti(){
   for(let i=0;i<24;i++){const c=document.createElement('i');c.className='confetti';c.style.left=(10+Math.random()*80)+'%';c.style.background=["#ff6d5a","#4ea7a1","#f0b54a","#8c7bd6"][i%4];c.style.setProperty('--x',(Math.random()*240-120)+'px');c.style.animationDelay=(Math.random()*.35)+'s';card.appendChild(c)}
 }
 
-function openModal(html){$('#modalSheet').innerHTML=html;$('#modalLayer').classList.add('show')}
+function openModal(html){const sheet=$('#modalSheet');sheet.innerHTML=html;hydrateGemIcons(sheet);$('#modalLayer').classList.add('show')}
 function closeModal(){$('#modalLayer').classList.remove('show')}
 
 function renderShop(){
@@ -4401,7 +4651,47 @@ function renderShop(){
     {icon:'ph-skip-forward',name:'Skip token',desc:'Unlock the next level instantly',price:CONSTANTS.SKIP_COST,buy:()=>{state.skipTokens=(state.skipTokens||0)+1}}
   ];
   const list=$('#shopList');list.innerHTML='';
-  items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy"><i class="ph ph-sketch-logo" aria-hidden="true"></i> ${it.price}</button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateToolQuantities();};list.appendChild(d)});
+  items.forEach(it=>{const d=document.createElement('div');d.className='shop-item card';d.innerHTML=`<div class="shop-icon"><i class="ph-duotone ${it.icon}"></i></div><div><h3>${it.name}</h3><p>${it.desc}</p></div><button class="buy"><span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${it.price}</button>`;d.querySelector('.buy').onclick=()=>{if(state.coins<it.price)return toast('<span class="gem-icon" data-gem-icon aria-hidden="true"></span> Not enough gems');state.coins-=it.price;it.buy();saveState();sound('coin');haptic(14);toast(`${it.name} added`);updateToolQuantities();};list.appendChild(d)});
+  hydrateGemIcons(list);
+}
+
+function formatDuration(totalSeconds){
+  totalSeconds=Math.max(0,Math.floor(Number(totalSeconds)||0));
+  const hours=Math.floor(totalSeconds/3600);
+  const minutes=Math.floor((totalSeconds%3600)/60);
+  if(hours)return `${hours}h ${minutes}m`;
+  return `${minutes}m`;
+}
+function renderProgress(){
+  const statsGrid=$('#statsGrid'),achievementList=$('#achievementList');
+  if(!statsGrid||!achievementList)return;
+  const stats=[
+    ['Boards cleared',state.stats.totalClears||0],
+    ['Perfect clears',state.stats.perfectClears||0],
+    ['Perfect streak',`${state.perfectStreak.current||0} now · ${state.perfectStreak.best||0} best`],
+    ['Visit streak',`${state.loginBonus.streak||0} now · ${state.loginBonus.bestStreak||0} best`],
+    ['Campaign stars',totalCampaignStars()],
+    ['Daily clears',uniqueDailyClears()],
+    ['Play time',formatDuration(state.stats.totalPlaySeconds||0)],
+    ['Gems earned',state.stats.totalGemsEarned||0]
+  ];
+  statsGrid.innerHTML=stats.map(([label,value])=>`<div class="stat-card"><span>${label}</span><strong>${value}</strong></div>`).join('');
+
+  achievementList.innerHTML=ACHIEVEMENTS.map(a=>{
+    const earned=!!state.achievements[a.id];
+    const progress=achievementProgress(a);
+    const pct=Math.round((progress/Math.max(1,a.target))*100);
+    return `<div class="achievement-row ${earned?'':'locked'}">
+      <div class="badge"><i class="ph-duotone ${earned?'ph-check-circle':a.icon}"></i></div>
+      <div>
+        <h3>${a.title}</h3>
+        <p>${a.desc}</p>
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="achievement-reward">${earned?'Done':`${progress}/${a.target}`}<br><span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${a.reward}</div>
+    </div>`;
+  }).join('');
+  hydrateGemIcons(achievementList);
 }
 
 function syncSettings(){
@@ -4494,7 +4784,7 @@ function beginTutorial(){
   tutorialStage=1;
   tutorialArrowId=null;
   $('#tutorialCard').innerHTML=`
-    <div class="tutorial-icon" aria-hidden="true"><i class="ph-fill ph-path"></i></div>
+    <div class="tutorial-icon" aria-hidden="true"><i class="ph-duotone ph-path"></i></div>
     <div class="step">How to play</div>
     <h3>Clear the board</h3>
     <p>Remove every arrow by finding the right order. An arrow can leave only when the path in front of its head is clear.</p>
@@ -4519,11 +4809,12 @@ function showTutorialStep2(){
   tutorialStage=3;
   tutorialArrowId=null;
   $('#tutorialCard').innerHTML=`
-    <div class="tutorial-icon gem" aria-hidden="true"><i class="ph-fill ph-sketch-logo"></i></div>
+    <div class="tutorial-icon gem" aria-hidden="true"><span class="gem-icon" data-gem-icon></span></div>
     <div class="step">That’s it</div>
     <h3>Keep clearing</h3>
-    <p>Continue removing arrows until the board is empty. Finish levels to earn <i class="ph-fill ph-sketch-logo currency-inline" aria-hidden="true"></i> gems, then spend them on powerups when you need a hand.</p>
+    <p>Continue removing arrows until the board is empty. Finish levels to earn <span class="gem-icon currency-inline" data-gem-icon aria-hidden="true"></span> gems, then spend them on powerups when you need a hand.</p>
     <button class="primary tutorial-cta" id="tutorialDone">Got it</button>`;
+  hydrateGemIcons($('#tutorialCard'));
   $('#tutorial').classList.add('show');
   $('#tutorialDone').onclick=endTutorial;
 }
@@ -4550,14 +4841,14 @@ $('#lifeBtn').onclick=openLifeModal;
 $('#skipBtn').onclick=()=>{
   if(game?.daily){toast('Daily boards cannot be skipped');return;}
   const token=state.skipTokens||0;
-  openModal(`<h2>Skip this level?</h2><p>${token?`You have ${token} skip token${token===1?'':'s'}.`:`Skipping costs <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.SKIP_COST}.`}</p><div class="sheet-actions"><button class="primary" id="confirmSkip">${token?'Use skip token':`Buy · <i class="ph ph-sketch-logo" aria-hidden="true"></i> ${CONSTANTS.SKIP_COST}`}</button><button class="ghost" id="cancelSkip">Cancel</button></div>`);
-  $('#confirmSkip').onclick=()=>{if(game?.daily){closeModal();return;}if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('<i class="ph ph-sketch-logo" aria-hidden="true"></i> Not enough gems');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();updateToolQuantities();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
+  openModal(`<h2>Skip this level?</h2><p>${token?`You have ${token} skip token${token===1?'':'s'}.`:`Skipping costs <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.SKIP_COST}.`}</p><div class="sheet-actions"><button class="primary" id="confirmSkip">${token?'Use skip token':`Buy · <span class="gem-icon" data-gem-icon aria-hidden="true"></span> ${CONSTANTS.SKIP_COST}`}</button><button class="ghost" id="cancelSkip">Cancel</button></div>`);
+  $('#confirmSkip').onclick=()=>{if(game?.daily){closeModal();return;}if(token)state.skipTokens--;else if(state.coins>=CONSTANTS.SKIP_COST)state.coins-=CONSTANTS.SKIP_COST;else return toast('<span class="gem-icon" data-gem-icon aria-hidden="true"></span> Not enough gems');state.maxUnlocked=Math.max(state.maxUnlocked,Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1));state.currentLevel=Math.min(CONSTANTS.TOTAL_LEVELS,game.level+1);saveState();updateToolQuantities();closeModal();startLevel(state.currentLevel)};$('#cancelSkip').onclick=closeModal;
 };
 $('#nextBtn').onclick=()=>{if(game.daily)return showScreen('home');startLevel(state.currentLevel)};
 $$('[data-setting]').forEach(b=>b.onclick=()=>{const k=b.dataset.setting;state[k]=!state[k];saveState();syncSettings();if(k==='dark'){if(game&&$('#game').classList.contains('active'))applyBoardArrowColours();toast(state.dark?'Dark mode on':'Dark mode off')}});
 $('#resetTutorial').onclick=()=>{state.tutorialSeen=false;saveState();toast('Tutorial ready for level 1')};
-$('#resetProgress').onclick=()=>openModal(`<h2>Reset all progress?</h2><p>Levels, stars, <i class="ph ph-sketch-logo" aria-hidden="true"></i> gems and inventory will return to their starting values.</p><div class="sheet-actions"><button class="secondary" id="doReset">Reset everything</button><button class="ghost" id="cancelReset">Cancel</button></div>`);
-document.addEventListener('click',e=>{if(e.target?.id==='doReset'){state={...defaultState,stars:{},dailyHistory:{}};saveState();syncSettings();closeModal();showScreen('home');toast('Progress reset')}if(e.target?.id==='cancelReset')closeModal();});
+$('#resetProgress').onclick=()=>openModal(`<h2>Reset all progress?</h2><p>Levels, stars, <span class="gem-icon" data-gem-icon aria-hidden="true"></span> gems and inventory will return to their starting values.</p><div class="sheet-actions"><button class="secondary" id="doReset">Reset everything</button><button class="ghost" id="cancelReset">Cancel</button></div>`);
+document.addEventListener('click',e=>{if(e.target?.id==='doReset'){state=freshState();saveState();syncSettings();renderLevels();renderProgress();closeModal();showScreen('home');toast('Progress reset')}if(e.target?.id==='cancelReset')closeModal();});
 
 window.addEventListener('resize',()=>{if(game&&$('#game').classList.contains('active')){renderBoard();applyStageTransform();}});
 
@@ -4588,12 +4879,15 @@ window.ArrowflowDebug={
   stress(count=100){ return ArrowMazeGenerator.stressTest({count,seed:'arrowflow-browser-check',candidateCount:1,reproCheck:true}); }
 };
 
-function bootArrowflow(){
-  updateWallets();updateToolQuantities();syncSettings();renderLevels();renderShop();
+async function bootArrowflow(){
+  const loadingStarted=showLoadingWipe();
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  updateWallets();updateToolQuantities();syncSettings();renderLevels();renderShop();renderProgress();
+  hydrateGemIcons(document);
   // Start the current + next two campaign boards off-thread immediately.
   beginWarmWindow(state.currentLevel);
-  // The splash is a short branded transition, not a forced wait for generation.
-  setTimeout(playSplashWipe,520);
+  await finishLoadingWipe(loadingStarted);
+  claimDailyVisitBonus();
 }
 bootArrowflow();
 </script>
