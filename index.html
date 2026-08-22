@@ -105,7 +105,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 /* game */
 #game{padding-left:10px;padding-right:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
 .game-top{display:grid;grid-template-columns:52px 1fr;align-items:center;gap:8px;flex:0 0 auto}
-.level-title{text-align:right}.level-title strong{font-size:1.18rem}.level-title small{display:block;font-size:.74rem;line-height:1.1;margin-top:2px}
+.level-title{text-align:right}.level-title strong{font-size:1.18rem}.level-title small{display:block;font-size:1rem;line-height:1.1;margin-top:2px}
 .game-stats{display:grid;grid-template-columns:1fr 1fr;align-items:center;margin:10px 8px 4px}
 .game-stats .left{justify-self:start}.game-stats .right{justify-self:end}.hearts{display:flex;gap:5px;color:var(--danger);font-size:1.6rem}.heart.lost{color:#d8d6d0;transform:scale(.86)}
 .board-shell{flex:1;min-height:0;position:relative;margin:0;display:flex;align-items:stretch;justify-content:center;overflow:hidden}
@@ -948,7 +948,7 @@ body.dark {
 #game:not(.active) .board-svg,
 #game:not(.active) .arrow-piece,
 #game:not(.active) .arrow-hit { pointer-events:none!important; }
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 18px}.stat-card{padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.stat-card span{display:block;color:var(--muted);font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.stat-card strong{display:block;margin-top:4px;font-size:1.35rem;letter-spacing:-.04em}.achievement-list{display:grid;gap:10px;padding-bottom:20px}.achievement-row{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.achievement-row.locked{opacity:.72}.achievement-row .badge{width:46px;height:46px;border-radius:8px;display:grid;place-items:center;background:var(--flat-panel-2);font-size:1.3rem}.achievement-row h3{margin:0;font-size:1rem}.achievement-row p{margin:3px 0 8px;color:var(--muted);font-size:.9rem}.achievement-reward{font-weight:900;white-space:nowrap}.progress-track{height:8px;border:1px solid var(--flat-line);border-radius:999px;background:var(--flat-panel-2);overflow:hidden}.progress-fill{height:100%;background:var(--flat-green);width:0%}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 18px}.stat-card{padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.stat-card span{display:block;color:var(--muted);font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.stat-card strong{display:block;margin-top:4px;font-size:1.35rem;letter-spacing:-.04em}.achievement-list{display:grid;gap:10px;padding-bottom:20px}.achievement-row{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;padding:14px;border:2px solid var(--flat-line);border-radius:8px;background:var(--flat-panel);box-shadow:4px 4px 0 var(--flat-line)}.achievement-row.locked{opacity:.72}.achievement-row .badge{width:46px;height:46px;border-radius:8px;display:grid;place-items:center;background:var(--flat-panel-2);font-size:1.3rem}.achievement-row h3{margin:0;font-size:1rem}.achievement-row p{margin:3px 0 8px;color:var(--muted);font-size:1rem}.achievement-reward{font-weight:900;white-space:nowrap}.progress-track{height:8px;border:1px solid var(--flat-line);border-radius:999px;background:var(--flat-panel-2);overflow:hidden}.progress-fill{height:100%;background:var(--flat-green);width:0%}
 .gem-icon{display:inline-grid;place-items:center;width:1.12em;height:1.12em;min-width:16px;min-height:16px;color:var(--flat-purple);line-height:1;vertical-align:-.12em;flex:0 0 auto}
 .gem-icon svg{display:block;width:100%;height:100%;overflow:visible}
 .currency-inline,.reward-pill .gem-icon,.chip .gem-icon,.buy .gem-icon{vertical-align:-.12em}
@@ -3659,6 +3659,44 @@ function hydrateGemIcons(root=document){
     span.innerHTML=gemIconSvg();
     icon.replaceWith(span);
   });
+  enforceMinimumReadableSize(scope);
+}
+function isIconElement(el){
+  return el.matches?.('.gem-icon,i[class^="ph"],i[class*=" ph-"]');
+}
+function enforceMinimumReadableSize(root=document){
+  const scope=root instanceof Element||root instanceof Document?root:document;
+  const elements=scope instanceof Element?[scope,...scope.querySelectorAll('*')]:[...scope.querySelectorAll('*')];
+  elements.forEach(el=>{
+    if(!(el instanceof HTMLElement))return;
+    if(el.closest('svg'))return;
+    const style=getComputedStyle(el);
+    const fontSize=parseFloat(style.fontSize);
+    const hasOwnText=[...el.childNodes].some(node=>node.nodeType===Node.TEXT_NODE&&node.textContent.trim());
+    const textLike=hasOwnText||/^(BUTTON|INPUT|TEXTAREA|LABEL|SMALL|SPAN|P|H1|H2|H3|H4|H5|H6|STRONG|EM|A|LI)$/i.test(el.tagName);
+    const iconLike=isIconElement(el);
+    if((textLike||iconLike)&&fontSize>0&&fontSize<16)el.style.fontSize='16px';
+    if(iconLike){
+      el.style.minWidth='16px';
+      el.style.minHeight='16px';
+    }
+  });
+}
+let minimumReadableSizeObserver=null,minimumReadableSizePending=false;
+function queueMinimumReadableSizeCheck(){
+  if(minimumReadableSizePending)return;
+  minimumReadableSizePending=true;
+  requestAnimationFrame(()=>{
+    minimumReadableSizePending=false;
+    enforceMinimumReadableSize(document);
+  });
+}
+function startMinimumReadableSizeGuard(){
+  enforceMinimumReadableSize(document);
+  if(minimumReadableSizeObserver)return;
+  const target=$('#app')||document.body;
+  minimumReadableSizeObserver=new MutationObserver(queueMinimumReadableSizeCheck);
+  minimumReadableSizeObserver.observe(target,{childList:true,subtree:true});
 }
 function toast(msg){ const t=$('#toast');t.innerHTML=msg;hydrateGemIcons(t);t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600); }
 function hideToast(){const t=$('#toast');clearTimeout(toast.t);t.classList.remove('show');}
@@ -4891,6 +4929,7 @@ async function bootArrowflow(){
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   updateWallets();updateToolQuantities();syncSettings();renderLevels();renderShop();renderProgress();
   hydrateGemIcons(document);
+  startMinimumReadableSizeGuard();
   // Start the current + next two campaign boards off-thread immediately.
   beginWarmWindow(state.currentLevel);
   await finishLoadingWipe(loadingStarted);
