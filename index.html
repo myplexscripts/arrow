@@ -954,7 +954,12 @@ body.dark {
 .currency-inline,.reward-pill .gem-icon,.chip .gem-icon,.buy .gem-icon{vertical-align:-.12em}
 .shop-balance .gem-icon{color:#fff!important}
 i[class^="ph-"],i[class*=" ph-"],.gem-icon{min-width:16px;min-height:16px}
+i.ph-duotone{display:inline-grid!important;place-items:center!important;line-height:1!important;font-style:normal!important;vertical-align:-.12em}
+i.ph-duotone:before,i.ph-duotone:after{grid-area:1/1!important;line-height:1!important;margin:0!important;transform:none!important}
+.tool>i.ph-duotone:first-child{align-self:center!important;justify-self:center!important}
 :where(.app small,.app .stat-card span,.app .achievement-row p,.app .level-title small,.app .tutorial-card .step){font-size:1rem!important}
+.stat-card strong{line-height:1.12!important;letter-spacing:-.025em!important}
+.stat-card em{display:block;margin-top:8px;color:var(--muted);font-size:1rem;font-style:normal;font-weight:800}
 .shop-list,.setting-list,.achievement-list{gap:12px!important;padding-bottom:20px}
 .shop-item,.setting-row,.achievement-row{border:2px solid var(--flat-line)!important;border-bottom-width:2px!important;margin:0!important}
 .switch{display:flex!important;align-items:center!important;width:58px!important;height:36px!important;min-width:58px!important;min-height:36px!important;padding:4px!important}
@@ -3627,6 +3632,8 @@ function gemIconSvg(){
     </clipPath>
   </defs>
 
+  <polygon points="72 40 184 40 240 104 128 224 16 104" fill="currentColor" opacity=".2" />
+
   <g clip-path="url(#${maskId})">
     <line x1="0" y1="104" x2="256" y2="104" stroke="currentColor" stroke-width="16" stroke-linecap="round" />
     <path d="M 72 40 L 16 104 L 128 224" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" dur="3.6s" repeatCount="indefinite" calcMode="linear" values="M 72 40 L 16 104 L 128 224; M 184 40 L 240 104 L 128 224" /></path>
@@ -4666,16 +4673,16 @@ function renderProgress(){
   const statsGrid=$('#statsGrid'),achievementList=$('#achievementList');
   if(!statsGrid||!achievementList)return;
   const stats=[
-    ['Boards cleared',state.stats.totalClears||0],
-    ['Perfect clears',state.stats.perfectClears||0],
-    ['Perfect streak',`${state.perfectStreak.current||0} now · ${state.perfectStreak.best||0} best`],
-    ['Visit streak',`${state.loginBonus.streak||0} now · ${state.loginBonus.bestStreak||0} best`],
-    ['Campaign stars',totalCampaignStars()],
-    ['Daily clears',uniqueDailyClears()],
-    ['Play time',formatDuration(state.stats.totalPlaySeconds||0)],
-    ['Gems earned',state.stats.totalGemsEarned||0]
+    {label:'Boards cleared',value:state.stats.totalClears||0},
+    {label:'Perfect clears',value:state.stats.perfectClears||0},
+    {label:'Perfect streak',value:state.perfectStreak.current||0,detail:`Best ${state.perfectStreak.best||0}`},
+    {label:'Visit streak',value:state.loginBonus.streak||0,detail:`Best ${state.loginBonus.bestStreak||0}`},
+    {label:'Campaign stars',value:totalCampaignStars()},
+    {label:'Daily clears',value:uniqueDailyClears()},
+    {label:'Play time',value:formatDuration(state.stats.totalPlaySeconds||0)},
+    {label:'Gems earned',value:state.stats.totalGemsEarned||0}
   ];
-  statsGrid.innerHTML=stats.map(([label,value])=>`<div class="stat-card"><span>${label}</span><strong>${value}</strong></div>`).join('');
+  statsGrid.innerHTML=stats.map(({label,value,detail})=>`<div class="stat-card"><span>${label}</span><strong>${value}</strong>${detail?`<em>${detail}</em>`:''}</div>`).join('');
 
   achievementList.innerHTML=ACHIEVEMENTS.map(a=>{
     const earned=!!state.achievements[a.id];
