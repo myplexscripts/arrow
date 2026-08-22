@@ -1544,14 +1544,73 @@ body.dark {
 
   function patternPool(level) {
     if (level <= 10) return ['rectangle','square'];
-    if (level <= 25) return ['rectangle','diamond','oval'];
-    if (level <= 50) return ['heart','triangle','circle','hourglass','diamond','oval','bunny'];
-    if (level <= 100) return ['shield','bottle','wave','star','bell','cross','cloud','flower','house','fish','dolphin'];
+    if (level < 15) return ['rectangle','diamond','oval'];
+    if (level < 25) return ['rectangle','diamond','oval','heart'];
+    if (level < 40) return ['heart','triangle','circle','hourglass','diamond','oval','bunny','fish'];
+    if (level < 60) return ['heart','triangle','circle','hourglass','diamond','oval','bunny','fish','dolphin','shield','wave'];
+    if (level <= 100) return ['shield','bottle','wave','star','bell','cross','cloud','flower','house','fish','dolphin','bunny','portrait_bust'];
     return [
       'rectangle','diamond','oval','heart','triangle','circle','hourglass','shield','bottle','bell','star',
       'crescent','cross','wave','lightning','cloud','flower','butterfly','fish','dolphin','bunny','portrait_bust',
       'cat','house','tree','crown','key','question','letter_a','number_8','blob'
     ];
+  }
+
+  function showcaseOptionsForLevel(level) {
+    if (level < 15) {
+      return [
+        { pattern:'rectangle', artPlanStyle:'nested_frame', showcase:'starter_frame' },
+        { pattern:'square', artPlanStyle:'ribbon_stack', showcase:'starter_ribbon' }
+      ];
+    }
+    if (level < 25) {
+      return [
+        { pattern:'rectangle', artPlanStyle:'mirrored_columns', showcase:'mirror_intro' },
+        { pattern:'diamond', artPlanStyle:'mirrored_columns', showcase:'mirror_diamond' },
+        { pattern:'rectangle', artPlanStyle:'nested_frame', showcase:'frame_intro' }
+      ];
+    }
+    if (level < 40) {
+      return [
+        { pattern:'bunny', artPlanStyle:'animal_contour', showcase:'bunny_intro' },
+        { pattern:'fish', artPlanStyle:'animal_contour', showcase:'fish_intro' },
+        { pattern:'heart', artPlanStyle:'comb_ladder', showcase:'heart_ladder' }
+      ];
+    }
+    if (level < 60) {
+      return [
+        { pattern:'dolphin', artPlanStyle:'animal_contour', showcase:'dolphin_intro' },
+        { pattern:'bunny', artPlanStyle:'mirrored_columns', showcase:'mirror_bunny' },
+        { pattern:'rectangle', artPlanStyle:'side_chambers', showcase:'side_chambers' },
+        { pattern:'rectangle', artPlanStyle:'temple_frame', showcase:'temple_frame' }
+      ];
+    }
+    return [
+      { pattern:'portrait_bust', artPlanStyle:'portrait_guides', showcase:'portrait_intro' },
+      { pattern:'rectangle', artPlanStyle:'circuit_board', showcase:'circuit_intro' },
+      { pattern:'dolphin', artPlanStyle:'animal_contour', showcase:'dolphin_showcase' },
+      { pattern:'butterfly', artPlanStyle:'mirrored_columns', showcase:'butterfly_mirror' },
+      { pattern:'rectangle', artPlanStyle:'temple_frame', showcase:'temple_showcase' }
+    ];
+  }
+
+  function showcaseSpecForLevel(level, rng) {
+    if (level === 15) return { pattern:'rectangle', artPlanStyle:'mirrored_columns', showcase:'first_mirror' };
+    if (level === 25) return rng.pick([
+      { pattern:'bunny', artPlanStyle:'animal_contour', showcase:'first_bunny' },
+      { pattern:'fish', artPlanStyle:'animal_contour', showcase:'first_fish' }
+    ]);
+    if (level === 40) return { pattern:'dolphin', artPlanStyle:'animal_contour', showcase:'first_dolphin' };
+    if (level === 60) return rng.pick([
+      { pattern:'portrait_bust', artPlanStyle:'portrait_guides', showcase:'first_portrait' },
+      { pattern:'rectangle', artPlanStyle:'circuit_board', showcase:'first_circuit' }
+    ]);
+    if (level % 10 === 0) return rng.pick(showcaseOptionsForLevel(level));
+    return null;
+  }
+
+  function dailyShowcaseSpecForLevel(level, rng) {
+    return showcaseSpecForLevel(level, rng) || rng.pick(showcaseOptionsForLevel(level));
   }
 
   function choosePattern(level, rng, recentPatterns = []) {
@@ -2506,7 +2565,12 @@ body.dark {
   function buildCandidate(levelNumber, seed, options = {}) {
     const rng = new RNG(seed);
     const config = { ...getDifficultyConfig(levelNumber), ...(options.configOverrides || {}) };
-    const pattern = options.pattern || choosePattern(levelNumber, rng, options.recentPatterns || []);
+    const showcaseSpec = options.showcaseSpec || (
+      !options.pattern && !options.artPlanStyle && options.showcase !== false
+        ? showcaseSpecForLevel(levelNumber, rng)
+        : null
+    );
+    const pattern = options.pattern || showcaseSpec?.pattern || choosePattern(levelNumber, rng, options.recentPatterns || []);
 
     let mask = createPatternMask(pattern, config.width, config.height, rng);
     const rotations = [0,90,180,270];
@@ -2518,7 +2582,7 @@ body.dark {
     mask = transformPattern(mask, transform);
 
     const board = { width: mask.width, height: mask.height, mask };
-    const artPlan = createArtPlan(board, pattern, levelNumber, rng, options.artPlanStyle || null);
+    const artPlan = createArtPlan(board, pattern, levelNumber, rng, options.artPlanStyle || showcaseSpec?.artPlanStyle || null);
     config.artPlan = artPlan;
     const maskCellCount = mask.cells.size;
     const fillTarget = patternCoverageTarget(pattern, config);
@@ -2730,6 +2794,7 @@ body.dark {
       levelNumber,
       pattern,
       artPlan: { style: artPlan.style, symmetrical: artPlan.symmetrical },
+      showcase: showcaseSpec ? { ...showcaseSpec } : null,
       transform,
       width: board.width,
       height: board.height,
@@ -2990,14 +3055,22 @@ body.dark {
   function generateLevel(levelNumber, seed, options = {}) {
     const baseSeed = `${seed ?? 'arrow-maze'}:${levelNumber}`;
     const cfg = getDifficultyConfig(levelNumber);
-    const candidateCount = options.candidateCount ?? cfg.candidateCount;
+    const suppliedShowcase = options.showcaseSpec || null;
+    const campaignShowcase = !suppliedShowcase && !options.pattern && !options.artPlanStyle && options.showcase !== false
+      ? showcaseSpecForLevel(levelNumber, new RNG(`${baseSeed}:showcase`))
+      : null;
+    const activeShowcase = suppliedShowcase || campaignShowcase;
+    const candidateCount = options.candidateCount ?? (activeShowcase ? Math.max(cfg.candidateCount, levelNumber <= 60 ? 4 : 3) : cfg.candidateCount);
+    const buildOptions = activeShowcase
+      ? { ...options, pattern:activeShowcase.pattern, artPlanStyle:activeShowcase.artPlanStyle, showcaseSpec:activeShowcase }
+      : options;
     let best = null;
     let bestValid = null;
     const candidates = [];
 
     for (let i=0; i<candidateCount; i++) {
       const candidateSeed = `${baseSeed}:candidate:${i}`;
-      const c = buildCandidate(levelNumber, candidateSeed, options);
+      const c = buildCandidate(levelNumber, candidateSeed, buildOptions);
       const validation = validateLevel(c, {checkAlternateStrategies:false});
       if (validation.valid) {
         candidates.push(c);
@@ -3028,12 +3101,12 @@ body.dark {
       // 50+ cell boards. Bounding by wall-clock keeps latency predictable
       // regardless of board size; we still always keep the best candidate
       // found even if the floor is never cleared in the budget.
-      const fallbackDeadline = Date.now() + (options.fallbackBudgetMs ?? 2500);
+      const fallbackDeadline = Date.now() + (buildOptions.fallbackBudgetMs ?? 2500);
       let bestFallbackValid = null;
-      const fallbackPattern = options.pattern || 'rectangle';
+      const fallbackPattern = buildOptions.pattern || 'rectangle';
       for (let i=0; i<8 && Date.now() < fallbackDeadline; i++) {
         const c = buildCandidate(levelNumber, `${baseSeed}:fallback:${i}`, {
-          ...options, pattern:fallbackPattern, placementAttempts:70
+          ...buildOptions, pattern:fallbackPattern, placementAttempts:70
         });
         const validation = validateLevel(c, {checkAlternateStrategies:false});
         if (!validation.valid) continue;
@@ -3052,6 +3125,59 @@ body.dark {
     best.requestedSeed = String(seed ?? 'arrow-maze');
     best.candidateScores = candidates.map(c=>c.generationScore);
     return best;
+  }
+
+  function withDailyShowcaseFlag(spec) {
+    return spec ? { ...spec, daily:true } : null;
+  }
+
+  function dailyArtQuality(level) {
+    const coverage = Number(level.debug?.coverage ?? maskCoverage(level));
+    const fullness = Number(level.debug?.shapeFullness ?? shapeFullnessMetrics(level).minBand);
+    return coverage * 100 + fullness * 34 + Number(level.generationScore || 0) * 0.08;
+  }
+
+  function dailyArtIsStrong(level) {
+    const coverage = Number(level.debug?.coverage ?? maskCoverage(level));
+    const fullness = Number(level.debug?.shapeFullness ?? shapeFullnessMetrics(level).minBand);
+    const rectangular = level.pattern === 'rectangle' || level.pattern === 'square';
+    return coverage >= (rectangular ? 0.965 : 0.95) && fullness >= (rectangular ? 0.82 : 0.84);
+  }
+
+  function generateDailyLevel(levelNumber, seed, options = {}) {
+    const candidateCount = options.candidateCount ?? (levelNumber <= 60 ? 4 : 3);
+    const baseOptions = { ...options, candidateCount };
+    const primarySpec = withDailyShowcaseFlag(
+      options.showcaseSpec || dailyShowcaseSpecForLevel(levelNumber, new RNG(`${seed ?? 'arrow-maze-daily'}:${levelNumber}:showcase`))
+    );
+    let best = null;
+    const tryDailyBuild = (spec, seedSuffix = '') => {
+      const dailySeed = seedSuffix ? `${seed ?? 'arrow-maze-daily'}:${seedSuffix}` : seed;
+      const level = generateLevel(levelNumber, dailySeed, { ...baseOptions, showcaseSpec:withDailyShowcaseFlag(spec) });
+      if (!best || dailyArtQuality(level) > dailyArtQuality(best)) best = level;
+      return level;
+    };
+
+    const primary = tryDailyBuild(primarySpec);
+    if (dailyArtIsStrong(primary)) return primary;
+
+    const tried = new Set([primarySpec?.showcase].filter(Boolean));
+    const alternates = new RNG(`${seed ?? 'arrow-maze-daily'}:${levelNumber}:showcase-alternates`)
+      .shuffle(showcaseOptionsForLevel(levelNumber));
+    let altIndex = 0;
+    for (const spec of alternates) {
+      if (tried.has(spec.showcase)) continue;
+      tried.add(spec.showcase);
+      let candidate = null;
+      try {
+        candidate = tryDailyBuild(spec, `alt:${altIndex++}`);
+      } catch (err) {
+        continue;
+      }
+      if (dailyArtIsStrong(candidate)) return candidate;
+    }
+
+    return best || primary;
   }
 
   // ---------- debug support ----------
@@ -3074,6 +3200,7 @@ body.dark {
       solution: level.solution,
       pattern: level.pattern,
       artPlan: level.artPlan,
+      showcase: level.showcase,
       seed: level.seed,
       generationScore: level.generationScore
     };
@@ -3101,7 +3228,7 @@ body.dark {
   function stableLevelFingerprint(level) {
     return JSON.stringify({
       pattern:level.pattern,width:level.width,height:level.height,mask:level.mask,
-      artPlan:level.artPlan,arrows:level.arrows,solution:level.solution,generationScore:level.generationScore
+      artPlan:level.artPlan,showcase:level.showcase,arrows:level.arrows,solution:level.solution,generationScore:level.generationScore
     });
   }
 
@@ -3156,6 +3283,9 @@ body.dark {
     transformPattern,
     createArtPlan,
     chooseArtPlanStyle,
+    dailyShowcaseSpecForLevel,
+    showcaseOptionsForLevel,
+    showcaseSpecForLevel,
     buildDependencyPlan,
     generateArrowPaths: buildCandidate,
     placeArrow,
@@ -3169,6 +3299,7 @@ body.dark {
     scoreCandidate: calculateGenerationScore,
     solveLevel,
     validateLevel,
+    generateDailyLevel,
     generateLevel,
     getDebugFrame,
     autoPlaySolution,
@@ -3321,20 +3452,23 @@ function showScreen(id){
 
 
 const GAME_SEED = 'arrowflow-campaign-v2';
+const DAILY_SEED = 'arrowflow-daily-v2';
 const generatedLevelCache = new Map();
 const warmingLevelPromises = new Map();
 const warmWorkerResolvers = new Map();
 let warmWorker = null;
 let warmWorkerUnavailable = false;
 
-function buildAndCacheRawLevel(level){
-  level=clamp(Math.floor(Number(level)||1),1,CONSTANTS.TOTAL_LEVELS);
-  const cacheKey=levelCacheKey(level);
+function buildAndCacheRawLevel(level,generationOptions={}){
+  const request=generationRequestForLevel(level,generationOptions);
+  const cacheKey=request.cacheKey;
   const cached=generatedLevelCache.get(cacheKey);
   if(cached)return cached;
-  const raw=ArrowMazeGenerator.generateLevel(level,GAME_SEED,{candidateCount:candidateCountForLevel(level)});
+  const raw=request.daily
+    ? ArrowMazeGenerator.generateDailyLevel(request.level,request.seed,request.options)
+    : ArrowMazeGenerator.generateLevel(request.level,request.seed,request.options);
   const validation=ArrowMazeGenerator.validateLevel(raw);
-  if(!validation.valid)throw new Error(`Generated level ${level} failed validation: ${validation.errors.join('; ')}`);
+  if(!validation.valid)throw new Error(`Generated level ${request.level} failed validation: ${validation.errors.join('; ')}`);
   generatedLevelCache.set(cacheKey,raw);
   return raw;
 }
@@ -3349,7 +3483,11 @@ function getWarmWorker(){
 self.onmessage=function(event){
   const d=event.data||{};
   try{
-    const raw=self.ArrowMazeGenerator.generateLevel(d.level,d.seed,{candidateCount:d.candidateCount});
+    const options=Object.assign({},d.options||{});
+    if(d.candidateCount!=null)options.candidateCount=d.candidateCount;
+    const raw=d.daily
+      ? self.ArrowMazeGenerator.generateDailyLevel(d.level,d.seed,options)
+      : self.ArrowMazeGenerator.generateLevel(d.level,d.seed,options);
     const validation=self.ArrowMazeGenerator.validateLevel(raw);
     if(!validation.valid)throw new Error(validation.errors.join('; '));
     self.postMessage({ok:true,cacheKey:d.cacheKey,level:d.level,raw:raw});
@@ -3393,10 +3531,11 @@ self.onmessage=function(event){
   return warmWorker;
 }
 
-function warmLevel(level,{delay=0}={}){
-  level=Math.floor(Number(level)||0);
+function warmLevel(level,{delay=0,daily=false,dailyKey=null}={}){
+  const request=generationRequestForLevel(level,{daily,dailyKey});
+  level=request.level;
   if(level<1||level>CONSTANTS.TOTAL_LEVELS)return Promise.resolve(null);
-  const cacheKey=levelCacheKey(level);
+  const cacheKey=request.cacheKey;
   if(generatedLevelCache.has(cacheKey))return Promise.resolve(generatedLevelCache.get(cacheKey));
   if(warmingLevelPromises.has(cacheKey))return warmingLevelPromises.get(cacheKey);
 
@@ -3408,13 +3547,15 @@ function warmLevel(level,{delay=0}={}){
         worker.postMessage({
           cacheKey,
           level,
-          seed:GAME_SEED,
-          candidateCount:candidateCountForLevel(level)
+          seed:request.seed,
+          candidateCount:request.candidateCount,
+          options:request.options,
+          daily:request.daily
         });
         return;
       }
       // Old browsers still work, but generation falls back to the main thread.
-      try{ resolve(buildAndCacheRawLevel(level)); }
+      try{ resolve(buildAndCacheRawLevel(level,request)); }
       catch(error){ console.error(`Warm-up failed for level ${level}`,error); resolve(null); }
       finally{ warmingLevelPromises.delete(cacheKey); }
     };
@@ -3487,7 +3628,13 @@ function difficultyLabel(level,tier){
   if(level<500)return 'Expert';
   return tier==='hard'?'Master':'Flow';
 }
-function candidateCountForLevel(level){
+function isArtShowcaseLevel(level){
+  level=Math.floor(Number(level)||0);
+  return level===15||level===25||level===40||level===60||level%10===0;
+}
+function candidateCountForLevel(level,{daily=false}={}){
+  if(daily)return level<=60?4:3;
+  if(isArtShowcaseLevel(level))return level<=60?4:3;
   if(level<=10)return 3;
   if(level<=100)return 2;
   return 1;
@@ -3508,6 +3655,7 @@ function adaptGeneratedLevel(raw,level){
       shape:raw.pattern,
       shapeLabel:shapeLabel(raw.pattern),
       layoutPattern:raw.artPlan?.style||'freeform',
+      showcase:raw.showcase||null,
       seed:raw.seed
     },
     arrows,
@@ -3519,9 +3667,51 @@ function adaptGeneratedLevel(raw,level){
     generatorBoard:ArrowMazeGenerator.boardFromLevel(raw)
   };
 }
-function levelCacheKey(level){ return `artplan1:${GAME_SEED}:${level}`; }
-function generateLevel(level){
-  return adaptGeneratedLevel(buildAndCacheRawLevel(level),level);
+function levelCacheKey(level){ return `showcase2:${GAME_SEED}:${level}`; }
+function dailyLevelCacheKey(level,dailyKey){ return `showcase2:${DAILY_SEED}:${dailyKey}:${level}`; }
+function dailyKeyForDate(date=new Date()){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+function dailyChallengeForDate(date=new Date()){
+  const dailyKey=dailyKeyForDate(date);
+  const localMidnight=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+  const dayIndex=Math.floor(localMidnight.getTime()/86400000);
+  return {dailyKey,level:(dayIndex%CONSTANTS.TOTAL_LEVELS)+1};
+}
+function generationRequestForLevel(level,{daily=false,dailyKey=null}={}){
+  if(arguments[1]?.cacheKey&&arguments[1]?.seed&&arguments[1]?.options)return arguments[1];
+  level=clamp(Math.floor(Number(level)||1),1,CONSTANTS.TOTAL_LEVELS);
+  if(!daily){
+    const candidateCount=candidateCountForLevel(level);
+    return {
+      level,
+      seed:GAME_SEED,
+      cacheKey:levelCacheKey(level),
+      candidateCount,
+      options:{candidateCount},
+      daily:false
+    };
+  }
+  const key=dailyKey||dailyKeyForDate();
+  const seed=`${DAILY_SEED}:${key}`;
+  const candidateCount=candidateCountForLevel(level,{daily:true});
+  const showcase=ArrowMazeGenerator.dailyShowcaseSpecForLevel(
+    level,
+    new ArrowMazeGenerator.RNG(`${seed}:${level}:showcase`)
+  );
+  return {
+    level,
+    seed,
+    cacheKey:dailyLevelCacheKey(level,key),
+    candidateCount,
+    options:{candidateCount,showcaseSpec:{...showcase,daily:true}},
+    daily:true,
+    dailyKey:key
+  };
+}
+function generateLevel(level,generationOptions={}){
+  const request=generationRequestForLevel(level,generationOptions);
+  return adaptGeneratedLevel(buildAndCacheRawLevel(request.level,request),request.level);
 }
 function toGeneratorArrow(a){
   return {
@@ -3751,8 +3941,11 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
   if(levelStarting)return;
   level=clamp(Math.floor(Number(level)||1),1,CONSTANTS.TOTAL_LEVELS);
   if(!daily)level=Math.min(level,state.maxUnlocked);
+  const request=generationRequestForLevel(level,{daily,dailyKey});
+  level=request.level;
+  dailyKey=request.dailyKey||dailyKey;
   levelStarting=true;
-  const cacheKey=levelCacheKey(level);
+  const cacheKey=request.cacheKey;
   let cached=generatedLevelCache.has(cacheKey);
   const tutorialPending=!daily&&!state.tutorialSeen&&level===1;
   let loadingStarted=0;
@@ -3762,14 +3955,14 @@ async function startLevel(level,{daily=false,dailyKey=null}={}){
     // Prefer the already-running background job. If none exists, start one now.
     let warmed=null;
     if(warmingLevelPromises.has(cacheKey))warmed=await warmingLevelPromises.get(cacheKey);
-    else warmed=await warmLevel(level);
+    else warmed=await warmLevel(level,{daily,dailyKey});
     cached=generatedLevelCache.has(cacheKey);
     // If a worker was unavailable or failed, retain the deterministic synchronous fallback.
     if(!cached&&!warmed)await new Promise(resolve=>requestAnimationFrame(resolve));
   }
   let data;
   try{
-    data=generateLevel(level);
+    data=generateLevel(level,{daily,dailyKey});
   }catch(err){
     console.error(err);
     levelStarting=false;
@@ -4296,7 +4489,7 @@ function endTutorial(){
 $$('[data-nav]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.nav)));
 $$('[data-back]').forEach(b=>b.addEventListener('click',()=>showScreen(previousScreen==='settings'?'home':previousScreen)));
 $('#continueBtn').onclick=()=>startLevel(state.currentLevel);
-$('#dailyBtn').onclick=()=>{const now=new Date();const day=Math.floor(Date.now()/86400000);const dailyKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;startLevel((day%CONSTANTS.TOTAL_LEVELS)+1,{daily:true,dailyKey})};
+$('#dailyBtn').onclick=()=>{const daily=dailyChallengeForDate();startLevel(daily.level,{daily:true,dailyKey:daily.dailyKey})};
 $('#gameBack').onclick=()=>openModal(`<h2>Leave this board?</h2><p>Your current attempt will restart when you return.</p><div class="sheet-actions"><button class="primary" id="leaveBoard">Leave level</button><button class="ghost" id="stayBoard">Keep playing</button></div>`);
 $('#modalLayer').addEventListener('click',e=>{if(e.target.id==='modalLayer')closeModal()});
 document.addEventListener('click',e=>{if(e.target?.id==='leaveBoard'){closeModal();showScreen('home')}if(e.target?.id==='stayBoard')closeModal();});
